@@ -1,6 +1,27 @@
-# 초파리 뇌지도에 Python 문법 가르치기
+# CodingFly: FlyWire 시냅스 학습과 Python 생성 실험
+
+[개발 로드맵](docs/DUAL_FLY_DEVELOPMENT_ROADMAP.md)에 따른 **fly-only 연구 경로**를 추가했습니다. 현재 P0~P2를 구현·검증했고, P3는 LET/PRINT 순차 생성 실험까지 구현했습니다. **Fly-NL과 두 파리 통합은 아직 구현하지 않았습니다.** P3가 문법/실행 목표에 미달해 다음 단계 확장을 보류합니다. [실측 결과와 한계](docs/IMPLEMENTATION_RESULTS.md) · [실험 절차](docs/EXPERIMENT_PROTOCOL.md) · [IR v0.1](docs/IR_SPEC.md)
+
+새 경로는 원본 FlyWire 간선의 강도만 학습하는 반복적 rate 신경 모델입니다. 입력은 고정 UTF-8 바이트 자극이고, 출력 뉴런의 활동이 Python 토큰 또는 원문 COPY 위치를 결정합니다. 외부 LLM, 기존 정규식 의도 분류, 기존 코드 템플릿으로 실패한 답을 보정하지 않습니다. 생물학적으로 검증된 초파리 뇌 시뮬레이터라는 의미는 아닙니다.
+
+```bash
+python -m pip install -r requirements.txt
+python -m unittest -v
+python benchmark.py
+python -m evaluation.toy --output artifacts/toy-p2
+python -m models.train_code --toy-report artifacts/toy-p2/report.json --output artifacts/fly-code
+python dual_fly.py --checkpoint artifacts/fly-code/learned.json --dataset artifacts/fly-code/dataset.json --ir "PRINT 37"
+```
+
+새 신경 엔진은 Python 3.10 이상과 NumPy를 사용합니다. 생성 코드의 **실행 채점**에는 Linux의 `bubblewrap`과 `/usr/bin/python3`가 필요합니다. 미설치/격리 불가 환경에서는 `sandbox_unavailable`로 실패하며 호스트 실행으로 대체하지 않습니다. 기존 데모는 계속 표준 라이브러리만 사용합니다.
+
+훈련은 고정 시드·예산으로 수행하고 자료/그래프/IR 해시, 실제 변경 간선, 복원 결과, frozen/재연결/무작위 대조 결과를 JSON에 남깁니다. `--trace`를 주면 각 출력 선택의 뉴런/가중치 근거를 볼 수 있습니다. 이 명령은 **연구용 예측**이므로 생성된 코드가 올바르다고 보장하지 않습니다. 실패한 출력과 중단 상태를 그대로 반환합니다.
+
+## Legacy: 초파리 뇌지도에 Python 문법 가르치기
 
 FlyWire 초파리 뇌지도의 연결로 Python 코드 빈칸을 학습하는 실험입니다. 예를 들어 `score □ 42`에서 `=`를 예측합니다. Python 3.10 이상과 표준 라이브러리만 사용합니다.
+
+아래 `lab.py`, `fly.py`, `benchmark.py`는 기존 **legacy 하이브리드 경로**입니다. 예문별 보상 메모리, 정규식, 코드 템플릿 및 Qwen 경로가 포함되며 새 fly-only 성과와 구분합니다.
 
 ## 브라우저에서 학습 보기
 

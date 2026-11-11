@@ -1,0 +1,2 @@
+# The legacy demo remains standard-library only. The new sparse neural engine uses NumPy.
+numpy>=1.24,<3

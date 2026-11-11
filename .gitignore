@@ -1,3 +1,6 @@
 __pycache__/
+*.py[cod]
+.venv/
+artifacts/
 lab_state*.json
 .lab_state*.tmp

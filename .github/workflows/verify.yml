@@ -1,0 +1,41 @@
+name: Verify legacy and fly-only engine
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y bubblewrap python3
+      - run: python -m pip install -r requirements.txt
+      - name: Require actual OS isolation
+        run: |
+          python - <<'PY'
+          from evaluation.sandbox import isolation_status
+          result = isolation_status()
+          assert result['status'] == 'ok', result
+          for check in ('network_blocked', 'runtime_readonly', 'host_workspace_hidden', 'environment_cleared'):
+              assert result[check], result
+          PY
+      - run: python -m unittest -v
+      - run: python benchmark.py
+      - run: python -m evaluation.toy --output artifacts/toy-p2
+      - name: Require the repeated synaptic-learning gate
+        run: |
+          python - <<'PY'
+          from models.train_code import require_p2
+          require_p2('artifacts/toy-p2/report.json')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: toy-learning-evidence
+          path: artifacts/toy-p2/
