@@ -10,6 +10,8 @@ from threading import Lock, Thread
 
 from fly import BLANK, HERE, Fly, load_lessons
 from algorithm_phrases import ALGORITHM_LESSONS, CHECKS, GENERALIZATION_CHECKS
+from goal_model import solve
+from learning import ProgramLearning
 from program_model import ProgramModel
 from reward import RewardMemory
 
@@ -163,8 +165,8 @@ class Experiment:
                                            for lesson in self.lessons]}).encode()
 
 
-def serve(lab):
-    program_model = ProgramModel(lab.fly)
+def build_program(lab, record):
+    program_model = ProgramModel(lab.fly, on_step=record)
     categories = {
         "기존 문법 종합": "program_checks.json",
         "추가 문법 종합": "advanced_checks.json",
@@ -181,7 +183,8 @@ def serve(lab):
     ]
     program_checks = [*examples["기존 문법 종합"], *examples["추가 문법 종합"]]
     program_summary = program_model.evaluate(program_checks)
-    program_summary["constructs"] = program_model.construct_results()
+    record("종합 프로그램 검증", "기존·추가 문법", f"{program_summary['correct']}/{program_summary['total']}개 일치")
+    program_summary["constructs"] = program_model.construct_results(record)
     program_summary["examples"] = {group: [{"title": check["title"], "source": check["source"]} for check in checks]
                                    for group, checks in examples.items()}
     program_summary["curriculum"] = program_model.curriculum
@@ -190,6 +193,13 @@ def serve(lab):
     program_summary["phrase_correct"] = sum(program_model.algorithm.ranks(phrase)[0][0] == expected
                                            for phrase, expected in phrase_checks)
     program_summary["phrase_total"] = len(phrase_checks)
+    record("알고리즘 표현 검증", "학습에 없던 표현",
+           f"{program_summary['phrase_correct']}/{program_summary['phrase_total']}개 통과")
+    return program_model, json.dumps(program_summary).encode()
+
+
+def serve(lab):
+    learning = ProgramLearning(lambda record: build_program(lab, record))
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_):
@@ -209,18 +219,22 @@ def serve(lab):
             elif self.path == "/api/state":
                 self.send(lab.snapshot(), "application/json")
             elif self.path == "/api/program":
-                self.send(json.dumps(program_summary).encode(), "application/json")
+                self.send(learning.bundle[1], "application/json")
+            elif self.path == "/api/learning":
+                self.send(json.dumps(learning.snapshot()).encode(), "application/json")
             else:
                 self.send_error(404)
 
         def do_POST(self):
-            if self.path not in ("/api/train", "/api/pause", "/api/generate"):
+            if self.path not in ("/api/train", "/api/pause", "/api/generate", "/api/goal", "/api/learning"):
                 self.send_error(404)
             elif (self.headers.get("Origin") != f"http://127.0.0.1:{PORT}"
                   or self.headers.get("Content-Type") != "application/json"):
                 self.send_error(403)
-            elif self.path == "/api/generate":
+            elif self.path in ("/api/generate", "/api/goal"):
                 self.generate()
+            elif self.path == "/api/learning":
+                self.send(json.dumps({"started": learning.start()}).encode(), "application/json")
             elif self.path == "/api/train":
                 started = lab.start()
                 self.send(b'{"started":true}' if started else b'{"started":false}', "application/json")
@@ -239,7 +253,9 @@ def serve(lab):
                     raise ValueError("의사코드 요청의 형식을 확인하세요.") from error
                 if not isinstance(payload, dict):
                     raise ValueError("의사코드 요청의 형식을 확인하세요.")
-                data = program_model.generate(payload.get("source"))
+                program_model = learning.bundle[0]
+                data = (solve(program_model, payload.get("goal"), payload.get("answer")) if self.path == "/api/goal"
+                        else program_model.generate(payload.get("source")))
                 status = 200
             except ValueError as error:
                 data = {"error": str(error)}

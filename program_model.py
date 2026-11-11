@@ -160,8 +160,8 @@ def render_step(action, body):
 
 
 class ProgramModel:
-    def __init__(self, fly):
-        self.algorithm = AlgorithmModel(fly)
+    def __init__(self, fly, on_step=None):
+        self.algorithm = AlgorithmModel(fly, on_step=on_step)
         actions = {cue: cue for cue in OPERATIONS}
         aliases = {**COMMANDS, **SIMPLE}
         for cue, operation in OPERATIONS.items():
@@ -181,11 +181,13 @@ class ProgramModel:
             for cue, expected in actions.items():
                 if expected != action:
                     continue
-                for _ in learned:
-                    _, reward = self.memory.attempt(cue, expected, learned, rng)
+                for attempt_number in range(1, len(learned) + 1):
+                    chosen, reward = self.memory.attempt(cue, expected, learned, rng)
                     self.attempts += 1
                     if reward > 0:
                         self.bonus += reward - 1
+                        if on_step:
+                            on_step("Python 구문 학습", cue, f"{chosen} 선택 · {attempt_number}번 시도 · 보상 +{reward}")
                         break
 
     def render(self, line, used, indent, siblings, dictionaries):
@@ -271,7 +273,7 @@ class ProgramModel:
         return {"correct": correct, "total": len(checks), "covered": sorted(covered),
                 "attempts": self.attempts, "bonus": self.bonus}
 
-    def construct_results(self):
+    def construct_results(self, on_step=None):
         courses = []
         for lesson in CONSTRUCT_LESSONS:
             examples = []
@@ -282,6 +284,9 @@ class ProgramModel:
                 except ValueError as error:
                     code, correct = str(error), False
                 examples.append({"source": example["source"], "code": code, "correct": correct})
+            if on_step:
+                passed = sum(example["correct"] for example in examples)
+                on_step("완성 구문 검증", lesson["title"], f"기준 Python 코드와 {passed}/{len(examples)}개 일치")
             courses.append({"group": lesson["group"], "title": lesson["title"],
                             "description": lesson["description"], "examples": examples})
         return courses

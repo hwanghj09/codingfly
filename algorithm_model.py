@@ -17,7 +17,7 @@ def similarity(left, right):
 
 
 class AlgorithmModel:
-    def __init__(self, fly, *, lexical=True):
+    def __init__(self, fly, *, lexical=True, on_step=None):
         self.fly = fly
         self.lexical = lexical
         self.examples = {}
@@ -39,10 +39,12 @@ class AlgorithmModel:
             actions.append(action)
             vectors = []
             for phrase in phrases:
-                for _ in actions:
-                    _, reward = memory.attempt(phrase, action, actions, rng)
+                for attempt_number in range(1, len(actions) + 1):
+                    chosen, reward = memory.attempt(phrase, action, actions, rng)
                     if reward > 0:
                         vectors.append(self.embed(phrase))
+                        if on_step:
+                            on_step("알고리즘 표현 학습", phrase, f"{chosen} 선택 · {attempt_number}번 시도 · 보상 +{reward}")
                         break
             self.examples[action] = vectors
             total = Counter()

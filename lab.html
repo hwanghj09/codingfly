@@ -100,6 +100,14 @@
   .archive { color:var(--muted); }
   .archive > summary { cursor:pointer; padding:14px 0; }
   .archive > .control { margin-bottom:14px; }
+  .training-body { padding:14px 18px; }
+  .training-body input[type=range] { flex:1 1 160px; accent-color:var(--green); }
+  .training-event { min-height:67px; padding:12px 0 0; }
+  .goal-input { width:100%; min-height:46px; padding:9px; font:inherit; border:1px solid var(--line); border-radius:7px; }
+  .goal-answer { margin-top:14px; }
+  .goal-answer summary { cursor:pointer; font-weight:700; }
+  .goal-answer textarea { margin:8px 0; min-height:130px; }
+  #goal-detail { white-space:pre-wrap; overflow-wrap:anywhere; }
   @media (max-width:830px) { .grid { grid-template-columns:1fr; } .shell { padding:0 20px 24px; } }
   @media (max-width:680px) { .workbench-grid { grid-template-columns:1fr; } }
   @media (max-width:540px) { .intro { align-items:start; flex-direction:column; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric:nth-child(odd) { border-left:0; } .metric:nth-child(n+3) { border-top:1px solid var(--line); } .source { font-size:11px; } }
@@ -115,6 +123,43 @@
     <div class="intro">
       <div><h1>초파리의 Python 학습</h1><p id="graph">FlyWire 뉴런 연결망</p></div>
     </div>
+    <section class="card workbench" aria-labelledby="goal-heading">
+      <div class="card-head"><h2 id="goal-heading">목적에 맞는 Python 작성</h2><span class="note" id="goal-summary" role="status"></span></div>
+      <div class="workbench-grid">
+        <form class="workbench-pane" id="goal-form">
+          <label for="goal-source">목적</label>
+          <input class="goal-input" id="goal-source" value="hello를 출력해" maxlength="600" required>
+          <p class="note">문자열 출력, 정수 범위, 목록의 합계와 정렬을 지원합니다. <code>함수를 이용해서 hello를 출력해</code>처럼 방법도 지정할 수 있습니다.</p>
+          <div class="control"><button class="start" id="solve-goal" type="submit">답안 생성 및 채점</button></div>
+          <details class="goal-answer">
+            <summary>내 Python 답안 채점하기</summary>
+            <label for="goal-answer">검사할 Python 코드</label>
+            <textarea id="goal-answer" maxlength="4000" spellcheck="false" placeholder='print("hello")'></textarea>
+            <button class="start" id="judge-goal" type="submit">내 답안 채점</button>
+          </details>
+          <p class="note" id="goal-error" role="alert"></p>
+        </form>
+        <div class="workbench-pane terminal">
+          <h3>답안과 채점 결과</h3>
+          <select id="goal-candidate" aria-label="채점한 답안" disabled></select>
+          <pre><code id="goal-code">목적을 입력하면 답안을 생성합니다.</code></pre>
+          <p class="answer" id="goal-detail"></p>
+        </div>
+      </div>
+    </section>
+    <section class="card workbench" aria-labelledby="training-heading">
+      <div class="card-head"><h2 id="training-heading">학습 과정</h2><span class="note" id="training-summary" role="status">학습 기록 불러오는 중</span></div>
+      <div class="training-body">
+        <div class="control">
+          <button class="start" id="retrain" type="button" disabled>다시 학습</button>
+          <button class="start" id="play-training" type="button" disabled>기록 재생</button>
+          <input id="training-step" type="range" aria-label="학습 기록 단계" min="1" max="1" value="1" disabled>
+          <span class="note" id="training-position"></span>
+        </div>
+        <div class="training-event"><strong id="training-phase"></strong><p id="training-event"></p></div>
+        <p class="note">초기 학습과 다시 학습에서 나온 구문 선택, 시도 횟수, 보상, 검증 결과를 확인할 수 있습니다.</p>
+      </div>
+    </section>
     <section class="card workbench" aria-labelledby="lesson-heading">
       <div class="card-head"><h2 id="lesson-heading">Python 문법과 사용 예제</h2><span class="note" id="lesson-summary" role="status">수업 불러오는 중</span></div>
       <div class="lesson-picker">
@@ -225,6 +270,116 @@
   let generatedCode = '';
   let programExamples = [];
   const lessonGroups = new Map();
+  let goalResult;
+  let learningEvents = [];
+  let replayTimer;
+
+  function renderGoalAnswer() {
+    const answer = goalResult.answers[Number(el('goal-candidate').value)];
+    if (!answer) return;
+    el('goal-code').textContent = answer.code;
+    const lines = [`기대 출력 ${JSON.stringify(goalResult.expected)}`, `실제 출력 ${JSON.stringify(answer.output)}`];
+    if (goalResult.required.length) lines.push(`요구한 방법 ${goalResult.required.join(', ')}`);
+    if (answer.methods.length) lines.push(`출력에 사용한 방법 ${answer.methods.join(', ')}`);
+    if (answer.missing.length) lines.push(`충족하지 못한 방법 ${answer.missing.join(', ')}`);
+    if (answer.error) lines.push(answer.error);
+    el('goal-detail').textContent = lines.join('\n');
+  }
+
+  el('goal-candidate').addEventListener('change', renderGoalAnswer);
+  el('goal-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    const payload = {goal: el('goal-source').value};
+    if (event.submitter?.id === 'judge-goal') payload.answer = el('goal-answer').value;
+    el('goal-error').textContent = '';
+    el('goal-summary').textContent = '실행 검사 중';
+    el('solve-goal').disabled = el('judge-goal').disabled = true;
+    try {
+      const response = await fetch('/api/goal', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+      goalResult = result;
+      const firstCorrect = result.answers.findIndex(answer => answer.accepted);
+      const correct = result.answers.filter(answer => answer.accepted).length;
+      const picker = el('goal-candidate');
+      picker.replaceChildren(...result.answers.map((answer, index) => new Option(`답안 ${index + 1} · ${answer.accepted ? '정답' : '미통과'}`, index)));
+      picker.disabled = result.answers.length < 2;
+      picker.value = String(Math.max(0, firstCorrect));
+      el('goal-summary').textContent = `${result.answers.length}개 검사 · 정답 ${correct}개`;
+      renderGoalAnswer();
+    } catch (error) {
+      el('goal-error').textContent = error.message;
+      el('goal-summary').textContent = '검사할 수 없음';
+      el('goal-candidate').replaceChildren();
+      el('goal-candidate').disabled = true;
+      el('goal-code').textContent = '';
+      el('goal-detail').textContent = '';
+    } finally {
+      el('solve-goal').disabled = el('judge-goal').disabled = false;
+    }
+  });
+
+  function showTrainingStep() {
+    const index = Number(el('training-step').value);
+    const step = learningEvents[index - 1];
+    el('training-position').textContent = step ? `${index} / ${learningEvents.length}` : '';
+    el('training-phase').textContent = step ? step.phase : '';
+    el('training-event').textContent = step ? `${step.item} · ${step.detail}` : '';
+  }
+
+  function stopReplay() {
+    clearInterval(replayTimer);
+    replayTimer = undefined;
+    el('play-training').textContent = '기록 재생';
+  }
+
+  async function refreshTraining() {
+    try {
+      const response = await fetch('/api/learning');
+      if (!response.ok) throw new Error();
+      const state = await response.json();
+      learningEvents = state.events;
+      const slider = el('training-step');
+      slider.max = Math.max(1, learningEvents.length);
+      slider.value = slider.max;
+      slider.disabled = state.running || !learningEvents.length;
+      el('retrain').disabled = state.running;
+      el('play-training').disabled = state.running || !learningEvents.length;
+      el('training-summary').textContent = state.error || `${state.run}회차 · ${state.running ? '학습 중' : '학습 완료'}`;
+      showTrainingStep();
+      if (state.running) setTimeout(refreshTraining, 250);
+    } catch {
+      el('training-summary').textContent = '학습 기록을 불러오지 못했습니다.';
+      el('retrain').disabled = false;
+    }
+  }
+
+  el('training-step').addEventListener('input', showTrainingStep);
+  el('play-training').addEventListener('click', () => {
+    if (replayTimer) { stopReplay(); return; }
+    const slider = el('training-step');
+    slider.value = slider.min;
+    showTrainingStep();
+    el('play-training').textContent = '재생 중지';
+    replayTimer = setInterval(() => {
+      slider.stepUp();
+      showTrainingStep();
+      if (slider.value === slider.max) stopReplay();
+    }, 110);
+  });
+  el('retrain').addEventListener('click', async () => {
+    stopReplay();
+    el('retrain').disabled = true;
+    el('training-summary').textContent = '학습 시작 중';
+    try {
+      const response = await fetch('/api/learning', {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
+      if (!response.ok) throw new Error();
+      await refreshTraining();
+    } catch {
+      el('training-summary').textContent = '다시 학습을 시작하지 못했습니다.';
+      el('retrain').disabled = false;
+    }
+  });
 
   function selectedLesson() {
     return lessonGroups.get(el('lesson-group').value)[Number(el('lesson-name').value)];
@@ -508,6 +663,7 @@
   el('next').addEventListener('click', () => { position++; render(); });
   new ResizeObserver(chart).observe(el('chart'));
   loadProgramExamples();
+  refreshTraining();
   poll();
 </script>
 </body>
