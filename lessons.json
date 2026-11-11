@@ -1,0 +1,290 @@
+[
+  {
+    "title": "변수에 값 대입하기",
+    "token": "=",
+    "train": ["x □ 1", "total □ 200", "name □ 'fly'", "result □ left + right", "values □ [1, 2]"],
+    "check": ["score □ 42", "animal □ 'ant'", "answer □ first + second"]
+  },
+  {
+    "title": "함수 호출의 여는 괄호",
+    "token": "(",
+    "train": ["print□x)", "show□12)", "len□items)", "send□'go')", "run□)"],
+    "check": ["display□score)", "draw□4)", "clear□)"]
+  },
+  {
+    "title": "함수 호출의 닫는 괄호",
+    "token": ")",
+    "train": ["print(x□", "show(12□", "len(items□", "send('go'□", "run(□"],
+    "check": ["display(score□", "draw(4□", "clear(□"]
+  },
+  {
+    "title": "인자를 쉼표로 구분하기",
+    "token": ",",
+    "train": ["send(x□ y)", "draw(1□ 2)", "show('left'□ 'right')", "mix(x□ 3)"],
+    "check": ["paint(red□ blue)", "move(4□ 5)", "echo('hi'□ 'fly')"]
+  },
+  {
+    "title": "조건문 끝에 콜론 붙이기",
+    "token": ":",
+    "train": ["if ready□\n    pass", "if x > 0□\n    run()", "if left == right□\n    print(x)", "if low == high□\n    reset()"],
+    "check": ["if awake□\n    pass", "if score > 4□\n    show()", "if a == b□\n    stop()"]
+  },
+  {
+    "title": "조건문 본문 들여쓰기",
+    "token": "    ",
+    "train": ["if ready:\n□pass", "if x > 0:\n□run()", "if left == right:\n□print(x)", "if low == high:\n□reset()"],
+    "check": ["if awake:\n□pass", "if score > 4:\n□show()", "if a == b:\n□stop()"]
+  },
+  {
+    "title": "두 값이 같은지 비교하기",
+    "token": "==",
+    "train": ["if x □ 1:\n    run()", "if left □ right:\n    pass", "if name □ 'fly':\n    show()", "if level □ 2:\n    print(level)", "if low □ high:\n    reset()", "if kind □ 'insect':\n    pass"],
+    "check": ["if score □ 42:\n    show()", "if first □ second:\n    stop()", "if color □ 'green':\n    pass"]
+  },
+  {
+    "title": "함수에서 결과 돌려주기",
+    "token": "return",
+    "train": ["def get():\n    □ x", "def add(x, y):\n    □ x + y", "def one():\n    □ 1", "def label():\n    □ 'fly'"],
+    "check": ["def read():\n    □ score", "def count():\n    □ 42", "def sum_pair(a, b):\n    □ a + b"]
+  },
+  {
+    "title": "리스트의 여는 대괄호",
+    "token": "[",
+    "train": ["items = □1, 2]", "words = □'one', 'two']", "values = □x]", "empty = □]", "letters = □'a']"],
+    "check": ["scores = □7, 8]", "names = □'fly']", "notes = □]"]
+  },
+  {
+    "title": "리스트의 닫는 대괄호",
+    "token": "]",
+    "train": ["items = [1, 2□", "words = ['one', 'two'□", "values = [x□", "empty = [□", "colors = ['green'□"],
+    "check": ["scores = [7, 8□", "names = ['fly'□", "notes = [□"]
+  },
+  {
+    "title": "for 반복문의 in",
+    "token": "in",
+    "train": ["for x □ items:\n    show(x)", "for i □ range(3):\n    pass", "for letter □ 'fly':\n    print(letter)", "for x □ [1, 2]:\n    run(x)", "for index □ range(2):\n    run()", "for name □ ['ant', 'bee']:\n    show(name)"],
+    "check": ["for score □ scores:\n    display(score)", "for step □ range(5):\n    move()", "for color □ ['red', 'blue']:\n    paint(color)"]
+  },
+  {
+    "title": "함수 정의의 def",
+    "token": "def",
+    "train": ["□ say():\n    pass", "□ double(x):\n    return x + x", "□ add(x, y):\n    return x + y", "□ label():\n    return 'fly'", "□ copy(item):\n    return item"],
+    "check": ["□ run():\n    pass", "□ greet(name):\n    return name", "□ total(a, b):\n    return a + b"]
+  },
+  {
+    "title": "조건문의 else",
+    "token": "else",
+    "train": ["if ready:\n    run()\n□:\n    wait()", "if x > 0:\n    print(x)\n□:\n    pass", "if x == y:\n    go()\n□:\n    stop()"],
+    "check": ["if awake:\n    play()\n□:\n    rest()", "if n > 5:\n    show(n)\n□:\n    pass", "if a == b:\n    move()\n□:\n    idle()"]
+  },
+  {
+    "title": "조건을 하나 더 검사하는 elif",
+    "token": "elif",
+    "train": ["if n < 0:\n    down()\n□ n > 0:\n    up()", "if x == 1:\n    go()\n□ x == 2:\n    wait()", "if quiet:\n    sleep()\n□ hungry:\n    eat()"],
+    "check": ["if score < 8:\n    wait()\n□ score > 8:\n    move()", "if mode == 3:\n    open_file()\n□ mode == 4:\n    close_file()", "if awake:\n    go()\n□ tired:\n    rest()"]
+  },
+  {
+    "title": "조건을 반복해서 확인하는 while",
+    "token": "while",
+    "train": ["□ n < 3:\n    n += 1", "□ x > 0:\n    x -= 1", "□ keep_going:\n    tick()"],
+    "check": ["□ i < 5:\n    i += 2", "□ fuel > 3:\n    fuel -= 2", "□ active:\n    loop()"]
+  },
+  {
+    "title": "조건부 표현식의 if",
+    "token": "if",
+    "train": ["label = 'yes' □ ready else 'no'", "value = x □ valid else y", "count = 1 □ started else 0"],
+    "check": ["text = 'go' □ awake else 'stop'", "choice = left □ available else right", "result = 2 □ enabled else 3"]
+  },
+  {
+    "title": "두 조건을 모두 요구하는 and",
+    "token": "and",
+    "train": ["if x > 0 □ x < 10:\n    pass", "if n >= 1 □ n <= 5:\n    run()", "if (x > 0) □ (y < 10):\n    show()"],
+    "check": ["if i > 1 □ i < 8:\n    pass", "if score >= 3 □ score <= 8:\n    move()", "if (a > 2) □ (b < 7):\n    plot()"]
+  },
+  {
+    "title": "기본값을 고르는 or",
+    "token": "or",
+    "train": ["options = provided □ defaults", "name = typed □ 'guest'", "width = measured □ 100"],
+    "check": ["settings = current □ fallback", "label = given □ 'untitled'", "size = desired □ 30"]
+  },
+  {
+    "title": "조건을 반대로 바꾸는 not",
+    "token": "not",
+    "train": ["if □ ready:\n    wait()", "if □ found:\n    pass", "done = □ active"],
+    "check": ["if □ awake:\n    sleep()", "if □ enabled:\n    pass", "finished = □ busy"]
+  },
+  {
+    "title": "같은 객체인지 검사하는 is",
+    "token": "is",
+    "train": ["if value □ None:\n    pass", "if item □ True:\n    stop()", "same = result □ None"],
+    "check": ["if data □ None:\n    pass", "if record □ True:\n    wait()", "empty = payload □ None"]
+  },
+  {
+    "title": "클래스를 정의하는 class",
+    "token": "class",
+    "train": ["□ Bird:\n    pass", "□ Timer(Base):\n    pass", "□ Fly:\n    speed = 1"],
+    "check": ["□ Animal:\n    pass", "□ Clock(Parent):\n    pass", "□ Bee:\n    count = 2"]
+  },
+  {
+    "title": "예외 처리의 try",
+    "token": "try",
+    "train": ["□:\n    run()\nexcept ValueError:\n    pass", "□:\n    data = read()\nexcept OSError:\n    wait()", "□:\n    go()\nfinally:\n    clean()"],
+    "check": ["□:\n    start()\nexcept TypeError:\n    pass", "□:\n    result = load()\nexcept RuntimeError:\n    rest()", "□:\n    move()\nfinally:\n    close()"]
+  },
+  {
+    "title": "예외를 잡는 except",
+    "token": "except",
+    "train": ["try:\n    run()\n□ ValueError:\n    pass", "try:\n    data = read()\n□ OSError:\n    wait()", "try:\n    go()\n□:\n    raise"],
+    "check": ["try:\n    start()\n□ TypeError:\n    pass", "try:\n    result = load()\n□ RuntimeError:\n    rest()", "try:\n    move()\n□:\n    raise"]
+  },
+  {
+    "title": "항상 실행할 finally",
+    "token": "finally",
+    "train": ["try:\n    run()\n□:\n    close()", "try:\n    read()\nexcept OSError:\n    log()\n□:\n    clean()", "try:\n    x = start()\n□:\n    reset()"],
+    "check": ["try:\n    start()\n□:\n    release()", "try:\n    load()\nexcept ValueError:\n    report()\n□:\n    stop()", "try:\n    value = open_file()\n□:\n    close_file()"]
+  },
+  {
+    "title": "자원 관리를 시작하는 with",
+    "token": "with",
+    "train": ["□ open('a.txt') as file:\n    data = file.read()", "□ lock, cache:\n    run()", "□ manager() as item:\n    pass"],
+    "check": ["□ open('b.txt') as stream:\n    text = stream.read()", "□ guard, store:\n    move()", "□ context() as value:\n    pass"]
+  },
+  {
+    "title": "모듈에 별명을 붙이는 as",
+    "token": "as",
+    "train": ["import math □ m", "from pathlib import Path □ P", "with open('a.txt') □ file:\n    pass"],
+    "check": ["import random □ rng", "from collections import Counter □ C", "with open('b.txt') □ stream:\n    pass"]
+  },
+  {
+    "title": "모듈을 가져오는 import",
+    "token": "import",
+    "train": ["from math □ sqrt", "from pathlib □ Path as P", "from collections □ Counter, deque"],
+    "check": ["from random □ choice", "from datetime □ date as D", "from functools □ reduce, partial"]
+  },
+  {
+    "title": "모듈의 출처를 지정하는 from",
+    "token": "from",
+    "train": ["□ math import sqrt", "□ pathlib import Path as P", "□ collections import Counter, deque"],
+    "check": ["□ random import choice", "□ datetime import date as D", "□ functools import reduce, partial"]
+  },
+  {
+    "title": "짧은 함수를 만드는 lambda",
+    "token": "lambda",
+    "train": ["key = □ x: x[0]", "key = □ x, y: x + y", "key = □: 0"],
+    "check": ["sort_key = □ row: row[1]", "combine = □ a, b: a + b", "make = □: 42"]
+  },
+  {
+    "title": "제너레이터에서 값을 내보내는 yield",
+    "token": "yield",
+    "train": ["def values():\n    for x in items:\n        □ x", "def first():\n    □ from source", "def nums():\n    □ 1\n    yield 2"],
+    "check": ["def values():\n    for n in numbers:\n        □ n", "def stream():\n    □ from rows", "def counts():\n    □ 3\n    yield 4"]
+  },
+  {
+    "title": "예외를 일으키는 raise",
+    "token": "raise",
+    "train": ["if bad:\n    □ ValueError('bad')", "if empty:\n    □ RuntimeError()", "try:\n    go()\nexcept OSError:\n    □"],
+    "check": ["if invalid:\n    □ TypeError('invalid')", "if closed:\n    □ OSError()", "try:\n    move()\nexcept ValueError:\n    □"]
+  },
+  {
+    "title": "조건을 확인하는 assert",
+    "token": "assert",
+    "train": ["□ x > 0, 'positive'", "□ len(items) == 3", "□ ready is True"],
+    "check": ["□ n > 2, 'large'", "□ len(rows) == 5", "□ active is True"]
+  },
+  {
+    "title": "비어 있는 본문을 채우는 pass",
+    "token": "pass",
+    "train": ["class Placeholder:\n    □", "def stub(x):\n    □", "if waiting:\n    □\nelse:\n    run()"],
+    "check": ["class Empty:\n    □", "def later(name):\n    □", "if paused:\n    □\nelse:\n    go()"]
+  },
+  {
+    "title": "반복을 끝내는 break",
+    "token": "break",
+    "train": ["while True:\n    if done:\n        □", "while True:\n    n += 1\n    if n > 3:\n        □", "for x in items:\n    if x == target:\n        □\nelse:\n    fail()"],
+    "check": ["while True:\n    if finished:\n        □", "while True:\n    step += 2\n    if step > 6:\n        □", "for row in rows:\n    if row == sought:\n        □\nelse:\n    report()"]
+  },
+  {
+    "title": "다음 반복으로 넘어가는 continue",
+    "token": "continue",
+    "train": ["for x in items:\n    if x is None:\n        □\n    print(x)", "for n in nums:\n    if n < 0:\n        □\n    total += n", "for row in rows:\n    if skip(row):\n        □\n    save(row)"],
+    "check": ["for item in values:\n    if item is None:\n        □\n    display(item)", "for i in counts:\n    if i < 2:\n        □\n    sum_all += i", "for entry in records:\n    if omit(entry):\n        □\n    keep(entry)"]
+  },
+  {
+    "title": "항목을 삭제하는 del",
+    "token": "del",
+    "train": ["□ items[0]", "□ cache['old']", "□ x, y"],
+    "check": ["□ rows[1]", "□ data['key']", "□ a, b"]
+  },
+  {
+    "title": "딕셔너리의 여는 중괄호",
+    "token": "{",
+    "train": ["data = □'a': 1}", "mapping = □key: value}", "empty = □}"],
+    "check": ["scores = □'x': 2}", "pairs = □name: score}", "blank = □}"]
+  },
+  {
+    "title": "딕셔너리의 닫는 중괄호",
+    "token": "}",
+    "train": ["data = {'a': 1□", "mapping = {key: value□", "empty = {□"],
+    "check": ["scores = {'x': 2□", "pairs = {name: score□", "blank = {□"]
+  },
+  {
+    "title": "딕셔너리의 키와 값을 잇는 콜론",
+    "token": ":",
+    "train": ["data = {'a'□ 1}", "mapping = {key□ value}", "points = {0□ 'zero'}"],
+    "check": ["scores = {'x'□ 2}", "pairs = {name□ score}", "labels = {1□ 'one'}"]
+  },
+  {
+    "title": "데코레이터를 붙이는 @",
+    "token": "@",
+    "train": ["□trace\ndef run():\n    pass", "□cache\ndef get(x):\n    return x", "□decorate(1)\ndef move():\n    pass"],
+    "check": ["□log\ndef start():\n    pass", "□memo\ndef read(n):\n    return n", "□wrap(2)\ndef walk():\n    pass"]
+  },
+  {
+    "title": "반환 타입을 표시하는 ->",
+    "token": "->",
+    "train": ["def get() □ int:\n    return 1", "def name(x) □ str:\n    return 'fly'", "def run() □ None:\n    pass"],
+    "check": ["def read() □ int:\n    return 2", "def label(n) □ str:\n    return 'bee'", "def move() □ None:\n    pass"]
+  },
+  {
+    "title": "가변 위치 인자를 받는 *",
+    "token": "*",
+    "train": ["def run(□args):\n    pass", "def send(x, □rest):\n    pass", "def combine(□values):\n    return values"],
+    "check": ["def show(□items):\n    pass", "def mix(a, □others):\n    pass", "def pack(□rows):\n    return rows"]
+  },
+  {
+    "title": "딕셔너리를 펼치는 **",
+    "token": "**",
+    "train": ["merged = {□base, 'x': 1}", "result = {□left, **right}", "copied = {□source}"],
+    "check": ["options = {□default, 'y': 2}", "scores = {□old, **new}", "snapshot = {□current}"]
+  },
+  {
+    "title": "표현식에서 값을 대입하는 :=",
+    "token": ":=",
+    "train": ["if (n □ len(items)) > 0:\n    show(n)", "while (line □ read()):\n    print(line)", "if (value □ get()):\n    pass"],
+    "check": ["if (size □ len(rows)) > 2:\n    display(size)", "while (text □ scan()):\n    show(text)", "if (record □ fetch()):\n    pass"]
+  },
+  {
+    "title": "비동기 결과를 기다리는 await",
+    "token": "await",
+    "train": ["async def run():\n    □ fetch()", "async def get():\n    return □ read()", "async def load():\n    data = □ read()"],
+    "check": ["async def start():\n    □ connect()", "async def fetch():\n    return □ scan()", "async def read():\n    text = □ load()"]
+  },
+  {
+    "title": "비동기 함수를 정의하는 async",
+    "token": "async",
+    "train": ["□ def run():\n    await fetch()", "□ def get():\n    return await read()", "□ def load():\n    data = await read()"],
+    "check": ["□ def start():\n    await connect()", "□ def fetch():\n    return await scan()", "□ def read():\n    text = await load()"]
+  },
+  {
+    "title": "패턴 매칭을 시작하는 match",
+    "token": "match",
+    "train": ["□ value:\n    case 0:\n        pass", "□ token:\n    case 'go':\n        run()", "□ point:\n    case [x, y]:\n        draw(x, y)"],
+    "check": ["□ code:\n    case 1:\n        pass", "□ action:\n    case 'stop':\n        wait()", "□ pair:\n    case [a, b]:\n        plot(a, b)"]
+  },
+  {
+    "title": "패턴을 하나 지정하는 case",
+    "token": "case",
+    "train": ["match value:\n    □ 0:\n        pass", "match token:\n    □ 'go':\n        run()", "match point:\n    □ [x, y]:\n        draw(x, y)"],
+    "check": ["match code:\n    □ 1:\n        pass", "match action:\n    □ 'stop':\n        wait()", "match pair:\n    □ [a, b]:\n        plot(a, b)"]
+  }
+]

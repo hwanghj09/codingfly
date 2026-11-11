@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flycoding Lab · 초파리 Python 학습</title>
+<style>
+  :root { color-scheme: light; --ink:#19241e; --muted:#526359; --line:#dce4dc; --paper:#f3f5ef; --green:#166442; --lime:#d4fa83; --dark:#15241e; --mono:'IBM Plex Mono',Consolas,monospace; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:15px/1.55 'Instrument Sans','Malgun Gothic',system-ui,sans-serif; }
+  button { font:inherit; cursor:pointer; }
+  button:disabled { cursor:default; }
+  button:focus-visible { outline:3px solid #38875b; outline-offset:3px; }
+  h1,h2,p { margin:0; }
+  .shell { max-width:1320px; margin:auto; padding:0 36px 34px; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:74px; border-bottom:1px solid var(--line); }
+  .brand { display:flex; align-items:center; gap:10px; font:700 16px var(--mono); }
+  .brand span { display:grid; place-items:center; width:34px; height:34px; border-radius:9px; background:var(--dark); color:var(--lime); }
+  .source { color:var(--muted); font:13px var(--mono); }
+  .source a { color:inherit; text-underline-offset:3px; }
+  .intro { display:flex; justify-content:space-between; align-items:end; gap:18px; margin:34px 0 26px; }
+  h1 { font-size:clamp(30px,4vw,48px); line-height:1.13; letter-spacing:-.055em; }
+  .intro p { margin-top:8px; color:var(--muted); }
+  .control { display:flex; align-items:center; flex-wrap:wrap; gap:14px; }
+  .status { display:flex; align-items:center; gap:7px; white-space:nowrap; color:var(--green); font-weight:700; }
+  .status::before { content:''; background:currentColor; width:8px; height:8px; border-radius:50%; }
+  .start { min-height:46px; border:1px solid var(--dark); border-radius:9px; background:var(--dark); color:white; padding:0 17px; font-weight:700; white-space:nowrap; }
+  .start:hover:not(:disabled) { background:#264036; }
+  .start:disabled { opacity:.65; }
+  #error:not(:empty) { margin-bottom:16px; padding:12px; background:#fae4dc; color:#8d2d22; border-radius:8px; }
+  .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); border:1px solid var(--line); border-radius:12px; background:white; margin-bottom:20px; }
+  .metric { padding:15px 19px; }
+  .metric + .metric { border-left:1px solid var(--line); }
+  .metric span { display:block; color:var(--muted); font-size:13px; }
+  .metric strong { display:block; margin-top:3px; font:600 clamp(22px,3vw,32px)/1.2 var(--mono); letter-spacing:-.045em; }
+  .metric .good { color:var(--green); }
+  .metric .bad { color:#9e3d2d; }
+  .grid { display:grid; grid-template-columns:minmax(0,1.75fr) minmax(285px,1fr); gap:20px; align-items:start; }
+  .main { display:grid; gap:20px; min-width:0; }
+  .card { background:white; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .card-head { padding:16px 18px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; }
+  h2 { font-size:17px; letter-spacing:-.035em; }
+  .note { color:var(--muted); font-size:13px; }
+  .plot { margin:0 16px 12px; height:153px; position:relative; }
+  canvas { display:block; width:100%; height:100%; }
+  .empty-plot { position:absolute; inset:0; display:grid; place-items:center; color:var(--muted); }
+  [hidden] { display:none !important; }
+  .switch { display:flex; background:#edf2ec; padding:3px; border-radius:8px; }
+  .switch button { padding:7px 10px; min-height:38px; border:0; border-radius:6px; background:transparent; color:var(--muted); font-size:13px; }
+  .switch button[aria-pressed='true'] { background:white; color:var(--ink); box-shadow:0 1px 3px #172b211b; font-weight:700; }
+  .terminal { background:var(--dark); color:#edf7ec; padding:16px 18px 18px; min-height:222px; }
+  .terminal-head, .terminal-foot, .pager { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .file { color:#b9cec0; font:13px var(--mono); }
+  .signal { border-radius:5px; padding:4px 8px; font-size:12px; font-weight:700; background:#253b30; color:#deebde; }
+  .signal.good { background:#d4fa83; color:#203019; }
+  .signal.bad { background:#f9dbd2; color:#772e23; }
+  pre { margin:12px 0; min-height:62px; padding:12px 14px; border:1px solid #3d5446; border-radius:8px; background:#1c2d25; overflow:auto; }
+  code { font:15px/1.65 var(--mono); }
+  mark { padding:1px 2px; background:#d4fa83; color:#18231a; border-radius:3px; }
+  mark.bad { background:#f9dbd2; color:#662519; }
+  .answer { font-size:13px; color:#d1e4d4; }
+  .answer code { font-size:13px; }
+  .pager button { min-width:44px; min-height:44px; background:transparent; color:#edf7ec; border:1px solid #5b7363; border-radius:7px; }
+  .pager button:hover:not(:disabled) { background:#385044; }
+  .pager button:disabled { opacity:.4; }
+  .pager span { min-width:48px; text-align:center; font:12px var(--mono); }
+  .timeline .card-head { border-bottom:1px solid var(--line); }
+  .timeline ol { margin:0; padding:5px 11px; list-style:none; max-height:540px; overflow:auto; }
+  .stage { width:100%; min-height:45px; display:grid; grid-template-columns:28px minmax(0,1fr) auto; align-items:center; gap:9px; border:0; border-radius:7px; background:white; color:var(--ink); text-align:left; padding:5px 8px; }
+  .stage:hover { background:#f2f6ef; }
+  .stage[aria-pressed='true'] { background:#e7f1e3; }
+  .stage .index { color:#617369; font:12px var(--mono); }
+  .stage .label { font-size:13px; }
+  .stage .value { color:var(--green); font:12px var(--mono); white-space:nowrap; }
+  .stage.pending .value { color:var(--muted); }
+  .track { padding:12px 18px 15px; border-top:1px solid var(--line); }
+  .track p { display:flex; justify-content:space-between; gap:7px; font-size:12px; color:var(--muted); }
+  progress { display:block; width:100%; height:8px; margin-top:8px; accent-color:var(--green); }
+  footer { margin-top:16px; color:var(--muted); font-size:13px; }
+  @media (max-width:830px) { .grid { grid-template-columns:1fr; } .shell { padding:0 20px 24px; } }
+  @media (max-width:540px) { .intro { align-items:start; flex-direction:column; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric:nth-child(odd) { border-left:0; } .metric:nth-child(n+3) { border-top:1px solid var(--line); } .source { font-size:11px; } }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div class="brand"><span aria-hidden="true">&gt;_</span> Flycoding Lab</div>
+    <div class="source"><a href="https://codex.flywire.ai/api/download">FlyWire FAFB v783</a></div>
+  </header>
+  <main>
+    <div class="intro">
+      <div><h1>초파리의 Python 학습</h1><p id="graph">FlyWire 뉴런 연결망</p></div>
+      <div class="control"><span class="status" id="status" role="status">연결 중</span><button class="start" id="start" disabled>100점까지 학습</button><button class="start" id="pause" hidden>일시정지</button></div>
+    </div>
+    <div id="error" role="alert"></div>
+    <section class="metrics" aria-label="학습 지표">
+      <div class="metric"><span>평가 정확도</span><strong id="accuracy">—</strong></div>
+      <div class="metric"><span>맞힌 평가 문제</span><strong id="correct">—</strong></div>
+      <div class="metric"><span>가상 보상 횟수</span><strong id="positive" class="good">0</strong></div>
+      <div class="metric"><span>가상 벌점 −1</span><strong id="negative" class="bad">0</strong></div>
+      <div class="metric"><span>오답 극복 보너스</span><strong id="bonus" class="good">0</strong></div>
+    </section>
+    <div class="grid">
+      <div class="main">
+        <section class="card">
+          <div class="card-head"><h2>평가 정확도 추이</h2><span class="note" id="chart-note">배운 문법의 누적 평가</span></div>
+          <div class="plot"><canvas id="chart" role="img" aria-label="학습 회차별 평가 정확도"></canvas><p id="empty-plot" class="empty-plot">학습을 시작하면 정확도가 표시됩니다.</p></div>
+        </section>
+        <section class="card">
+          <div class="card-head">
+            <h2>초파리가 완성한 코드</h2>
+            <div class="switch" role="group" aria-label="코드 예문 종류">
+              <button id="evaluation" aria-pressed="true">평가 예문</button>
+              <button id="training" aria-pressed="false">학습 기록</button>
+            </div>
+          </div>
+          <div class="terminal">
+            <div class="terminal-head"><span class="file" id="sample-name">output.py</span><span class="signal" id="signal">예문 대기 중</span></div>
+            <pre><code id="code">수업을 시작하면 완성한 코드가 여기에 표시됩니다.</code></pre>
+            <div class="terminal-foot">
+              <div class="answer" id="answer"></div>
+              <div class="pager"><button id="prev" aria-label="이전 예문" disabled>←</button><span id="position">0 / 0</span><button id="next" aria-label="다음 예문" disabled>→</button></div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <section class="card timeline">
+        <div class="card-head"><h2>Python 문법 수업</h2><span class="note" id="stage-total">—</span></div>
+        <ol id="stages"></ol>
+        <div class="track"><p><span id="round-title">학습 대기 중</span><span id="round-count">—</span></p><progress id="progress" aria-label="현재 수업 진행률" max="100" value="0"></progress></div>
+      </section>
+    </div>
+    <footer>정답에는 가상 단맛 +1, 오답에는 −1을 줍니다. 연속으로 틀린 문제를 맞히면 최대 +4를 받고, 자주 틀린 문제는 복습에 더 자주 나옵니다.</footer>
+  </main>
+</div>
+<script>
+  const el = id => document.getElementById(id);
+  const fmt = value => value.toLocaleString('ko-KR');
+  const token = value => value === null ? '예측 없음' : value.trim() ? JSON.stringify(value) : `공백 ${value.length}칸`;
+  let state;
+  let stage = null;
+  let mode = 'evaluation';
+  let position = 0;
+  let requestPending = false;
+  let startError = '';
+
+  function chart() {
+    const canvas = el('chart');
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width === 0) return;
+    const scale = window.devicePixelRatio || 1;
+    canvas.width = rect.width * scale;
+    canvas.height = rect.height * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+    const left = 43, right = rect.width - 12, top = 13, bottom = rect.height - 23;
+    ctx.font = '11px Consolas, monospace';
+    ctx.fillStyle = '#526359';
+    ctx.strokeStyle = '#dce4dc';
+    for (const pct of [0, 50, 100]) {
+      const y = bottom - (bottom - top) * pct / 100;
+      ctx.beginPath(); ctx.moveTo(left, y); ctx.lineTo(right, y); ctx.stroke();
+      ctx.fillText(`${pct}%`, 3, y + 4);
+    }
+    const data = state?.history || [];
+    el('empty-plot').hidden = data.length > 0;
+    if (!data.length) return;
+    const points = data.map((item, i) => [left + (right - left) * i / Math.max(1, data.length - 1),
+                                         bottom - (bottom - top) * item.correct / item.total]);
+    ctx.beginPath();
+    points.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+    ctx.lineTo(points.at(-1)[0], bottom); ctx.lineTo(left, bottom); ctx.closePath();
+    ctx.fillStyle = '#e7f3e7'; ctx.fill();
+    ctx.beginPath();
+    points.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+    ctx.lineWidth = 2; ctx.strokeStyle = '#19734b'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(...points.at(-1), 4, 0, Math.PI * 2); ctx.fillStyle = '#166442'; ctx.fill();
+    ctx.fillStyle = '#526359';
+    ctx.fillText(`${data[0].batch}회차`, left, bottom + 16);
+    if (data.length > 1) {
+      const label = `${data.at(-1).batch}회차`;
+      ctx.fillText(label, right - ctx.measureText(label).width, bottom + 16);
+    }
+  }
+
+  function renderCode(active) {
+    const training = mode === 'training';
+    const records = training ? [...state.events].reverse() : state.results;
+    const chosenStage = stage ?? active;
+    const examples = records.filter(item => item.stage === chosenStage);
+    const items = training && stage === null && !examples.length ? records : examples;
+    position = Math.max(0, Math.min(position, items.length - 1));
+    const item = items[position];
+    el('evaluation').setAttribute('aria-pressed', String(!training));
+    el('training').setAttribute('aria-pressed', String(training));
+    el('sample-name').textContent = item ? `output.py · ${item.stage}과` : 'output.py';
+    el('position').textContent = `${item ? position + 1 : 0} / ${items.length}`;
+    el('prev').disabled = position === 0;
+    el('next').disabled = position + 1 >= items.length;
+    const signal = el('signal');
+    signal.className = 'signal';
+    const code = el('code');
+    code.textContent = '이 수업의 예문이 아직 없습니다.';
+    el('answer').textContent = '';
+    if (!item) { signal.textContent = '예문 대기 중'; return; }
+    const correct = item.reward > 0;
+    signal.textContent = item.chosen === null ? '예측 없음' : training ? (correct ? `단맛 +${item.reward}` : '벌점 −1') : (correct ? '정답' : '오답');
+    if (item.chosen !== null) signal.classList.add(correct ? 'good' : 'bad');
+    const [left, right] = item.prompt.split('□');
+    const highlight = document.createElement('mark');
+    highlight.className = correct ? '' : 'bad';
+    highlight.textContent = item.chosen ?? '□';
+    code.replaceChildren(left, highlight, right);
+    const answer = document.createElement('code');
+    answer.textContent = token(item.expected);
+    el('answer').append('예측 ', token(item.chosen), ' · 정답 ', answer);
+  }
+
+  function render() {
+    const total = state.lessons.length;
+    const practice = state.stage > total;
+    const last = state.history.at(-1);
+    const active = last?.stage ?? 1;
+    const running = state.running || requestPending;
+    const percent = last ? Math.floor(100 * last.correct / last.total) : 0;
+    el('graph').textContent = `FlyWire 뉴런 ${fmt(state.nodes)}개 · 방향성 연결 ${fmt(state.edges)}개`;
+    el('status').textContent = state.mastered ? '100점 달성' : running ? '학습 중' : state.error ? '학습 오류' : last ? '학습 중지' : '학습 대기';
+    el('error').textContent = state.error || startError;
+    el('start').disabled = running || state.mastered;
+    el('start').textContent = state.mastered ? '학습 완료' : running ? '학습 중…' : last ? '100점까지 이어서 학습' : '100점까지 학습';
+    el('pause').hidden = !state.running;
+    el('pause').disabled = requestPending;
+    el('accuracy').textContent = last ? `${percent}%` : '—';
+    el('correct').textContent = last ? `${last.correct}/${last.total}` : '—';
+    el('positive').textContent = fmt(state.positive);
+    el('negative').textContent = fmt(state.negative);
+    el('bonus').textContent = `+${fmt(state.bonus)}`;
+    el('chart-note').textContent = last ? `최근 ${last.batch}회차 · ${percent}%` : '배운 문법의 누적 평가';
+    el('chart').setAttribute('aria-label', `학습 회차별 평가 정확도. ${el('chart-note').textContent}`);
+    el('stage-total').textContent = `${Math.min(state.stage - 1, total)} / ${total}과 완료`;
+    el('round-title').textContent = state.mastered ? '전체 평가 정답' : practice ? '전체 수업 복습' : `${state.stage}과 훈련`;
+    const completed = state.mastered;
+    const target = completed ? total : practice ? state.practiceRounds : state.stageRounds;
+    const progress = completed ? total : state.round;
+    el('round-count').textContent = `${progress} / ${target}${completed ? '과' : ' 반복'}`;
+    el('progress').max = target;
+    el('progress').value = progress;
+    const list = el('stages');
+    if (list.children.length !== total) {
+      list.replaceChildren(...state.lessons.map((lesson, i) => {
+        const li = document.createElement('li');
+        const button = document.createElement('button');
+        button.className = 'stage';
+        for (const [name, content] of [['index', String(i + 1).padStart(2, '0')], ['label', lesson.title], ['value', '대기']]) {
+          const span = document.createElement('span'); span.className = name; span.textContent = content; button.append(span);
+        }
+        button.addEventListener('click', () => { stage = stage === i + 1 ? null : i + 1; position = 0; render(); });
+        li.append(button);
+        return li;
+      }));
+    }
+    Array.from(list.children).forEach((row, i) => {
+      const results = state.results.filter(item => item.stage === i + 1);
+      const button = row.firstChild;
+      button.classList.toggle('pending', !results.length);
+      button.setAttribute('aria-pressed', String((stage ?? active) === i + 1));
+      button.lastChild.textContent = results.length ? `${results.filter(item => item.reward === 1).length}/${results.length}` : '대기';
+    });
+    chart();
+    renderCode(active);
+  }
+
+  async function readState() {
+    const response = await fetch('/api/state', { cache: 'no-store' });
+    if (!response.ok) throw new Error();
+    state = await response.json();
+    render();
+  }
+
+  async function poll() {
+    try { if (!document.hidden && !requestPending) await readState(); }
+    catch { el('status').textContent = '연결 끊김'; el('start').disabled = true; }
+    finally { setTimeout(poll, state?.running ? 550 : 1600); }
+  }
+
+  el('start').addEventListener('click', async () => {
+    requestPending = true;
+    startError = '';
+    stage = null;
+    position = 0;
+    mode = 'training';
+    render();
+    try {
+      const response = await fetch('/api/train', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+      if (!response.ok) throw new Error();
+      await readState();
+    } catch { startError = '학습 요청을 처리하지 못했습니다. 서버가 실행 중인지 확인해 주세요.'; }
+    finally { requestPending = false; render(); }
+  });
+  el('pause').addEventListener('click', async () => {
+    requestPending = true;
+    render();
+    try {
+      const response = await fetch('/api/pause', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+      if (!response.ok) throw new Error();
+      await readState();
+    } catch { startError = '학습 중지 요청을 처리하지 못했습니다.'; }
+    finally { requestPending = false; render(); }
+  });
+  for (const name of ['evaluation', 'training']) {
+    el(name).addEventListener('click', () => { mode = name; position = 0; if (state) render(); });
+  }
+  el('prev').addEventListener('click', () => { position--; render(); });
+  el('next').addEventListener('click', () => { position++; render(); });
+  new ResizeObserver(chart).observe(el('chart'));
+  poll();
+</script>
+</body>
+</html>
