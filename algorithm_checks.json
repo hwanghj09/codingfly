@@ -36,7 +36,7 @@
   },
   {
     "title": "이진 탐색",
-    "source": "1. 새 함수 정의: search(values, target)\n    1. 초기 변수 설정: left | 0\n    2. 초기 변수 설정: right | len(values) - 1\n    3. 조건이 만족되는 동안: left <= right\n        1. 변수 값 갱신: middle | (left + right) // 2\n        2. 조건을 검사: values[middle] == target\n            1. 결과를 반환: middle\n        3. 다른 조건 분기: values[middle] < target\n            1. 변수 값 갱신: left | middle + 1\n        4. 그 밖의 경우 처리:\n            1. 변수 값 갱신: right | middle - 1\n    4. 결과를 반환: -1",
+    "source": "1. 새 함수 정의: search(values, target)\n    1. 초기 변수 설정: left | 0\n    2. 초기 변수 설정: right | len(values) - 1\n    3. 조건이 만족되는 동안: left <= right\n        1. 변수 값 갱신: middle | (left + right) // 2\n        2. 조건을 검사: values[middle] == target\n            1. 결과를 반환: middle\n        3. 추가 조건을 검사: values[middle] < target\n            1. 변수 값 갱신: left | middle + 1\n        4. 그 밖의 경우 처리:\n            1. 변수 값 갱신: right | middle - 1\n    4. 결과를 반환: -1",
     "name": "search",
     "cases": [
       [

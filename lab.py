@@ -9,7 +9,7 @@ from pathlib import Path
 from threading import Lock, Thread
 
 from fly import BLANK, HERE, Fly, load_lessons
-from algorithm_phrases import CHECKS
+from algorithm_phrases import ALGORITHM_LESSONS, CHECKS, GENERALIZATION_CHECKS
 from program_model import ProgramModel
 from reward import RewardMemory
 
@@ -172,14 +172,23 @@ def serve(lab):
         "사용자 예제": "example_checks.json",
     }
     examples = {group: json.loads((HERE / name).read_text(encoding="utf-8")) for group, name in categories.items()}
+    examples["알고리즘"].extend(json.loads((HERE / "algorithm_transfer.json").read_text(encoding="utf-8")))
+    examples["알고리즘 학습 예제"] = [
+        {"title": title, "source": "\n".join(
+            f"{'    ' * depth}{index}. {phrase}: {operands}".rstrip()
+            for index, (depth, phrase, _, operands) in enumerate(steps, 1))}
+        for title, steps in ALGORITHM_LESSONS
+    ]
     program_checks = [*examples["기존 문법 종합"], *examples["추가 문법 종합"]]
     program_summary = program_model.evaluate(program_checks)
     program_summary["examples"] = {group: [{"title": check["title"], "source": check["source"]} for check in checks]
                                    for group, checks in examples.items()}
     program_summary["curriculum"] = program_model.curriculum
+    phrase_checks = [(phrase, expected) for split in (CHECKS, GENERALIZATION_CHECKS)
+                     for expected, phrases in split.items() for phrase in phrases]
     program_summary["phrase_correct"] = sum(program_model.algorithm.ranks(phrase)[0][0] == expected
-                                           for expected, phrases in CHECKS.items() for phrase in phrases)
-    program_summary["phrase_total"] = sum(map(len, CHECKS.values()))
+                                           for phrase, expected in phrase_checks)
+    program_summary["phrase_total"] = len(phrase_checks)
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_):

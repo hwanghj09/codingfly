@@ -1,14 +1,49 @@
 import json
+import math
+import random
 import subprocess
 import sys
 import unittest
+from collections import Counter
+from itertools import accumulate
 
-from algorithm_model import AlgorithmModel
-from algorithm_phrases import CHECKS, PHRASES
+from algorithm_phrases import CHECKS, GENERALIZATION_CHECKS, training_phrases
 from fly import HERE, Fly
 from lab import GRAPH
 from program_model import ProgramModel
 from pseudocode import translate
+
+
+def generated_cases(name):
+    rng = random.Random(2026)
+    for _ in range(64):
+        values = [rng.randint(-9, 9) for _ in range(rng.randrange(13))]
+        if name == "gcd":
+            pair = [rng.randint(-10_000, 10_000), rng.randint(-10_000, 10_000)]
+            yield pair, math.gcd(*pair)
+        elif name == "search":
+            ordered = sorted(set(values))
+            target = rng.randint(-10, 10)
+            yield [ordered, target], ordered.index(target) if target in ordered else -1
+        elif name == "insertion_sort":
+            yield [values], sorted(values)
+        elif name == "prefix_sums":
+            yield [values], list(accumulate(values))
+        elif name == "merge_sorted":
+            other = [rng.randint(-9, 9) for _ in range(rng.randrange(13))]
+            yield [sorted(values), sorted(other)], sorted(values + other)
+        elif name == "is_palindrome":
+            text = "".join(rng.choice("ab한글") for _ in values)
+            if rng.choice((True, False)):
+                text += text[::-1]
+            yield [text], text == text[::-1]
+        elif name == "maximum_subarray":
+            yield [values], max((sum(values[start:end]) for start in range(len(values))
+                                 for end in range(start + 1, len(values) + 1)), default=0)
+        elif name == "frequencies":
+            yield [values], dict(Counter(values))
+        else:
+            raise ValueError(f"Unknown algorithm: {name}")
 
 
 class PseudocodeTest(unittest.TestCase):
@@ -77,17 +112,19 @@ answer ← total([2, 3])"""
         return result.stdout
 
     def test_phrase_accuracy_on_unseen_wording(self):
-        cases = [(phrase, action) for action, phrases in CHECKS.items() for phrase in phrases]
-        self.assertTrue({phrase for phrase, _ in cases}.isdisjoint(phrase for phrases in PHRASES.values() for phrase in phrases))
-        baseline = AlgorithmModel(self.fly, lexical=False)
-        for model, prototypes, expected in ((baseline, False, 20), (self.model.algorithm, True, 27)):
-            self.assertEqual(sum(model.ranks(phrase, prototypes=prototypes)[0][0] == action
+        cases = [(phrase, action) for split in (CHECKS, GENERALIZATION_CHECKS)
+                 for action, phrases in split.items() for phrase in phrases]
+        self.assertTrue({phrase for phrase, _ in cases}.isdisjoint(
+            phrase for phrases in training_phrases().values() for phrase in phrases))
+        for contrast, expected in ((False, 54), (True, len(cases))):
+            self.assertEqual(sum(self.model.algorithm.ranks(phrase, contrast=contrast)[0][0] == action
                                  for phrase, action in cases), expected)
 
     def test_numbered_algorithms_match_expected_behavior(self):
-        for check in self.checks("algorithm_checks.json"):
+        for check in [*self.checks("algorithm_checks.json"), *self.checks("algorithm_transfer.json")]:
             with self.subTest(algorithm=check["title"]):
-                assertions = (f"\nfor args, expected in {check['cases']!r}:\n"
+                cases = [*check["cases"], *generated_cases(check["name"])]
+                assertions = (f"\nfor args, expected in {cases!r}:\n"
                               f"    assert {check['name']}(*args) == expected, args\n")
                 self.run_generated(check["source"], assertions)
 
