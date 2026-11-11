@@ -181,6 +181,7 @@ def serve(lab):
     ]
     program_checks = [*examples["기존 문법 종합"], *examples["추가 문법 종합"]]
     program_summary = program_model.evaluate(program_checks)
+    program_summary["constructs"] = program_model.construct_results()
     program_summary["examples"] = {group: [{"title": check["title"], "source": check["source"]} for check in checks]
                                    for group, checks in examples.items()}
     program_summary["curriculum"] = program_model.curriculum

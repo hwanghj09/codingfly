@@ -1,5 +1,6 @@
 import ast
 import io
+import json
 import random
 import re
 import tokenize
@@ -7,6 +8,7 @@ from dataclasses import dataclass
 from string import Formatter
 
 from algorithm_model import AlgorithmModel
+from fly import HERE
 from pseudocode import COMMANDS, SIMPLE, identifier, statement, translate
 from reward import RewardMemory
 
@@ -98,6 +100,11 @@ OPERATIONS = {
     "반복": Operation(),
     "출력": Operation(),
 }
+
+CONSTRUCT_LESSONS = json.loads((HERE / "construct_lessons.json").read_text(encoding="utf-8"))
+for lesson in CONSTRUCT_LESSONS:
+    if "action" in lesson:
+        OPERATIONS[lesson["action"]] = Operation(template=lesson["template"])
 
 
 def arguments(body):
@@ -263,3 +270,18 @@ class ProgramModel:
                 covered.update(result["lessons"])
         return {"correct": correct, "total": len(checks), "covered": sorted(covered),
                 "attempts": self.attempts, "bonus": self.bonus}
+
+    def construct_results(self):
+        courses = []
+        for lesson in CONSTRUCT_LESSONS:
+            examples = []
+            for example in lesson["examples"]:
+                try:
+                    code = self.generate(example["source"])["code"]
+                    correct = ast.dump(ast.parse(code)) == ast.dump(ast.parse(example["python"]))
+                except ValueError as error:
+                    code, correct = str(error), False
+                examples.append({"source": example["source"], "code": code, "correct": correct})
+            courses.append({"group": lesson["group"], "title": lesson["title"],
+                            "description": lesson["description"], "examples": examples})
+        return courses

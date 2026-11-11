@@ -84,7 +84,7 @@
   .workbench-pane label, .workbench-pane h3 { display:block; margin:0 0 8px; font-size:14px; font-weight:700; }
   .workbench-pane textarea { display:block; width:100%; min-height:218px; resize:vertical; padding:11px; border:1px solid var(--line); border-radius:7px; background:#f8faf5; color:var(--ink); font:14px/1.65 var(--mono); }
   .workbench-pane textarea:focus-visible { outline:3px solid #38875b; outline-offset:2px; }
-  .workbench-pane select { max-width:100%; min-height:42px; border:1px solid var(--line); border-radius:7px; background:white; color:var(--ink); font:inherit; }
+  .workbench select { max-width:100%; min-height:42px; padding:0 8px; border:1px solid var(--line); border-radius:7px; background:white; color:var(--ink); font:inherit; }
   .workbench-pane pre { min-height:218px; max-height:500px; margin:0; }
   .workbench-pane .control { margin-top:12px; }
   .workbench-pane .start { min-height:42px; }
@@ -92,6 +92,14 @@
   .workbench summary { cursor:pointer; }
   .workbench details p { margin:7px 0; }
   #generation-error { margin-top:6px; color:#8d2d22; font-size:13px; }
+  .lesson-picker { display:flex; flex-wrap:wrap; gap:12px; padding:14px 18px 0; }
+  .lesson-picker div { display:grid; gap:4px; min-width:0; font-size:13px; font-weight:700; }
+  .lesson-description { margin:14px 18px 0; color:var(--muted); }
+  .lesson-preview pre { min-height:94px; max-height:280px; }
+  .lesson-preview .source-preview { background:#f8faf5; color:var(--ink); border-color:var(--line); }
+  .archive { color:var(--muted); }
+  .archive > summary { cursor:pointer; padding:14px 0; }
+  .archive > .control { margin-bottom:14px; }
   @media (max-width:830px) { .grid { grid-template-columns:1fr; } .shell { padding:0 20px 24px; } }
   @media (max-width:680px) { .workbench-grid { grid-template-columns:1fr; } }
   @media (max-width:540px) { .intro { align-items:start; flex-direction:column; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric:nth-child(odd) { border-left:0; } .metric:nth-child(n+3) { border-top:1px solid var(--line); } .source { font-size:11px; } }
@@ -106,8 +114,28 @@
   <main>
     <div class="intro">
       <div><h1>초파리의 Python 학습</h1><p id="graph">FlyWire 뉴런 연결망</p></div>
-      <div class="control"><span class="status" id="status" role="status">연결 중</span><button class="start" id="start" disabled>100점까지 학습</button><button class="start" id="pause" hidden>일시정지</button></div>
     </div>
+    <section class="card workbench" aria-labelledby="lesson-heading">
+      <div class="card-head"><h2 id="lesson-heading">Python 문법과 사용 예제</h2><span class="note" id="lesson-summary" role="status">수업 불러오는 중</span></div>
+      <div class="lesson-picker">
+        <div><label for="lesson-group">분야</label><select id="lesson-group" disabled></select></div>
+        <div><label for="lesson-name">문법</label><select id="lesson-name" disabled></select></div>
+        <div><label for="lesson-example">예제</label><select id="lesson-example" disabled></select></div>
+      </div>
+      <p class="lesson-description" id="lesson-description"></p>
+      <div class="workbench-grid lesson-preview">
+        <div class="workbench-pane">
+          <h3>의사코드</h3>
+          <pre class="source-preview"><code id="lesson-source"></code></pre>
+          <div class="control"><button type="button" class="start" id="edit-lesson" disabled>예제 편집하기</button></div>
+        </div>
+        <div class="workbench-pane terminal">
+          <h3>모델이 작성한 Python</h3>
+          <pre><code id="lesson-python"></code></pre>
+          <p class="answer" id="lesson-result"></p>
+        </div>
+      </div>
+    </section>
     <section class="card workbench" aria-labelledby="workbench-heading">
       <div class="card-head"><h2 id="workbench-heading">의사코드로 Python 작성</h2><span class="note" id="program-summary">FlyWire 학습 결과 확인 중</span></div>
       <div class="workbench-grid">
@@ -139,6 +167,9 @@
         <p>알고리즘은 <code>1. 새 함수 정의: 탐색(목록, 목표)</code>처럼 단계 이름과 인자를 콜론으로 구분합니다. 조건식과 변수 변경을 구체적으로 적고, 하위 단계는 공백 4칸을 더 들여쓰세요.</p>
       </details>
     </section>
+    <details class="archive">
+    <summary>이전 빈칸 학습 기록</summary>
+    <div class="control"><span class="status" id="status" role="status">연결 중</span><button class="start" id="start" disabled>100점까지 학습</button><button class="start" id="pause" hidden>일시정지</button></div>
     <div id="error" role="alert"></div>
     <section class="metrics" aria-label="학습 지표">
       <div class="metric"><span>평가 정확도</span><strong id="accuracy">—</strong></div>
@@ -178,6 +209,7 @@
       </section>
     </div>
     <footer>정답에는 가상 단맛 +1, 오답에는 −1을 줍니다. 연속으로 틀린 문제를 맞히면 최대 +4를 받고, 자주 틀린 문제는 복습에 더 자주 나옵니다.</footer>
+    </details>
   </main>
 </div>
 <script>
@@ -192,12 +224,60 @@
   let startError = '';
   let generatedCode = '';
   let programExamples = [];
+  const lessonGroups = new Map();
+
+  function selectedLesson() {
+    return lessonGroups.get(el('lesson-group').value)[Number(el('lesson-name').value)];
+  }
+
+  function renderLessonExample() {
+    const lesson = selectedLesson();
+    const example = lesson.examples[Number(el('lesson-example').value)];
+    el('lesson-description').textContent = lesson.description;
+    el('lesson-source').textContent = example.source;
+    el('lesson-python').textContent = example.code;
+    el('lesson-result').textContent = example.correct ? '기준 코드와 일치' : '검증 미통과';
+  }
+
+  function loadLessonExamples() {
+    const lesson = selectedLesson();
+    el('lesson-example').replaceChildren(...lesson.examples.map((_, index) => new Option(`예제 ${index + 1}`, index)));
+    renderLessonExample();
+  }
+
+  function loadLessonsInGroup() {
+    const lessons = lessonGroups.get(el('lesson-group').value);
+    el('lesson-name').replaceChildren(...lessons.map((lesson, index) => new Option(lesson.title, index)));
+    loadLessonExamples();
+  }
+
+  function showConstructLessons(lessons) {
+    for (const lesson of lessons) {
+      if (!lessonGroups.has(lesson.group)) lessonGroups.set(lesson.group, []);
+      lessonGroups.get(lesson.group).push(lesson);
+    }
+    const examples = lessons.flatMap(lesson => lesson.examples);
+    const passed = examples.filter(example => example.correct).length;
+    el('lesson-summary').textContent = `${lessons.length}과 · 모델 검증 ${passed}/${examples.length}개`;
+    el('lesson-group').replaceChildren(...Array.from(lessonGroups.keys(), group => new Option(group, group)));
+    loadLessonsInGroup();
+    for (const id of ['lesson-group', 'lesson-name', 'lesson-example', 'edit-lesson']) el(id).disabled = false;
+  }
+
+  el('lesson-group').addEventListener('change', loadLessonsInGroup);
+  el('lesson-name').addEventListener('change', loadLessonExamples);
+  el('lesson-example').addEventListener('change', renderLessonExample);
+  el('edit-lesson').addEventListener('click', () => {
+    el('pseudocode').value = selectedLesson().examples[Number(el('lesson-example').value)].source;
+    el('pseudocode').focus();
+  });
 
   async function loadProgramExamples() {
     try {
       const response = await fetch('/api/program');
       if (!response.ok) throw new Error();
       const summary = await response.json();
+      showConstructLessons(summary.constructs);
       for (const [label, examples] of Object.entries(summary.examples)) {
         const group = document.createElement('optgroup');
         group.label = label;
@@ -206,8 +286,9 @@
         }
         el('program-example').append(group);
       }
-      el('program-summary').textContent = `FlyWire 모델 · ${summary.covered.length}/${summary.curriculum}과 · 종합 ${summary.correct}/${summary.total} · 새 표현 ${summary.phrase_correct}/${summary.phrase_total}`;
+      el('program-summary').textContent = `종합 프로그램 ${summary.correct}/${summary.total} · 새 표현 ${summary.phrase_correct}/${summary.phrase_total}`;
     } catch {
+      el('lesson-summary').textContent = '문법 수업을 불러오지 못했습니다.';
       el('program-summary').textContent = '의사코드 학습 결과를 불러오지 못했습니다.';
     }
   }
@@ -238,7 +319,7 @@
       if (!response.ok) throw new Error(result.error || '코드를 작성하지 못했습니다.');
       generatedCode = result.code;
       el('generated-code').textContent = generatedCode;
-      el('generation-status').textContent = `문법 검사 통과 · ${result.lessons.length}과 사용`;
+      el('generation-status').textContent = '문법 검사 통과';
       el('copy-generated').disabled = false;
     } catch (error) {
       el('generation-error').textContent = error.message;

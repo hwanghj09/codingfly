@@ -100,6 +100,27 @@ answer ← total([2, 3])"""
         disconnected.edges.clear()
         self.assertLess(ProgramModel(disconnected).evaluate(checks)["correct"], scores["correct"])
 
+    def test_complete_syntax_lessons_and_examples(self):
+        courses = self.model.construct_results()
+        self.assertEqual(len(courses), 100)
+        self.assertEqual(sum(len(course["examples"]) for course in courses), 300)
+        by_title = {course["title"]: course for course in courses}
+        self.assertEqual(len(by_title), len(courses))
+        for course in courses:
+            with self.subTest(lesson=course["title"]):
+                self.assertTrue(all(example["correct"] for example in course["examples"]))
+
+        self.assertEqual(self.run_generated(by_title["print(값)"]["examples"][0]["source"]), "안녕하세요\n")
+        for title, assertion in (
+            ("sorted(자료)", "assert 결과 == [1, 3, 4]"),
+            ("list.append(값)", "assert 대상 == [1, 2, 3]"),
+            ("str.split(구분자)", "assert 결과 == ['a', 'b', 'c']"),
+            ("dict.get(키, 기본값)", "assert 결과 == 2"),
+            ("json.loads(문자열)", "assert 결과 == {'이름': '민수', '점수': 90}"),
+        ):
+            with self.subTest(lesson=title):
+                self.run_generated(by_title[title]["examples"][0]["source"], f"\n{assertion}\n")
+
     @staticmethod
     def checks(name):
         return json.loads((HERE / name).read_text(encoding="utf-8"))

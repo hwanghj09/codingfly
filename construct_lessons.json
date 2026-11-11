@@ -1,0 +1,2036 @@
+[
+  {
+    "group": "입출력과 계산",
+    "title": "print(값)",
+    "description": "값을 화면에 표시합니다.",
+    "examples": [
+      {
+        "source": "출력 \"안녕하세요\"",
+        "python": "print(\"안녕하세요\")"
+      },
+      {
+        "source": "대입 이름 ← \"민수\"\n출력 이름, \"환영합니다\"",
+        "python": "이름 = \"민수\"\nprint(이름, \"환영합니다\")"
+      },
+      {
+        "source": "출력 12 * 3",
+        "python": "print(12 * 3)"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "input(안내문)",
+    "description": "사용자 입력을 문자열로 읽습니다.",
+    "action": "입력받기",
+    "template": "{} = input({})",
+    "examples": [
+      {
+        "source": "입력받기 결과 | \"이름: \"",
+        "python": "결과 = input(\"이름: \")"
+      },
+      {
+        "source": "입력받기 결과 | \"도시: \"",
+        "python": "결과 = input(\"도시: \")"
+      },
+      {
+        "source": "입력받기 결과 | \"오늘의 목표: \"",
+        "python": "결과 = input(\"오늘의 목표: \")"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "len(자료)",
+    "description": "문자열이나 컬렉션의 길이를 구합니다.",
+    "action": "길이구하기",
+    "template": "{} = len({})",
+    "examples": [
+      {
+        "source": "길이구하기 결과 | [10, 20, 30]",
+        "python": "결과 = len([10, 20, 30])"
+      },
+      {
+        "source": "길이구하기 결과 | \"파이썬\"",
+        "python": "결과 = len(\"파이썬\")"
+      },
+      {
+        "source": "길이구하기 결과 | {\"a\": 1, \"b\": 2}",
+        "python": "결과 = len({\"a\": 1, \"b\": 2})"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "sum(값들)",
+    "description": "숫자 모음의 합계를 구합니다.",
+    "action": "총합구하기",
+    "template": "{} = sum({})",
+    "examples": [
+      {
+        "source": "총합구하기 결과 | [1, 2, 3]",
+        "python": "결과 = sum([1, 2, 3])"
+      },
+      {
+        "source": "총합구하기 결과 | [-4, 7]",
+        "python": "결과 = sum([-4, 7])"
+      },
+      {
+        "source": "총합구하기 결과 | range(1, 6)",
+        "python": "결과 = sum(range(1, 6))"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "max(값들)",
+    "description": "가장 큰 값을 고릅니다.",
+    "action": "최대값구하기",
+    "template": "{} = max({})",
+    "examples": [
+      {
+        "source": "최대값구하기 결과 | [3, 9, 2]",
+        "python": "결과 = max([3, 9, 2])"
+      },
+      {
+        "source": "최대값구하기 결과 | -2, -7, -1",
+        "python": "결과 = max(-2, -7, -1)"
+      },
+      {
+        "source": "최대값구하기 결과 | [5, 5, 3]",
+        "python": "결과 = max([5, 5, 3])"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "min(값들)",
+    "description": "가장 작은 값을 고릅니다.",
+    "action": "최소값구하기",
+    "template": "{} = min({})",
+    "examples": [
+      {
+        "source": "최소값구하기 결과 | [3, 9, 2]",
+        "python": "결과 = min([3, 9, 2])"
+      },
+      {
+        "source": "최소값구하기 결과 | -2, -7, -1",
+        "python": "결과 = min(-2, -7, -1)"
+      },
+      {
+        "source": "최소값구하기 결과 | \"cab\"",
+        "python": "결과 = min(\"cab\")"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "abs(숫자)",
+    "description": "0으로부터의 거리를 구합니다.",
+    "action": "절댓값구하기",
+    "template": "{} = abs({})",
+    "examples": [
+      {
+        "source": "절댓값구하기 결과 | -12",
+        "python": "결과 = abs(-12)"
+      },
+      {
+        "source": "절댓값구하기 결과 | 0",
+        "python": "결과 = abs(0)"
+      },
+      {
+        "source": "절댓값구하기 결과 | -2.5",
+        "python": "결과 = abs(-2.5)"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "round(숫자, 자리수)",
+    "description": "지정한 자리까지 반올림합니다.",
+    "action": "반올림하기",
+    "template": "{} = round({})",
+    "examples": [
+      {
+        "source": "반올림하기 결과 | 3.14159, 2",
+        "python": "결과 = round(3.14159, 2)"
+      },
+      {
+        "source": "반올림하기 결과 | 12.74, 1",
+        "python": "결과 = round(12.74, 1)"
+      },
+      {
+        "source": "반올림하기 결과 | 1234, -2",
+        "python": "결과 = round(1234, -2)"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "divmod(나뉠수, 나눌수)",
+    "description": "나눗셈의 몫과 나머지를 튜플로 받습니다.",
+    "action": "몫과나머지",
+    "template": "{} = divmod({})",
+    "examples": [
+      {
+        "source": "몫과나머지 결과 | 17, 5",
+        "python": "결과 = divmod(17, 5)"
+      },
+      {
+        "source": "몫과나머지 결과 | 12, 4",
+        "python": "결과 = divmod(12, 4)"
+      },
+      {
+        "source": "몫과나머지 결과 | -7, 3",
+        "python": "결과 = divmod(-7, 3)"
+      }
+    ]
+  },
+  {
+    "group": "입출력과 계산",
+    "title": "pow(밑, 지수)",
+    "description": "거듭제곱을 계산합니다.",
+    "action": "거듭제곱계산",
+    "template": "{} = pow({})",
+    "examples": [
+      {
+        "source": "거듭제곱계산 결과 | 2, 8",
+        "python": "결과 = pow(2, 8)"
+      },
+      {
+        "source": "거듭제곱계산 결과 | 9, 0.5",
+        "python": "결과 = pow(9, 0.5)"
+      },
+      {
+        "source": "거듭제곱계산 결과 | 3, 4, 5",
+        "python": "결과 = pow(3, 4, 5)"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "int(값)",
+    "description": "문자열이나 실수를 정수로 바꿉니다.",
+    "action": "정수로변환",
+    "template": "{} = int({})",
+    "examples": [
+      {
+        "source": "정수로변환 결과 | \"42\"",
+        "python": "결과 = int(\"42\")"
+      },
+      {
+        "source": "정수로변환 결과 | 3.9",
+        "python": "결과 = int(3.9)"
+      },
+      {
+        "source": "정수로변환 결과 | \"1010\", 2",
+        "python": "결과 = int(\"1010\", 2)"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "float(값)",
+    "description": "문자열이나 숫자를 실수로 바꿉니다.",
+    "action": "실수로변환",
+    "template": "{} = float({})",
+    "examples": [
+      {
+        "source": "실수로변환 결과 | \"3.14\"",
+        "python": "결과 = float(\"3.14\")"
+      },
+      {
+        "source": "실수로변환 결과 | 7",
+        "python": "결과 = float(7)"
+      },
+      {
+        "source": "실수로변환 결과 | \"-0.25\"",
+        "python": "결과 = float(\"-0.25\")"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "str(값)",
+    "description": "값을 문자열로 바꿉니다.",
+    "action": "문자로변환",
+    "template": "{} = str({})",
+    "examples": [
+      {
+        "source": "문자로변환 결과 | 42",
+        "python": "결과 = str(42)"
+      },
+      {
+        "source": "문자로변환 결과 | 3.14",
+        "python": "결과 = str(3.14)"
+      },
+      {
+        "source": "문자로변환 결과 | True",
+        "python": "결과 = str(True)"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "bool(값)",
+    "description": "값을 참 또는 거짓으로 평가합니다.",
+    "action": "불리언변환",
+    "template": "{} = bool({})",
+    "examples": [
+      {
+        "source": "불리언변환 결과 | 0",
+        "python": "결과 = bool(0)"
+      },
+      {
+        "source": "불리언변환 결과 | []",
+        "python": "결과 = bool([])"
+      },
+      {
+        "source": "불리언변환 결과 | \"데이터\"",
+        "python": "결과 = bool(\"데이터\")"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "list(반복가능객체)",
+    "description": "항목을 리스트로 모읍니다.",
+    "action": "목록으로변환",
+    "template": "{} = list({})",
+    "examples": [
+      {
+        "source": "목록으로변환 결과 | range(3)",
+        "python": "결과 = list(range(3))"
+      },
+      {
+        "source": "목록으로변환 결과 | \"abc\"",
+        "python": "결과 = list(\"abc\")"
+      },
+      {
+        "source": "목록으로변환 결과 | (1, 2)",
+        "python": "결과 = list((1, 2))"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "tuple(반복가능객체)",
+    "description": "항목을 튜플로 모읍니다.",
+    "action": "튜플로변환",
+    "template": "{} = tuple({})",
+    "examples": [
+      {
+        "source": "튜플로변환 결과 | [1, 2]",
+        "python": "결과 = tuple([1, 2])"
+      },
+      {
+        "source": "튜플로변환 결과 | \"abc\"",
+        "python": "결과 = tuple(\"abc\")"
+      },
+      {
+        "source": "튜플로변환 결과 | range(2)",
+        "python": "결과 = tuple(range(2))"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "set(반복가능객체)",
+    "description": "항목을 집합으로 모아 중복을 없앱니다.",
+    "action": "집합으로변환",
+    "template": "{} = set({})",
+    "examples": [
+      {
+        "source": "집합으로변환 결과 | [1, 1, 2]",
+        "python": "결과 = set([1, 1, 2])"
+      },
+      {
+        "source": "집합으로변환 결과 | \"banana\"",
+        "python": "결과 = set(\"banana\")"
+      },
+      {
+        "source": "집합으로변환 결과 | (3, 4, 3)",
+        "python": "결과 = set((3, 4, 3))"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "dict(항목)",
+    "description": "키와 값 쌍을 딕셔너리로 만듭니다.",
+    "action": "사전으로변환",
+    "template": "{} = dict({})",
+    "examples": [
+      {
+        "source": "사전으로변환 결과 | [(\"a\", 1), (\"b\", 2)]",
+        "python": "결과 = dict([(\"a\", 1), (\"b\", 2)])"
+      },
+      {
+        "source": "사전으로변환 결과 | name=\"민수\", age=20",
+        "python": "결과 = dict(name=\"민수\", age=20)"
+      },
+      {
+        "source": "사전으로변환 결과 | zip([\"x\", \"y\"], [4, 8])",
+        "python": "결과 = dict(zip([\"x\", \"y\"], [4, 8]))"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "isinstance(값, 타입)",
+    "description": "값이 지정한 타입인지 확인합니다.",
+    "action": "형태검사",
+    "template": "{} = isinstance({})",
+    "examples": [
+      {
+        "source": "형태검사 결과 | 42, int",
+        "python": "결과 = isinstance(42, int)"
+      },
+      {
+        "source": "형태검사 결과 | \"hello\", str",
+        "python": "결과 = isinstance(\"hello\", str)"
+      },
+      {
+        "source": "형태검사 결과 | 2.5, (int, float)",
+        "python": "결과 = isinstance(2.5, (int, float))"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "ord(문자)",
+    "description": "문자 하나의 유니코드 코드 포인트를 구합니다.",
+    "action": "유니코드번호",
+    "template": "{} = ord({})",
+    "examples": [
+      {
+        "source": "유니코드번호 결과 | \"A\"",
+        "python": "결과 = ord(\"A\")"
+      },
+      {
+        "source": "유니코드번호 결과 | \"가\"",
+        "python": "결과 = ord(\"가\")"
+      },
+      {
+        "source": "유니코드번호 결과 | \"😀\"",
+        "python": "결과 = ord(\"😀\")"
+      }
+    ]
+  },
+  {
+    "group": "형 변환과 검사",
+    "title": "chr(번호)",
+    "description": "코드 포인트를 문자로 바꿉니다.",
+    "action": "유니코드문자",
+    "template": "{} = chr({})",
+    "examples": [
+      {
+        "source": "유니코드문자 결과 | 65",
+        "python": "결과 = chr(65)"
+      },
+      {
+        "source": "유니코드문자 결과 | 44032",
+        "python": "결과 = chr(44032)"
+      },
+      {
+        "source": "유니코드문자 결과 | 128512",
+        "python": "결과 = chr(128512)"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "sorted(자료)",
+    "description": "항목을 정렬한 새 리스트를 만듭니다.",
+    "action": "정렬해서복사",
+    "template": "{} = sorted({})",
+    "examples": [
+      {
+        "source": "정렬해서복사 결과 | [4, 1, 3]",
+        "python": "결과 = sorted([4, 1, 3])"
+      },
+      {
+        "source": "정렬해서복사 결과 | [4, 1, 3], reverse=True",
+        "python": "결과 = sorted([4, 1, 3], reverse=True)"
+      },
+      {
+        "source": "정렬해서복사 결과 | [\"bee\", \"a\", \"ant\"], key=len",
+        "python": "결과 = sorted([\"bee\", \"a\", \"ant\"], key=len)"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "reversed(자료)",
+    "description": "역순으로 읽을 반복자를 만듭니다.",
+    "action": "역순으로순회",
+    "template": "{} = reversed({})",
+    "examples": [
+      {
+        "source": "역순으로순회 결과 | [1, 2, 3]",
+        "python": "결과 = reversed([1, 2, 3])"
+      },
+      {
+        "source": "역순으로순회 결과 | \"abc\"",
+        "python": "결과 = reversed(\"abc\")"
+      },
+      {
+        "source": "역순으로순회 결과 | (9, 8, 7)",
+        "python": "결과 = reversed((9, 8, 7))"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "range(시작, 끝, 간격)",
+    "description": "끝 값을 제외하는 정수 범위를 만듭니다.",
+    "action": "숫자범위생성",
+    "template": "{} = range({})",
+    "examples": [
+      {
+        "source": "숫자범위생성 결과 | 5",
+        "python": "결과 = range(5)"
+      },
+      {
+        "source": "숫자범위생성 결과 | 1, 6",
+        "python": "결과 = range(1, 6)"
+      },
+      {
+        "source": "숫자범위생성 결과 | 10, 0, -2",
+        "python": "결과 = range(10, 0, -2)"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "enumerate(자료, 시작)",
+    "description": "항목과 번호를 쌍으로 순회합니다.",
+    "action": "순서번호붙이기",
+    "template": "{} = enumerate({})",
+    "examples": [
+      {
+        "source": "순서번호붙이기 결과 | [\"a\", \"b\"]",
+        "python": "결과 = enumerate([\"a\", \"b\"])"
+      },
+      {
+        "source": "순서번호붙이기 결과 | [\"a\", \"b\"], 1",
+        "python": "결과 = enumerate([\"a\", \"b\"], 1)"
+      },
+      {
+        "source": "순서번호붙이기 결과 | \"abc\", 5",
+        "python": "결과 = enumerate(\"abc\", 5)"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "zip(자료1, 자료2)",
+    "description": "같은 위치의 항목을 쌍으로 묶습니다.",
+    "action": "두자료묶기",
+    "template": "{} = zip({})",
+    "examples": [
+      {
+        "source": "두자료묶기 결과 | [\"a\", \"b\"], [1, 2]",
+        "python": "결과 = zip([\"a\", \"b\"], [1, 2])"
+      },
+      {
+        "source": "두자료묶기 결과 | [1, 2, 3], [4, 5]",
+        "python": "결과 = zip([1, 2, 3], [4, 5])"
+      },
+      {
+        "source": "두자료묶기 결과 | \"ab\", \"XY\"",
+        "python": "결과 = zip(\"ab\", \"XY\")"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "map(함수, 자료)",
+    "description": "각 항목에 같은 함수를 적용합니다.",
+    "action": "항목마다변환",
+    "template": "{} = map({})",
+    "examples": [
+      {
+        "source": "항목마다변환 결과 | abs, [-1, 2, -3]",
+        "python": "결과 = map(abs, [-1, 2, -3])"
+      },
+      {
+        "source": "항목마다변환 결과 | str, [10, 20]",
+        "python": "결과 = map(str, [10, 20])"
+      },
+      {
+        "source": "항목마다변환 결과 | lambda n: n * 2, range(4)",
+        "python": "결과 = map(lambda n: n * 2, range(4))"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "filter(조건함수, 자료)",
+    "description": "조건을 만족하는 항목만 순회합니다.",
+    "action": "조건대로거르기",
+    "template": "{} = filter({})",
+    "examples": [
+      {
+        "source": "조건대로거르기 결과 | lambda n: n % 2 == 0, range(6)",
+        "python": "결과 = filter(lambda n: n % 2 == 0, range(6))"
+      },
+      {
+        "source": "조건대로거르기 결과 | None, [\"\", \"a\", \"\", \"b\"]",
+        "python": "결과 = filter(None, [\"\", \"a\", \"\", \"b\"])"
+      },
+      {
+        "source": "조건대로거르기 결과 | lambda n: n > 0, [-1, 2, 0]",
+        "python": "결과 = filter(lambda n: n > 0, [-1, 2, 0])"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "all(조건값들)",
+    "description": "모든 항목이 참인지 검사합니다.",
+    "action": "모두가참",
+    "template": "{} = all({})",
+    "examples": [
+      {
+        "source": "모두가참 결과 | [True, True]",
+        "python": "결과 = all([True, True])"
+      },
+      {
+        "source": "모두가참 결과 | [True, False]",
+        "python": "결과 = all([True, False])"
+      },
+      {
+        "source": "모두가참 결과 | x > 0 for x in [1, 2, 3]",
+        "python": "결과 = all(x > 0 for x in [1, 2, 3])"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "any(조건값들)",
+    "description": "참인 항목이 하나라도 있는지 검사합니다.",
+    "action": "하나라도참",
+    "template": "{} = any({})",
+    "examples": [
+      {
+        "source": "하나라도참 결과 | [False, True]",
+        "python": "결과 = any([False, True])"
+      },
+      {
+        "source": "하나라도참 결과 | [False, False]",
+        "python": "결과 = any([False, False])"
+      },
+      {
+        "source": "하나라도참 결과 | x < 0 for x in [2, -1, 5]",
+        "python": "결과 = any(x < 0 for x in [2, -1, 5])"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "next(반복자, 기본값)",
+    "description": "반복자의 다음 값을 받습니다.",
+    "action": "다음항목받기",
+    "template": "{} = next({})",
+    "examples": [
+      {
+        "source": "다음항목받기 결과 | iter([10, 20])",
+        "python": "결과 = next(iter([10, 20]))"
+      },
+      {
+        "source": "다음항목받기 결과 | iter([]), 0",
+        "python": "결과 = next(iter([]), 0)"
+      },
+      {
+        "source": "다음항목받기 결과 | iter(\"abc\"), None",
+        "python": "결과 = next(iter(\"abc\"), None)"
+      }
+    ]
+  },
+  {
+    "group": "정렬과 순회",
+    "title": "iter(자료)",
+    "description": "항목을 차례로 읽는 반복자를 만듭니다.",
+    "action": "반복자만들기",
+    "template": "{} = iter({})",
+    "examples": [
+      {
+        "source": "반복자만들기 결과 | [1, 2]",
+        "python": "결과 = iter([1, 2])"
+      },
+      {
+        "source": "반복자만들기 결과 | \"abc\"",
+        "python": "결과 = iter(\"abc\")"
+      },
+      {
+        "source": "반복자만들기 결과 | range(3)",
+        "python": "결과 = iter(range(3))"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.append(값)",
+    "description": "리스트 끝에 항목 하나를 추가합니다.",
+    "action": "리스트끝추가",
+    "template": "{}.append({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← [1, 2]\n리스트끝추가 대상 | 3",
+        "python": "대상 = [1, 2]\n대상.append(3)"
+      },
+      {
+        "source": "대입 대상 ← [\"a\"]\n리스트끝추가 대상 | \"b\"",
+        "python": "대상 = [\"a\"]\n대상.append(\"b\")"
+      },
+      {
+        "source": "대입 대상 ← []\n리스트끝추가 대상 | [7, 8]",
+        "python": "대상 = []\n대상.append([7, 8])"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.extend(자료)",
+    "description": "다른 자료의 항목을 리스트 끝에 이어 붙입니다.",
+    "action": "리스트여러추가",
+    "template": "{}.extend({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← [1]\n리스트여러추가 대상 | [2, 3]",
+        "python": "대상 = [1]\n대상.extend([2, 3])"
+      },
+      {
+        "source": "대입 대상 ← [\"a\"]\n리스트여러추가 대상 | \"bc\"",
+        "python": "대상 = [\"a\"]\n대상.extend(\"bc\")"
+      },
+      {
+        "source": "대입 대상 ← []\n리스트여러추가 대상 | range(3)",
+        "python": "대상 = []\n대상.extend(range(3))"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.insert(위치, 값)",
+    "description": "지정한 위치에 항목을 삽입합니다.",
+    "action": "리스트위치삽입",
+    "template": "{}.insert({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← [1, 3]\n리스트위치삽입 대상 | 1, 2",
+        "python": "대상 = [1, 3]\n대상.insert(1, 2)"
+      },
+      {
+        "source": "대입 대상 ← [\"b\"]\n리스트위치삽입 대상 | 0, \"a\"",
+        "python": "대상 = [\"b\"]\n대상.insert(0, \"a\")"
+      },
+      {
+        "source": "대입 대상 ← [9]\n리스트위치삽입 대상 | 1, 8",
+        "python": "대상 = [9]\n대상.insert(1, 8)"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.remove(값)",
+    "description": "처음으로 일치하는 항목을 삭제합니다.",
+    "action": "리스트값삭제",
+    "template": "{}.remove({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← [1, 2, 1]\n리스트값삭제 대상 | 1",
+        "python": "대상 = [1, 2, 1]\n대상.remove(1)"
+      },
+      {
+        "source": "대입 대상 ← [\"a\", \"b\"]\n리스트값삭제 대상 | \"a\"",
+        "python": "대상 = [\"a\", \"b\"]\n대상.remove(\"a\")"
+      },
+      {
+        "source": "대입 대상 ← [0, 9]\n리스트값삭제 대상 | 9",
+        "python": "대상 = [0, 9]\n대상.remove(9)"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.pop(위치)",
+    "description": "지정한 위치의 항목을 삭제하고 반환합니다.",
+    "action": "리스트꺼내기",
+    "template": "{} = {}.pop({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← [10, 20]\n리스트꺼내기 결과 | 대상 | 0",
+        "python": "대상 = [10, 20]\n결과 = 대상.pop(0)"
+      },
+      {
+        "source": "대입 대상 ← [\"a\", \"b\"]\n리스트꺼내기 결과 | 대상 | -1",
+        "python": "대상 = [\"a\", \"b\"]\n결과 = 대상.pop(-1)"
+      },
+      {
+        "source": "대입 대상 ← [4, 5, 6]\n리스트꺼내기 결과 | 대상 | 1",
+        "python": "대상 = [4, 5, 6]\n결과 = 대상.pop(1)"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.sort()",
+    "description": "리스트 자체를 제자리에서 정렬합니다.",
+    "action": "리스트자체정렬",
+    "template": "{}.sort()",
+    "examples": [
+      {
+        "source": "대입 대상 ← [5, 1, 3]\n리스트자체정렬 대상",
+        "python": "대상 = [5, 1, 3]\n대상.sort()"
+      },
+      {
+        "source": "대입 대상 ← [\"c\", \"a\", \"b\"]\n리스트자체정렬 대상",
+        "python": "대상 = [\"c\", \"a\", \"b\"]\n대상.sort()"
+      },
+      {
+        "source": "대입 대상 ← [3, -1, 3]\n리스트자체정렬 대상",
+        "python": "대상 = [3, -1, 3]\n대상.sort()"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.reverse()",
+    "description": "리스트 항목의 순서를 뒤집습니다.",
+    "action": "리스트뒤집기",
+    "template": "{}.reverse()",
+    "examples": [
+      {
+        "source": "대입 대상 ← [1, 2, 3]\n리스트뒤집기 대상",
+        "python": "대상 = [1, 2, 3]\n대상.reverse()"
+      },
+      {
+        "source": "대입 대상 ← [\"x\", \"y\"]\n리스트뒤집기 대상",
+        "python": "대상 = [\"x\", \"y\"]\n대상.reverse()"
+      },
+      {
+        "source": "대입 대상 ← [5]\n리스트뒤집기 대상",
+        "python": "대상 = [5]\n대상.reverse()"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.index(값)",
+    "description": "처음으로 일치하는 항목의 위치를 구합니다.",
+    "action": "리스트위치찾기",
+    "template": "{} = {}.index({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← [8, 3, 8]\n리스트위치찾기 결과 | 대상 | 8",
+        "python": "대상 = [8, 3, 8]\n결과 = 대상.index(8)"
+      },
+      {
+        "source": "대입 대상 ← [\"a\", \"b\"]\n리스트위치찾기 결과 | 대상 | \"b\"",
+        "python": "대상 = [\"a\", \"b\"]\n결과 = 대상.index(\"b\")"
+      },
+      {
+        "source": "대입 대상 ← [2, 3, 4]\n리스트위치찾기 결과 | 대상 | 4",
+        "python": "대상 = [2, 3, 4]\n결과 = 대상.index(4)"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.count(값)",
+    "description": "일치하는 항목이 몇 번 나오는지 셉니다.",
+    "action": "리스트횟수세기",
+    "template": "{} = {}.count({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← [1, 2, 1]\n리스트횟수세기 결과 | 대상 | 1",
+        "python": "대상 = [1, 2, 1]\n결과 = 대상.count(1)"
+      },
+      {
+        "source": "대입 대상 ← [\"a\", \"b\", \"a\"]\n리스트횟수세기 결과 | 대상 | \"a\"",
+        "python": "대상 = [\"a\", \"b\", \"a\"]\n결과 = 대상.count(\"a\")"
+      },
+      {
+        "source": "대입 대상 ← []\n리스트횟수세기 결과 | 대상 | 7",
+        "python": "대상 = []\n결과 = 대상.count(7)"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.copy()",
+    "description": "리스트의 얕은 복사본을 만듭니다.",
+    "action": "리스트복사하기",
+    "template": "{} = {}.copy()",
+    "examples": [
+      {
+        "source": "대입 대상 ← [1, 2]\n리스트복사하기 결과 | 대상",
+        "python": "대상 = [1, 2]\n결과 = 대상.copy()"
+      },
+      {
+        "source": "대입 대상 ← []\n리스트복사하기 결과 | 대상",
+        "python": "대상 = []\n결과 = 대상.copy()"
+      },
+      {
+        "source": "대입 대상 ← [[1], [2]]\n리스트복사하기 결과 | 대상",
+        "python": "대상 = [[1], [2]]\n결과 = 대상.copy()"
+      }
+    ]
+  },
+  {
+    "group": "리스트",
+    "title": "list.clear()",
+    "description": "리스트의 모든 항목을 삭제합니다.",
+    "action": "리스트비우기",
+    "template": "{}.clear()",
+    "examples": [
+      {
+        "source": "대입 대상 ← [1, 2, 3]\n리스트비우기 대상",
+        "python": "대상 = [1, 2, 3]\n대상.clear()"
+      },
+      {
+        "source": "대입 대상 ← []\n리스트비우기 대상",
+        "python": "대상 = []\n대상.clear()"
+      },
+      {
+        "source": "대입 대상 ← [\"x\"]\n리스트비우기 대상",
+        "python": "대상 = [\"x\"]\n대상.clear()"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.split(구분자)",
+    "description": "구분자를 기준으로 문자열을 나눕니다.",
+    "action": "문자열쪼개기",
+    "template": "{} = {}.split({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"a,b,c\"\n문자열쪼개기 결과 | 대상 | \",\"",
+        "python": "대상 = \"a,b,c\"\n결과 = 대상.split(\",\")"
+      },
+      {
+        "source": "대입 대상 ← \"2026-11-11\"\n문자열쪼개기 결과 | 대상 | \"-\"",
+        "python": "대상 = \"2026-11-11\"\n결과 = 대상.split(\"-\")"
+      },
+      {
+        "source": "대입 대상 ← \"one:two:three\"\n문자열쪼개기 결과 | 대상 | \":\", 1",
+        "python": "대상 = \"one:two:three\"\n결과 = 대상.split(\":\", 1)"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.join(문자열들)",
+    "description": "구분자 사이에 문자열을 이어 붙입니다.",
+    "action": "문자열연결하기",
+    "template": "{} = {}.join({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← \",\"\n문자열연결하기 결과 | 대상 | [\"a\", \"b\"]",
+        "python": "대상 = \",\"\n결과 = 대상.join([\"a\", \"b\"])"
+      },
+      {
+        "source": "대입 대상 ← \"-\"\n문자열연결하기 결과 | 대상 | [\"2026\", \"11\", \"11\"]",
+        "python": "대상 = \"-\"\n결과 = 대상.join([\"2026\", \"11\", \"11\"])"
+      },
+      {
+        "source": "대입 대상 ← \"\"\n문자열연결하기 결과 | 대상 | [\"P\", \"y\"]",
+        "python": "대상 = \"\"\n결과 = 대상.join([\"P\", \"y\"])"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.strip()",
+    "description": "문자열 양끝의 공백을 제거합니다.",
+    "action": "양끝공백제거",
+    "template": "{} = {}.strip()",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"  안녕  \"\n양끝공백제거 결과 | 대상",
+        "python": "대상 = \"  안녕  \"\n결과 = 대상.strip()"
+      },
+      {
+        "source": "대입 대상 ← \"\\tPython\\n\"\n양끝공백제거 결과 | 대상",
+        "python": "대상 = \"\\tPython\\n\"\n결과 = 대상.strip()"
+      },
+      {
+        "source": "대입 대상 ← \"   \"\n양끝공백제거 결과 | 대상",
+        "python": "대상 = \"   \"\n결과 = 대상.strip()"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.replace(이전값, 새값)",
+    "description": "일치하는 문자열을 새 문자열로 바꿉니다.",
+    "action": "문자열바꾸기",
+    "template": "{} = {}.replace({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"a-b-c\"\n문자열바꾸기 결과 | 대상 | \"-\", \":\"",
+        "python": "대상 = \"a-b-c\"\n결과 = 대상.replace(\"-\", \":\")"
+      },
+      {
+        "source": "대입 대상 ← \"banana\"\n문자열바꾸기 결과 | 대상 | \"a\", \"o\", 1",
+        "python": "대상 = \"banana\"\n결과 = 대상.replace(\"a\", \"o\", 1)"
+      },
+      {
+        "source": "대입 대상 ← \"hello\"\n문자열바꾸기 결과 | 대상 | \"ll\", \"y\"",
+        "python": "대상 = \"hello\"\n결과 = 대상.replace(\"ll\", \"y\")"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.lower()",
+    "description": "영문 대문자를 소문자로 바꿉니다.",
+    "action": "문자열소문자",
+    "template": "{} = {}.lower()",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"PyTHON\"\n문자열소문자 결과 | 대상",
+        "python": "대상 = \"PyTHON\"\n결과 = 대상.lower()"
+      },
+      {
+        "source": "대입 대상 ← \"HELLO\"\n문자열소문자 결과 | 대상",
+        "python": "대상 = \"HELLO\"\n결과 = 대상.lower()"
+      },
+      {
+        "source": "대입 대상 ← \"안녕 A\"\n문자열소문자 결과 | 대상",
+        "python": "대상 = \"안녕 A\"\n결과 = 대상.lower()"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.upper()",
+    "description": "영문 소문자를 대문자로 바꿉니다.",
+    "action": "문자열대문자",
+    "template": "{} = {}.upper()",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"python\"\n문자열대문자 결과 | 대상",
+        "python": "대상 = \"python\"\n결과 = 대상.upper()"
+      },
+      {
+        "source": "대입 대상 ← \"Hello\"\n문자열대문자 결과 | 대상",
+        "python": "대상 = \"Hello\"\n결과 = 대상.upper()"
+      },
+      {
+        "source": "대입 대상 ← \"안녕 a\"\n문자열대문자 결과 | 대상",
+        "python": "대상 = \"안녕 a\"\n결과 = 대상.upper()"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.startswith(접두어)",
+    "description": "문자열이 지정한 글자로 시작하는지 검사합니다.",
+    "action": "문자열접두확인",
+    "template": "{} = {}.startswith({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"python.py\"\n문자열접두확인 결과 | 대상 | \"py\"",
+        "python": "대상 = \"python.py\"\n결과 = 대상.startswith(\"py\")"
+      },
+      {
+        "source": "대입 대상 ← \"image.png\"\n문자열접두확인 결과 | 대상 | \"doc\"",
+        "python": "대상 = \"image.png\"\n결과 = 대상.startswith(\"doc\")"
+      },
+      {
+        "source": "대입 대상 ← \"https://example.com\"\n문자열접두확인 결과 | 대상 | \"https://\"",
+        "python": "대상 = \"https://example.com\"\n결과 = 대상.startswith(\"https://\")"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.endswith(접미어)",
+    "description": "문자열이 지정한 글자로 끝나는지 검사합니다.",
+    "action": "문자열접미확인",
+    "template": "{} = {}.endswith({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"data.csv\"\n문자열접미확인 결과 | 대상 | \".csv\"",
+        "python": "대상 = \"data.csv\"\n결과 = 대상.endswith(\".csv\")"
+      },
+      {
+        "source": "대입 대상 ← \"photo.png\"\n문자열접미확인 결과 | 대상 | \".jpg\"",
+        "python": "대상 = \"photo.png\"\n결과 = 대상.endswith(\".jpg\")"
+      },
+      {
+        "source": "대입 대상 ← \"readme.md\"\n문자열접미확인 결과 | 대상 | (\".txt\", \".md\")",
+        "python": "대상 = \"readme.md\"\n결과 = 대상.endswith((\".txt\", \".md\"))"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.find(부분문자열)",
+    "description": "처음 일치하는 위치를 찾고 없으면 −1을 반환합니다.",
+    "action": "부분문자위치",
+    "template": "{} = {}.find({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"banana\"\n부분문자위치 결과 | 대상 | \"na\"",
+        "python": "대상 = \"banana\"\n결과 = 대상.find(\"na\")"
+      },
+      {
+        "source": "대입 대상 ← \"Python\"\n부분문자위치 결과 | 대상 | \"P\"",
+        "python": "대상 = \"Python\"\n결과 = 대상.find(\"P\")"
+      },
+      {
+        "source": "대입 대상 ← \"abc\"\n부분문자위치 결과 | 대상 | \"x\"",
+        "python": "대상 = \"abc\"\n결과 = 대상.find(\"x\")"
+      }
+    ]
+  },
+  {
+    "group": "문자열",
+    "title": "str.count(부분문자열)",
+    "description": "겹치지 않는 일치 부분의 개수를 셉니다.",
+    "action": "부분문자횟수",
+    "template": "{} = {}.count({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← \"banana\"\n부분문자횟수 결과 | 대상 | \"a\"",
+        "python": "대상 = \"banana\"\n결과 = 대상.count(\"a\")"
+      },
+      {
+        "source": "대입 대상 ← \"aaaa\"\n부분문자횟수 결과 | 대상 | \"aa\"",
+        "python": "대상 = \"aaaa\"\n결과 = 대상.count(\"aa\")"
+      },
+      {
+        "source": "대입 대상 ← \"abc\"\n부분문자횟수 결과 | 대상 | \"x\"",
+        "python": "대상 = \"abc\"\n결과 = 대상.count(\"x\")"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "dict.get(키, 기본값)",
+    "description": "키가 없을 때도 기본값을 안전하게 받습니다.",
+    "action": "사전값조회",
+    "template": "{} = {}.get({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {\"a\": 2}\n사전값조회 결과 | 대상 | \"a\", 0",
+        "python": "대상 = {\"a\": 2}\n결과 = 대상.get(\"a\", 0)"
+      },
+      {
+        "source": "대입 대상 ← {\"a\": 2}\n사전값조회 결과 | 대상 | \"b\", 0",
+        "python": "대상 = {\"a\": 2}\n결과 = 대상.get(\"b\", 0)"
+      },
+      {
+        "source": "대입 대상 ← {}\n사전값조회 결과 | 대상 | \"name\", \"익명\"",
+        "python": "대상 = {}\n결과 = 대상.get(\"name\", \"익명\")"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "dict.keys()",
+    "description": "딕셔너리의 키를 순회할 수 있게 합니다.",
+    "action": "사전키보기",
+    "template": "{} = {}.keys()",
+    "examples": [
+      {
+        "source": "대입 대상 ← {\"a\": 1, \"b\": 2}\n사전키보기 결과 | 대상",
+        "python": "대상 = {\"a\": 1, \"b\": 2}\n결과 = 대상.keys()"
+      },
+      {
+        "source": "대입 대상 ← {}\n사전키보기 결과 | 대상",
+        "python": "대상 = {}\n결과 = 대상.keys()"
+      },
+      {
+        "source": "대입 대상 ← {1: \"가\", 2: \"나\"}\n사전키보기 결과 | 대상",
+        "python": "대상 = {1: \"가\", 2: \"나\"}\n결과 = 대상.keys()"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "dict.values()",
+    "description": "딕셔너리의 값을 순회할 수 있게 합니다.",
+    "action": "사전값보기",
+    "template": "{} = {}.values()",
+    "examples": [
+      {
+        "source": "대입 대상 ← {\"a\": 1, \"b\": 2}\n사전값보기 결과 | 대상",
+        "python": "대상 = {\"a\": 1, \"b\": 2}\n결과 = 대상.values()"
+      },
+      {
+        "source": "대입 대상 ← {}\n사전값보기 결과 | 대상",
+        "python": "대상 = {}\n결과 = 대상.values()"
+      },
+      {
+        "source": "대입 대상 ← {1: \"가\", 2: \"나\"}\n사전값보기 결과 | 대상",
+        "python": "대상 = {1: \"가\", 2: \"나\"}\n결과 = 대상.values()"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "dict.items()",
+    "description": "키와 값을 쌍으로 순회할 수 있게 합니다.",
+    "action": "사전항목보기",
+    "template": "{} = {}.items()",
+    "examples": [
+      {
+        "source": "대입 대상 ← {\"a\": 1, \"b\": 2}\n사전항목보기 결과 | 대상",
+        "python": "대상 = {\"a\": 1, \"b\": 2}\n결과 = 대상.items()"
+      },
+      {
+        "source": "대입 대상 ← {}\n사전항목보기 결과 | 대상",
+        "python": "대상 = {}\n결과 = 대상.items()"
+      },
+      {
+        "source": "대입 대상 ← {1: \"가\", 2: \"나\"}\n사전항목보기 결과 | 대상",
+        "python": "대상 = {1: \"가\", 2: \"나\"}\n결과 = 대상.items()"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "dict.update(자료)",
+    "description": "여러 키와 값을 한 번에 추가하거나 덮어씁니다.",
+    "action": "사전여러갱신",
+    "template": "{}.update({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {\"a\": 1}\n사전여러갱신 대상 | {\"b\": 2}",
+        "python": "대상 = {\"a\": 1}\n대상.update({\"b\": 2})"
+      },
+      {
+        "source": "대입 대상 ← {\"a\": 1}\n사전여러갱신 대상 | {\"a\": 3}",
+        "python": "대상 = {\"a\": 1}\n대상.update({\"a\": 3})"
+      },
+      {
+        "source": "대입 대상 ← {}\n사전여러갱신 대상 | [(\"x\", 7)]",
+        "python": "대상 = {}\n대상.update([(\"x\", 7)])"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "dict.setdefault(키, 기본값)",
+    "description": "키가 없으면 기본값을 넣고 값을 반환합니다.",
+    "action": "사전기본설정",
+    "template": "{} = {}.setdefault({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {}\n사전기본설정 결과 | 대상 | \"a\", 0",
+        "python": "대상 = {}\n결과 = 대상.setdefault(\"a\", 0)"
+      },
+      {
+        "source": "대입 대상 ← {\"a\": 5}\n사전기본설정 결과 | 대상 | \"a\", 0",
+        "python": "대상 = {\"a\": 5}\n결과 = 대상.setdefault(\"a\", 0)"
+      },
+      {
+        "source": "대입 대상 ← {}\n사전기본설정 결과 | 대상 | \"items\", []",
+        "python": "대상 = {}\n결과 = 대상.setdefault(\"items\", [])"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "dict.pop(키, 기본값)",
+    "description": "키를 삭제하고 값을 반환합니다.",
+    "action": "사전항목꺼내기",
+    "template": "{} = {}.pop({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {\"a\": 5}\n사전항목꺼내기 결과 | 대상 | \"a\", 0",
+        "python": "대상 = {\"a\": 5}\n결과 = 대상.pop(\"a\", 0)"
+      },
+      {
+        "source": "대입 대상 ← {\"a\": 5}\n사전항목꺼내기 결과 | 대상 | \"b\", 0",
+        "python": "대상 = {\"a\": 5}\n결과 = 대상.pop(\"b\", 0)"
+      },
+      {
+        "source": "대입 대상 ← {\"x\": 9, \"y\": 2}\n사전항목꺼내기 결과 | 대상 | \"x\", None",
+        "python": "대상 = {\"x\": 9, \"y\": 2}\n결과 = 대상.pop(\"x\", None)"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "set.add(값)",
+    "description": "집합에 항목을 하나 추가합니다.",
+    "action": "집합원소추가",
+    "template": "{}.add({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {1, 2}\n집합원소추가 대상 | 3",
+        "python": "대상 = {1, 2}\n대상.add(3)"
+      },
+      {
+        "source": "대입 대상 ← {1, 2}\n집합원소추가 대상 | 2",
+        "python": "대상 = {1, 2}\n대상.add(2)"
+      },
+      {
+        "source": "대입 대상 ← set()\n집합원소추가 대상 | \"a\"",
+        "python": "대상 = set()\n대상.add(\"a\")"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "set.discard(값)",
+    "description": "값이 있을 때 집합에서 제거합니다.",
+    "action": "집합원소제외",
+    "template": "{}.discard({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {1, 2}\n집합원소제외 대상 | 2",
+        "python": "대상 = {1, 2}\n대상.discard(2)"
+      },
+      {
+        "source": "대입 대상 ← {1, 2}\n집합원소제외 대상 | 8",
+        "python": "대상 = {1, 2}\n대상.discard(8)"
+      },
+      {
+        "source": "대입 대상 ← {\"a\", \"b\"}\n집합원소제외 대상 | \"a\"",
+        "python": "대상 = {\"a\", \"b\"}\n대상.discard(\"a\")"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "set.union(집합)",
+    "description": "두 집합의 합집합을 만듭니다.",
+    "action": "집합합치기",
+    "template": "{} = {}.union({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {1, 2}\n집합합치기 결과 | 대상 | {2, 3}",
+        "python": "대상 = {1, 2}\n결과 = 대상.union({2, 3})"
+      },
+      {
+        "source": "대입 대상 ← set()\n집합합치기 결과 | 대상 | {5}",
+        "python": "대상 = set()\n결과 = 대상.union({5})"
+      },
+      {
+        "source": "대입 대상 ← {\"a\"}\n집합합치기 결과 | 대상 | {\"b\", \"c\"}",
+        "python": "대상 = {\"a\"}\n결과 = 대상.union({\"b\", \"c\"})"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "set.intersection(집합)",
+    "description": "두 집합에 공통인 원소를 구합니다.",
+    "action": "집합공통원소",
+    "template": "{} = {}.intersection({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {1, 2}\n집합공통원소 결과 | 대상 | {2, 3}",
+        "python": "대상 = {1, 2}\n결과 = 대상.intersection({2, 3})"
+      },
+      {
+        "source": "대입 대상 ← {1}\n집합공통원소 결과 | 대상 | {7}",
+        "python": "대상 = {1}\n결과 = 대상.intersection({7})"
+      },
+      {
+        "source": "대입 대상 ← {\"a\", \"b\"}\n집합공통원소 결과 | 대상 | {\"a\"}",
+        "python": "대상 = {\"a\", \"b\"}\n결과 = 대상.intersection({\"a\"})"
+      }
+    ]
+  },
+  {
+    "group": "딕셔너리와 집합",
+    "title": "set.difference(집합)",
+    "description": "첫 집합에만 있는 원소를 구합니다.",
+    "action": "집합차이구하기",
+    "template": "{} = {}.difference({})",
+    "examples": [
+      {
+        "source": "대입 대상 ← {1, 2}\n집합차이구하기 결과 | 대상 | {2, 3}",
+        "python": "대상 = {1, 2}\n결과 = 대상.difference({2, 3})"
+      },
+      {
+        "source": "대입 대상 ← {1}\n집합차이구하기 결과 | 대상 | {1}",
+        "python": "대상 = {1}\n결과 = 대상.difference({1})"
+      },
+      {
+        "source": "대입 대상 ← {\"a\", \"b\"}\n집합차이구하기 결과 | 대상 | {\"a\"}",
+        "python": "대상 = {\"a\", \"b\"}\n결과 = 대상.difference({\"a\"})"
+      }
+    ]
+  },
+  {
+    "group": "기본 문법",
+    "title": "변수 = 값",
+    "description": "값을 이름에 저장합니다.",
+    "examples": [
+      {
+        "source": "x ← 10",
+        "python": "x = 10"
+      },
+      {
+        "source": "이름 ← \"민수\"",
+        "python": "이름 = \"민수\""
+      },
+      {
+        "source": "x ← 3\ny ← x * 2",
+        "python": "x = 3\ny = x * 2"
+      }
+    ]
+  },
+  {
+    "group": "기본 문법",
+    "title": "변수 += 값",
+    "description": "기존 값에 새 값을 더합니다.",
+    "examples": [
+      {
+        "source": "값 ← 1\n누적 값 ← 5",
+        "python": "값 = 1\n값 += 5"
+      },
+      {
+        "source": "글 ← \"안녕\"\n누적 글 ← \"!\"",
+        "python": "글 = \"안녕\"\n글 += \"!\""
+      },
+      {
+        "source": "목록 ← [1]\n누적 목록 ← [2, 3]",
+        "python": "목록 = [1]\n목록 += [2, 3]"
+      }
+    ]
+  },
+  {
+    "group": "기본 문법",
+    "title": "변수1, 변수2 = 자료",
+    "description": "자료의 여러 항목을 각각의 변수로 나눕니다.",
+    "examples": [
+      {
+        "source": "여러변수 x, y | (1, 2)",
+        "python": "x, y = (1, 2)"
+      },
+      {
+        "source": "여러변수 a, b | [\"가\", \"나\"]",
+        "python": "a, b = [\"가\", \"나\"]"
+      },
+      {
+        "source": "여러변수 a, b, c | range(3)",
+        "python": "a, b, c = range(3)"
+      }
+    ]
+  },
+  {
+    "group": "기본 문법",
+    "title": "값 == 다른값",
+    "description": "두 값이 같은지 확인합니다.",
+    "examples": [
+      {
+        "source": "같음 결과 | 3 | 3",
+        "python": "결과 = 3 == 3"
+      },
+      {
+        "source": "같음 결과 | \"서울\" | \"부산\"",
+        "python": "결과 = \"서울\" == \"부산\""
+      },
+      {
+        "source": "같음 결과 | [1, 2] | [1, 2]",
+        "python": "결과 = [1, 2] == [1, 2]"
+      }
+    ]
+  },
+  {
+    "group": "기본 문법",
+    "title": "값 is None",
+    "description": "값이 None과 같은 객체인지 검사합니다.",
+    "examples": [
+      {
+        "source": "동일객체 결과 | None | None",
+        "python": "결과 = None is None"
+      },
+      {
+        "source": "대입 값 ← \"안녕\"\n동일객체 결과 | 값 | None",
+        "python": "값 = \"안녕\"\n결과 = 값 is None"
+      },
+      {
+        "source": "값 ← []\n동일객체 결과 | 값 | None",
+        "python": "값 = []\n결과 = 값 is None"
+      }
+    ]
+  },
+  {
+    "group": "기본 문법",
+    "title": "f\"{값}\"",
+    "description": "중괄호 안의 표현식을 문자열에 넣습니다.",
+    "examples": [
+      {
+        "source": "대입 이름 ← \"민수\"\n문자열서식 문장 | \"안녕, {이름}!\"",
+        "python": "이름 = \"민수\"\n문장 = f\"안녕, {이름}!\""
+      },
+      {
+        "source": "문자열서식 문장 | \"합은 {3 + 5}\"",
+        "python": "문장 = f\"합은 {3 + 5}\""
+      },
+      {
+        "source": "문자열서식 문장 | \"가격 {10000:,}원\"",
+        "python": "문장 = f\"가격 {10000:,}원\""
+      }
+    ]
+  },
+  {
+    "group": "기본 문법",
+    "title": "자료[시작:끝:간격]",
+    "description": "끝 위치 직전까지의 일부를 뽑습니다.",
+    "examples": [
+      {
+        "source": "조각 결과 | [0, 1, 2, 3] | 1 | 3 | 1",
+        "python": "결과 = [0, 1, 2, 3][1:3:1]"
+      },
+      {
+        "source": "조각 결과 | \"abcdef\" | 0 | 6 | 2",
+        "python": "결과 = \"abcdef\"[0:6:2]"
+      },
+      {
+        "source": "조각 결과 | [0, 1, 2, 3] | 3 | 0 | -1",
+        "python": "결과 = [0, 1, 2, 3][3:0:-1]"
+      }
+    ]
+  },
+  {
+    "group": "조건과 반복",
+    "title": "if 조건:",
+    "description": "조건을 만족할 때만 본문을 실행합니다.",
+    "examples": [
+      {
+        "source": "만약 3 > 2\n    출력 \"통과\"",
+        "python": "if 3 > 2:\n    print(\"통과\")"
+      },
+      {
+        "source": "값 ← 10\n만약 값 >= 5\n    출력 값 - 5",
+        "python": "값 = 10\nif 값 >= 5:\n    print(값 - 5)"
+      },
+      {
+        "source": "만약 \"a\" in [\"a\", \"b\"]\n    출력 \"있음\"",
+        "python": "if \"a\" in [\"a\", \"b\"]:\n    print(\"있음\")"
+      }
+    ]
+  },
+  {
+    "group": "조건과 반복",
+    "title": "if … elif … else …",
+    "description": "위에서부터 조건을 검사하고 처음 맞는 분기를 실행합니다.",
+    "examples": [
+      {
+        "source": "점수 ← 85\n만약 점수 >= 90\n    출력 \"수\"\n아니면 만약 점수 >= 80\n    출력 \"우\"\n아니면\n    출력 \"미\"",
+        "python": "점수 = 85\nif 점수 >= 90:\n    print(\"수\")\nelif 점수 >= 80:\n    print(\"우\")\nelse:\n    print(\"미\")"
+      },
+      {
+        "source": "n ← -3\n만약 n > 0\n    출력 \"양수\"\n아니면 만약 n == 0\n    출력 \"영\"\n아니면\n    출력 \"음수\"",
+        "python": "n = -3\nif n > 0:\n    print(\"양수\")\nelif n == 0:\n    print(\"영\")\nelse:\n    print(\"음수\")"
+      },
+      {
+        "source": "만약 False\n    통과\n아니면 만약 True\n    출력 \"두 번째\"\n아니면\n    통과",
+        "python": "if False:\n    pass\nelif True:\n    print(\"두 번째\")\nelse:\n    pass"
+      }
+    ]
+  },
+  {
+    "group": "조건과 반복",
+    "title": "값1 if 조건 else 값2",
+    "description": "조건에 따라 두 값 중 하나를 고릅니다.",
+    "examples": [
+      {
+        "source": "조건값 결과 | \"합격\" | 80 >= 60 | \"재시험\"",
+        "python": "결과 = \"합격\" if 80 >= 60 else \"재시험\""
+      },
+      {
+        "source": "조건값 결과 | 3 | 3 < 4 | 4",
+        "python": "결과 = 3 if 3 < 4 else 4"
+      },
+      {
+        "source": "조건값 결과 | \"있음\" | [] | \"없음\"",
+        "python": "결과 = \"있음\" if [] else \"없음\""
+      }
+    ]
+  },
+  {
+    "group": "조건과 반복",
+    "title": "for 항목 in 자료:",
+    "description": "자료의 항목을 하나씩 꺼냅니다.",
+    "examples": [
+      {
+        "source": "각 과일 ∈ [\"사과\", \"바나나\"]\n    출력 과일",
+        "python": "for 과일 in [\"사과\", \"바나나\"]:\n    print(과일)"
+      },
+      {
+        "source": "각 글자 ∈ \"Py\"\n    출력 글자",
+        "python": "for 글자 in \"Py\":\n    print(글자)"
+      },
+      {
+        "source": "각 i ∈ range(3)\n    출력 i * i",
+        "python": "for i in range(3):\n    print(i * i)"
+      }
+    ]
+  },
+  {
+    "group": "조건과 반복",
+    "title": "while 조건:",
+    "description": "조건이 참인 동안 반복합니다.",
+    "examples": [
+      {
+        "source": "n ← 3\n동안 n > 0\n    출력 n\n    대입 n ← n - 1",
+        "python": "n = 3\nwhile n > 0:\n    print(n)\n    n = n - 1"
+      },
+      {
+        "source": "값 ← 1\n동안 값 < 10\n    대입 값 ← 값 * 2\n출력 값",
+        "python": "값 = 1\nwhile 값 < 10:\n    값 = 값 * 2\nprint(값)"
+      },
+      {
+        "source": "i ← 0\n동안 i < 3\n    누적 i ← 1",
+        "python": "i = 0\nwhile i < 3:\n    i += 1"
+      }
+    ]
+  },
+  {
+    "group": "조건과 반복",
+    "title": "break / continue",
+    "description": "반복을 끝내거나 다음 항목으로 넘어갑니다.",
+    "examples": [
+      {
+        "source": "각 값 ∈ [1, 2, 3]\n    만약 값 == 2\n        중단\n    출력 값",
+        "python": "for 값 in [1, 2, 3]:\n    if 값 == 2:\n        break\n    print(값)"
+      },
+      {
+        "source": "각 값 ∈ [1, 2, 3]\n    만약 값 == 2\n        건너뛰기\n    출력 값",
+        "python": "for 값 in [1, 2, 3]:\n    if 값 == 2:\n        continue\n    print(값)"
+      },
+      {
+        "source": "각 값 ∈ range(6)\n    만약 값 % 2 == 0\n        건너뛰기\n    만약 값 > 3\n        중단\n    출력 값",
+        "python": "for 값 in range(6):\n    if 값 % 2 == 0:\n        continue\n    if 값 > 3:\n        break\n    print(값)"
+      }
+    ]
+  },
+  {
+    "group": "조건과 반복",
+    "title": "match 값 / case 패턴",
+    "description": "값의 모양이나 내용에 맞는 분기를 선택합니다.",
+    "examples": [
+      {
+        "source": "패턴비교 \"go\"\n    패턴 \"go\"\n        출력 \"시작\"\n    패턴 _\n        출력 \"기타\"",
+        "python": "match \"go\":\n    case \"go\":\n        print(\"시작\")\n    case _:\n        print(\"기타\")"
+      },
+      {
+        "source": "패턴비교 [2, 4]\n    패턴 [a, b]\n        출력 a + b",
+        "python": "match [2, 4]:\n    case [a, b]:\n        print(a + b)"
+      },
+      {
+        "source": "패턴비교 2\n    여러패턴 1 | 2\n        출력 \"작은 수\"",
+        "python": "match 2:\n    case 1 | 2:\n        print(\"작은 수\")"
+      }
+    ]
+  },
+  {
+    "group": "함수와 클래스",
+    "title": "def 함수(인자):",
+    "description": "재사용할 함수와 매개변수를 정의합니다.",
+    "examples": [
+      {
+        "source": "함수 두배(n)\n    반환 n * 2\n출력 두배(4)",
+        "python": "def 두배(n):\n    return n * 2\nprint(두배(4))"
+      },
+      {
+        "source": "함수 인사(이름=\"친구\")\n    반환 \"안녕, \" + 이름\n출력 인사()",
+        "python": "def 인사(이름=\"친구\"):\n    return \"안녕, \" + 이름\nprint(인사())"
+      },
+      {
+        "source": "함수 넓이(가로, 세로)\n    반환 가로 * 세로\n출력 넓이(3, 7)",
+        "python": "def 넓이(가로, 세로):\n    return 가로 * 세로\nprint(넓이(3, 7))"
+      }
+    ]
+  },
+  {
+    "group": "함수와 클래스",
+    "title": "함수(위치인자, 이름=값)",
+    "description": "정의한 함수나 내장 함수를 호출합니다.",
+    "examples": [
+      {
+        "source": "호출 print(\"첫째\", \"둘째\", sep=\" / \")",
+        "python": "print(\"첫째\", \"둘째\", sep=\" / \")"
+      },
+      {
+        "source": "호출 print(sorted([3, 1, 2], reverse=True))",
+        "python": "print(sorted([3, 1, 2], reverse=True))"
+      },
+      {
+        "source": "결과 ← 호출 len([1, 2, 3])\n출력 결과",
+        "python": "결과 = len([1, 2, 3])\nprint(결과)"
+      }
+    ]
+  },
+  {
+    "group": "함수와 클래스",
+    "title": "return 값",
+    "description": "함수 실행을 끝내고 호출한 곳에 값을 전달합니다.",
+    "examples": [
+      {
+        "source": "함수 하나()\n    반환 1",
+        "python": "def 하나():\n    return 1"
+      },
+      {
+        "source": "함수 둘()\n    반환 1, 2",
+        "python": "def 둘():\n    return 1, 2"
+      },
+      {
+        "source": "함수 안전나눗셈(a, b)\n    만약 b == 0\n        반환 None\n    반환 a / b",
+        "python": "def 안전나눗셈(a, b):\n    if b == 0:\n        return None\n    return a / b"
+      }
+    ]
+  },
+  {
+    "group": "함수와 클래스",
+    "title": "lambda 인자: 표현식",
+    "description": "표현식 하나로 짧은 함수를 만듭니다.",
+    "examples": [
+      {
+        "source": "짧은함수 두배 | n | n * 2",
+        "python": "두배 = lambda n: n * 2"
+      },
+      {
+        "source": "짧은함수 더하기 | a, b | a + b",
+        "python": "더하기 = lambda a, b: a + b"
+      },
+      {
+        "source": "짧은함수 기준 | 항목 | 항목[1]",
+        "python": "기준 = lambda 항목: 항목[1]"
+      }
+    ]
+  },
+  {
+    "group": "함수와 클래스",
+    "title": "def 함수(*args):",
+    "description": "개수가 정해지지 않은 위치 인자를 받습니다.",
+    "examples": [
+      {
+        "source": "가변인자함수 합 | 값들\n    반환 sum(값들)",
+        "python": "def 합(*값들):\n    return sum(값들)"
+      },
+      {
+        "source": "가변인자함수 개수 | 값들\n    반환 len(값들)",
+        "python": "def 개수(*값들):\n    return len(값들)"
+      },
+      {
+        "source": "가변인자함수 목록만들기 | 값들\n    반환 list(값들)",
+        "python": "def 목록만들기(*값들):\n    return list(값들)"
+      }
+    ]
+  },
+  {
+    "group": "함수와 클래스",
+    "title": "def 함수(**kwargs):",
+    "description": "개수가 정해지지 않은 키워드 인자를 받습니다.",
+    "examples": [
+      {
+        "source": "키워드가변함수 모으기 | 설정\n    반환 설정",
+        "python": "def 모으기(**설정):\n    return 설정"
+      },
+      {
+        "source": "키워드가변함수 제목 | 설정\n    반환 설정.get(\"제목\", \"미정\")",
+        "python": "def 제목(**설정):\n    return 설정.get(\"제목\", \"미정\")"
+      },
+      {
+        "source": "키워드가변함수 합계 | 숫자들\n    반환 sum(숫자들.values())",
+        "python": "def 합계(**숫자들):\n    return sum(숫자들.values())"
+      }
+    ]
+  },
+  {
+    "group": "함수와 클래스",
+    "title": "class 이름:",
+    "description": "속성과 메서드를 묶어 새 타입을 정의합니다.",
+    "examples": [
+      {
+        "source": "클래스 상자\n    통과\n대입 객체 ← 상자()",
+        "python": "class 상자:\n    pass\n객체 = 상자()"
+      },
+      {
+        "source": "클래스 인사\n    함수 말하기(self)\n        반환 \"안녕\"",
+        "python": "class 인사:\n    def 말하기(self):\n        return \"안녕\""
+      },
+      {
+        "source": "클래스 계산\n    함수 두배(self, x)\n        반환 x * 2",
+        "python": "class 계산:\n    def 두배(self, x):\n        return x * 2"
+      }
+    ]
+  },
+  {
+    "group": "함수와 클래스",
+    "title": "yield 값",
+    "description": "함수에서 값을 한 개씩 꺼내 쓸 수 있게 합니다.",
+    "examples": [
+      {
+        "source": "함수 하나씩()\n    내보내기 1\n    내보내기 2",
+        "python": "def 하나씩():\n    yield 1\n    yield 2"
+      },
+      {
+        "source": "함수 짝수()\n    각 n ∈ range(3)\n        내보내기 2 * n",
+        "python": "def 짝수():\n    for n in range(3):\n        yield 2 * n"
+      },
+      {
+        "source": "함수 항목()\n    위임생성 [\"a\", \"b\"]",
+        "python": "def 항목():\n    yield from [\"a\", \"b\"]"
+      }
+    ]
+  },
+  {
+    "group": "자료구조 문법",
+    "title": "[값 for 항목 in 자료]",
+    "description": "자료의 항목을 변환해 새 리스트를 만듭니다.",
+    "examples": [
+      {
+        "source": "목록내포 결과 | x * x | x | [1, 2, 3]",
+        "python": "결과 = [x * x for x in [1, 2, 3]]"
+      },
+      {
+        "source": "목록내포 결과 | len(x) | x | [\"a\", \"hello\"]",
+        "python": "결과 = [len(x) for x in [\"a\", \"hello\"]]"
+      },
+      {
+        "source": "조건내포 결과 | x | x | range(6) | x % 2 == 0",
+        "python": "결과 = [x for x in range(6) if x % 2 == 0]"
+      }
+    ]
+  },
+  {
+    "group": "자료구조 문법",
+    "title": "{키: 값 for 항목 in 자료}",
+    "description": "자료에서 키와 값을 계산해 딕셔너리를 만듭니다.",
+    "examples": [
+      {
+        "source": "사전내포 표 | n | n ** 2 | n | range(4)",
+        "python": "표 = {n: n ** 2 for n in range(4)}"
+      },
+      {
+        "source": "사전내포 표 | 글자 | ord(글자) | 글자 | \"ABC\"",
+        "python": "표 = {글자: ord(글자) for 글자 in \"ABC\"}"
+      },
+      {
+        "source": "사전내포 표 | 단어 | len(단어) | 단어 | [\"a\", \"bee\"]",
+        "python": "표 = {단어: len(단어) for 단어 in [\"a\", \"bee\"]}"
+      }
+    ]
+  },
+  {
+    "group": "자료구조 문법",
+    "title": "{값 for 항목 in 자료}",
+    "description": "자료를 변환해 중복 없는 집합을 만듭니다.",
+    "examples": [
+      {
+        "source": "집합내포 결과 | x % 2 | x | range(6)",
+        "python": "결과 = {x % 2 for x in range(6)}"
+      },
+      {
+        "source": "집합내포 결과 | 글자.lower() | 글자 | \"Aba\"",
+        "python": "결과 = {글자.lower() for 글자 in \"Aba\"}"
+      },
+      {
+        "source": "집합내포 결과 | abs(x) | x | [-1, 1, -2]",
+        "python": "결과 = {abs(x) for x in [-1, 1, -2]}"
+      }
+    ]
+  },
+  {
+    "group": "자료구조 문법",
+    "title": "항목 in 자료",
+    "description": "자료에 항목이 포함되는지 확인합니다.",
+    "examples": [
+      {
+        "source": "포함 결과 | 2 | [1, 2, 3]",
+        "python": "결과 = 2 in [1, 2, 3]"
+      },
+      {
+        "source": "포함 결과 | \"py\" | \"python\"",
+        "python": "결과 = \"py\" in \"python\""
+      },
+      {
+        "source": "미포함 결과 | \"b\" | {\"a\": 1}",
+        "python": "결과 = \"b\" not in {\"a\": 1}"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "import 모듈 / from 모듈 import 이름",
+    "description": "모듈 전체나 필요한 이름을 가져옵니다.",
+    "examples": [
+      {
+        "source": "가져오기 math\n출력 math.sqrt(9)",
+        "python": "import math\nprint(math.sqrt(9))"
+      },
+      {
+        "source": "가져올곳 statistics | mean\n출력 mean([1, 2, 3])",
+        "python": "from statistics import mean\nprint(mean([1, 2, 3]))"
+      },
+      {
+        "source": "별명모듈 pathlib | p\n출력 p.Path(\"data.txt\").suffix",
+        "python": "import pathlib as p\nprint(p.Path(\"data.txt\").suffix)"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "try: … except: …",
+    "description": "예외가 생겼을 때 처리할 코드를 지정합니다.",
+    "examples": [
+      {
+        "source": "시도\n    값 ← int(\"실패\")\n예외 ValueError\n    값 ← 0\n출력 값",
+        "python": "try:\n    값 = int(\"실패\")\nexcept ValueError:\n    값 = 0\nprint(값)"
+      },
+      {
+        "source": "시도\n    출력 3 / 0\n예외 ZeroDivisionError\n    출력 \"0으로 나눌 수 없음\"",
+        "python": "try:\n    print(3 / 0)\nexcept ZeroDivisionError:\n    print(\"0으로 나눌 수 없음\")"
+      },
+      {
+        "source": "시도\n    출력 {\"a\": 1}[\"b\"]\n예외별명 KeyError | 오류값\n    출력 오류값",
+        "python": "try:\n    print({\"a\": 1}[\"b\"])\nexcept KeyError as 오류값:\n    print(오류값)"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "try: … finally: …",
+    "description": "예외 여부와 관계없이 마무리 작업을 실행합니다.",
+    "examples": [
+      {
+        "source": "시도\n    출력 \"작업\"\n마무리\n    출력 \"정리\"",
+        "python": "try:\n    print(\"작업\")\nfinally:\n    print(\"정리\")"
+      },
+      {
+        "source": "함수 결과()\n    시도\n        반환 1\n    마무리\n        출력 \"끝\"\n출력 결과()",
+        "python": "def 결과():\n    try:\n        return 1\n    finally:\n        print(\"끝\")\nprint(결과())"
+      },
+      {
+        "source": "상태 ← []\n시도\n    호출 상태.append(\"실행\")\n마무리\n    호출 상태.append(\"종료\")",
+        "python": "상태 = []\ntry:\n    상태.append(\"실행\")\nfinally:\n    상태.append(\"종료\")"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "raise 예외",
+    "description": "조건에 맞지 않을 때 예외를 발생시킵니다.",
+    "examples": [
+      {
+        "source": "시도\n    오류 ValueError(\"잘못된 값\")\n예외 ValueError\n    출력 \"처리\"",
+        "python": "try:\n    raise ValueError(\"잘못된 값\")\nexcept ValueError:\n    print(\"처리\")"
+      },
+      {
+        "source": "함수 양수만(n)\n    만약 n <= 0\n        오류 ValueError(\"양수 필요\")\n    반환 n",
+        "python": "def 양수만(n):\n    if n <= 0:\n        raise ValueError(\"양수 필요\")\n    return n"
+      },
+      {
+        "source": "시도\n    오류 RuntimeError(\"실패\")\n예외별명 RuntimeError | 오류값\n    출력 오류값",
+        "python": "try:\n    raise RuntimeError(\"실패\")\nexcept RuntimeError as 오류값:\n    print(오류값)"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "with open(경로, 모드) as 파일:",
+    "description": "블록을 나갈 때 파일을 자동으로 닫습니다.",
+    "examples": [
+      {
+        "source": "자원 open(\"notes.txt\", encoding=\"utf-8\") | 파일\n    출력 파일.read()",
+        "python": "with open(\"notes.txt\", encoding=\"utf-8\") as 파일:\n    print(파일.read())"
+      },
+      {
+        "source": "자원 open(\"notes.txt\", \"w\", encoding=\"utf-8\") | 파일\n    호출 파일.write(\"안녕하세요\")",
+        "python": "with open(\"notes.txt\", \"w\", encoding=\"utf-8\") as 파일:\n    파일.write(\"안녕하세요\")"
+      },
+      {
+        "source": "자원 open(\"notes.txt\", encoding=\"utf-8\") | 파일\n    각 줄 ∈ 파일\n        출력 줄.strip()",
+        "python": "with open(\"notes.txt\", encoding=\"utf-8\") as 파일:\n    for 줄 in 파일:\n        print(줄.strip())"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "assert 조건",
+    "description": "조건이 거짓이면 AssertionError를 발생시킵니다.",
+    "examples": [
+      {
+        "source": "검증 len([1, 2]) == 2",
+        "python": "assert len([1, 2]) == 2"
+      },
+      {
+        "source": "검증 3 > 0, \"양수가 필요합니다\"",
+        "python": "assert 3 > 0, \"양수가 필요합니다\""
+      },
+      {
+        "source": "값 ← 9\n검증 값 % 3 == 0",
+        "python": "값 = 9\nassert 값 % 3 == 0"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "json.loads(문자열)",
+    "description": "JSON 문자열을 Python 값으로 읽습니다.",
+    "action": "JSON읽기",
+    "template": "{} = json.loads({})",
+    "examples": [
+      {
+        "source": "가져오기 json\nJSON읽기 결과 | '{\"이름\": \"민수\", \"점수\": 90}'",
+        "python": "import json\n결과 = json.loads('{\"이름\": \"민수\", \"점수\": 90}')"
+      },
+      {
+        "source": "가져오기 json\nJSON읽기 결과 | '[1, 2, 3]'",
+        "python": "import json\n결과 = json.loads('[1, 2, 3]')"
+      },
+      {
+        "source": "가져오기 json\nJSON읽기 결과 | 'true'",
+        "python": "import json\n결과 = json.loads('true')"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "json.dumps(값)",
+    "description": "Python 값을 JSON 문자열로 바꿉니다.",
+    "action": "JSON만들기",
+    "template": "{} = json.dumps({})",
+    "examples": [
+      {
+        "source": "가져오기 json\nJSON만들기 결과 | {\"이름\": \"민수\"}, ensure_ascii=False",
+        "python": "import json\n결과 = json.dumps({\"이름\": \"민수\"}, ensure_ascii=False)"
+      },
+      {
+        "source": "가져오기 json\nJSON만들기 결과 | [1, 2, 3]",
+        "python": "import json\n결과 = json.dumps([1, 2, 3])"
+      },
+      {
+        "source": "가져오기 json\nJSON만들기 결과 | True",
+        "python": "import json\n결과 = json.dumps(True)"
+      }
+    ]
+  },
+  {
+    "group": "모듈·예외·파일",
+    "title": "Counter(자료)",
+    "description": "항목이 나온 횟수를 키별로 셉니다.",
+    "action": "항목빈도계산",
+    "template": "{} = collections.Counter({})",
+    "examples": [
+      {
+        "source": "가져오기 collections\n항목빈도계산 결과 | [\"a\", \"b\", \"a\"]",
+        "python": "import collections\n결과 = collections.Counter([\"a\", \"b\", \"a\"])"
+      },
+      {
+        "source": "가져오기 collections\n항목빈도계산 결과 | \"banana\"",
+        "python": "import collections\n결과 = collections.Counter(\"banana\")"
+      },
+      {
+        "source": "가져오기 collections\n항목빈도계산 결과 | [1, 2, 1, 3]",
+        "python": "import collections\n결과 = collections.Counter([1, 2, 1, 3])"
+      }
+    ]
+  }
+]
