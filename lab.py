@@ -9,6 +9,7 @@ from pathlib import Path
 from threading import Lock, Thread
 
 from fly import BLANK, HERE, Fly, load_lessons
+from pseudocode import translate
 from reward import RewardMemory
 
 
@@ -183,17 +184,37 @@ def serve(lab):
                 self.send_error(404)
 
         def do_POST(self):
-            if self.path not in ("/api/train", "/api/pause"):
+            if self.path not in ("/api/train", "/api/pause", "/api/generate"):
                 self.send_error(404)
             elif (self.headers.get("Origin") != f"http://127.0.0.1:{PORT}"
                   or self.headers.get("Content-Type") != "application/json"):
                 self.send_error(403)
+            elif self.path == "/api/generate":
+                self.generate()
             elif self.path == "/api/train":
                 started = lab.start()
                 self.send(b'{"started":true}' if started else b'{"started":false}', "application/json")
             else:
                 lab.pause()
                 self.send(b'{}', "application/json")
+
+        def generate(self):
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if not 0 < length <= 65_536:
+                    raise ValueError("요청의 크기를 확인하세요.")
+                try:
+                    payload = json.loads(self.rfile.read(length))
+                except (ValueError, RecursionError) as error:
+                    raise ValueError("의사코드 요청의 형식을 확인하세요.") from error
+                if not isinstance(payload, dict):
+                    raise ValueError("의사코드 요청의 형식을 확인하세요.")
+                data = {"code": translate(payload.get("source"))}
+                status = 200
+            except ValueError as error:
+                data = {"error": str(error)}
+                status = 400
+            self.send(json.dumps(data).encode(), "application/json", status)
 
     with ThreadingHTTPServer(("127.0.0.1", PORT), Handler) as server:
         print(f"http://127.0.0.1:{PORT}", flush=True)

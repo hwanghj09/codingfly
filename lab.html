@@ -77,7 +77,22 @@
   .track p { display:flex; justify-content:space-between; gap:7px; font-size:12px; color:var(--muted); }
   progress { display:block; width:100%; height:8px; margin-top:8px; accent-color:var(--green); }
   footer { margin-top:16px; color:var(--muted); font-size:13px; }
+  .workbench { margin-bottom:20px; }
+  .workbench .card-head { border-bottom:1px solid var(--line); }
+  .workbench-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .workbench-pane { padding:15px 18px; min-width:0; }
+  .workbench-pane label, .workbench-pane h3 { display:block; margin:0 0 8px; font-size:14px; font-weight:700; }
+  .workbench-pane textarea { display:block; width:100%; min-height:218px; resize:vertical; padding:11px; border:1px solid var(--line); border-radius:7px; background:#f8faf5; color:var(--ink); font:14px/1.65 var(--mono); }
+  .workbench-pane textarea:focus-visible { outline:3px solid #38875b; outline-offset:2px; }
+  .workbench-pane pre { min-height:218px; max-height:500px; margin:0; }
+  .workbench-pane .control { margin-top:12px; }
+  .workbench-pane .start { min-height:42px; }
+  .workbench details { padding:10px 18px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+  .workbench summary { cursor:pointer; }
+  .workbench details p { margin:7px 0; }
+  #generation-error { margin-top:6px; color:#8d2d22; font-size:13px; }
   @media (max-width:830px) { .grid { grid-template-columns:1fr; } .shell { padding:0 20px 24px; } }
+  @media (max-width:680px) { .workbench-grid { grid-template-columns:1fr; } }
   @media (max-width:540px) { .intro { align-items:start; flex-direction:column; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .metric:nth-child(odd) { border-left:0; } .metric:nth-child(n+3) { border-top:1px solid var(--line); } .source { font-size:11px; } }
 </style>
 </head>
@@ -92,6 +107,35 @@
       <div><h1>초파리의 Python 학습</h1><p id="graph">FlyWire 뉴런 연결망</p></div>
       <div class="control"><span class="status" id="status" role="status">연결 중</span><button class="start" id="start" disabled>100점까지 학습</button><button class="start" id="pause" hidden>일시정지</button></div>
     </div>
+    <section class="card workbench" aria-labelledby="workbench-heading">
+      <div class="card-head"><h2 id="workbench-heading">의사코드로 Python 작성</h2><span class="note">함수 · 반복문 · 조건문</span></div>
+      <div class="workbench-grid">
+        <form class="workbench-pane" id="pseudocode-form">
+          <label for="pseudocode">의사코드</label>
+          <textarea id="pseudocode" spellcheck="false" maxlength="10000" required aria-describedby="pseudocode-help">함수 짝수합(목록)
+    합계 ← 0
+    각 값 ∈ 목록
+        만약 값 % 2 == 0
+            누적 합계 ← 값
+    반환 합계
+
+출력 짝수합([1, 2, 3, 4, 5, 6])</textarea>
+          <div class="control"><button class="start" id="generate" type="submit">Python 코드 작성</button></div>
+          <p id="generation-error" role="alert"></p>
+        </form>
+        <div class="workbench-pane terminal">
+          <h3>결과 · output.py</h3>
+          <pre><code id="generated-code">작성한 Python 코드가 여기에 표시됩니다.</code></pre>
+          <div class="control"><button class="start" id="copy-generated" type="button" disabled>코드 복사</button><span class="answer" id="generation-status" role="status"></span></div>
+        </div>
+      </div>
+      <details id="pseudocode-help">
+        <summary>지원하는 의사코드 문법</summary>
+        <p>한 줄에 한 명령을 쓰고, 함수나 반복문 본문은 공백 4칸을 더 들여쓰세요. 값과 조건에는 Python 표현식을 씁니다.</p>
+        <p><code>함수 이름(인자)</code> · <code>변수 ← 값</code> · <code>누적 변수 ← 값</code> · <code>각 변수 ∈ 목록</code> · <code>반복 i = 시작 .. 끝</code> (끝 포함)</p>
+        <p><code>만약 조건</code> · <code>아니면 만약 조건</code> · <code>아니면</code> · <code>동안 조건</code> · <code>반환 값</code> · <code>출력 값</code> · <code>호출 함수(인자)</code> · <code>중단</code> · <code>건너뛰기</code> · <code>통과</code></p>
+      </details>
+    </section>
     <div id="error" role="alert"></div>
     <section class="metrics" aria-label="학습 지표">
       <div class="metric"><span>평가 정확도</span><strong id="accuracy">—</strong></div>
@@ -143,6 +187,43 @@
   let position = 0;
   let requestPending = false;
   let startError = '';
+  let generatedCode = '';
+
+  el('pseudocode-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    el('generate').disabled = true;
+    el('copy-generated').disabled = true;
+    el('generation-error').textContent = '';
+    el('generation-status').textContent = '작성 중…';
+    el('generated-code').textContent = '';
+    generatedCode = '';
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({source: el('pseudocode').value}),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || '코드를 작성하지 못했습니다.');
+      generatedCode = result.code;
+      el('generated-code').textContent = generatedCode;
+      el('generation-status').textContent = '문법 검사 통과';
+      el('copy-generated').disabled = false;
+    } catch (error) {
+      el('generation-error').textContent = error.message;
+      el('generation-status').textContent = '';
+    } finally {
+      el('generate').disabled = false;
+    }
+  });
+
+  el('copy-generated').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(generatedCode);
+      el('generation-status').textContent = '복사 완료';
+    } catch {
+      el('generation-status').textContent = '코드를 선택해 직접 복사하세요.';
+    }
+  });
 
   function chart() {
     const canvas = el('chart');
