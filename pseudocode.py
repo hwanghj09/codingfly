@@ -91,7 +91,7 @@ def statement(line):
     raise ValueError(f"지원하는 명령을 확인하세요. {name!r}")
 
 
-def translate(source):
+def translate(source, render=statement):
     if not isinstance(source, str) or not source.strip():
         raise ValueError("의사코드를 입력하세요.")
     if len(source) > MAX_SOURCE:
@@ -106,7 +106,7 @@ def translate(source):
         try:
             if "\t" in indent:
                 raise ValueError("들여쓰기에 공백을 사용하세요.")
-            output.append(indent + statement(text))
+            output.append(indent + render(text))
         except SyntaxError as error:
             raise ValueError(f"{number}줄 · {error.msg}") from error
         except (ValueError, RecursionError) as error:

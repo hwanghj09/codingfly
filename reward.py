@@ -4,18 +4,18 @@ import math
 class RewardMemory:
     """Store the feedback for attempted tokens and reuse it for similar graph activations."""
 
-    def __init__(self, fly, training, checks, feedback):
+    def __init__(self, fly, training, checks, feedback, *, project=None):
         self.feedback = feedback
-        prototypes = {prompt: self.embedding(fly, prompt) for _, prompt, _ in training}
+        prototypes = {prompt: self.embedding(fly, prompt, project) for _, prompt, _ in training}
         self.neighbors = {}
         for _, prompt, _ in checks:
-            activity = self.embedding(fly, prompt)
+            activity = self.embedding(fly, prompt, project)
             self.neighbors[prompt] = sorted(prototypes, key=lambda candidate: -sum(
                 value * activity.get(index, 0) for index, value in prototypes[candidate].items()))
 
     @staticmethod
-    def embedding(fly, prompt):
-        activity = fly.activity(prompt)[1:]
+    def embedding(fly, prompt, project=None):
+        activity = (project(prompt) if project else fly.activity(prompt))[1:]
         scale = math.hypot(*activity)
         return {index: value / scale for index, value in enumerate(activity) if value}
 

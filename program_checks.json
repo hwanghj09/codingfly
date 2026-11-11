@@ -1,0 +1,17 @@
+[
+  {
+    "title": "반복문과 조건문으로 정수 분류",
+    "source": "함수 분류(값들)\n    목록 결과 | 0\n    대입 번호 ← 0\n    각 값 ∈ 값들\n        누적 번호 ← 1\n        같음 짝수 | 값 % 2 | 0\n        모두 처리 | 짝수 | 값 > 0\n        반전 음수아님 | 값 < 0\n        만약 처리\n            호출 결과.append((번호, \"짝수\"))\n        아니면 만약 음수아님\n            조건값 설명 | \"영\" | 값 == 0 | \"홀수\"\n            호출 결과.append((번호, 설명))\n        아니면\n            건너뛰기\n    대입 현재 ← 0\n    동안 현재 < 5\n        누적 현재 ← 1\n        만약 현재 == 3\n            중단\n    기본값 마지막 | 결과 | [\"없음\"]\n    동일객체 동일 | 마지막 | 결과\n    반환 마지막, 현재, 동일\n대입 평가 ← 분류([2, -1, 3, 0])",
+    "python": "def 분류(값들):\n    결과 = [0]\n    번호 = 0\n    for 값 in 값들:\n        번호 += 1\n        짝수 = 값 % 2 == 0\n        처리 = 짝수 and 값 > 0\n        음수아님 = not (값 < 0)\n        if 처리:\n            결과.append((번호, \"짝수\"))\n        elif 음수아님:\n            설명 = \"영\" if 값 == 0 else \"홀수\"\n            결과.append((번호, 설명))\n        else:\n            continue\n    현재 = 0\n    while 현재 < 5:\n        현재 += 1\n        if 현재 == 3:\n            break\n    마지막 = 결과 or [\"없음\"]\n    동일 = 마지막 is 결과\n    return 마지막, 현재, 동일\n평가 = 분류([2, -1, 3, 0])"
+  },
+  {
+    "title": "함수·클래스·예외를 조합한 자료 처리",
+    "source": "별명모듈 io | 입출력\n가져오기 functools\n가져올곳 math | sqrt\n\n클래스 계산기\n    통과\n\n함수 그대로(함수객체)\n    반환 함수객체\n\n데코레이터 그대로\n반환형함수 합계(값들) | int\n    반환 sum(값들)\n\n가변인자함수 자료 | 값들\n    각 값 ∈ 값들\n        내보내기 값\n\n짧은함수 제곱 | 값 | 값 ** 2\n사전 원본 | \"기본\" | 5\n사전 추가 | \"계산\" | int(sqrt(9))\n사전합치기 결과 | 원본 | 추가\n삭제 결과[\"기본\"]\n\n시도\n    자원 입출력.StringIO(\"9\") | 스트림\n        대입하며검사 읽음 | 스트림.read()\n            대입 숫자 ← int(읽음)\n    만약 숫자 > 5\n        오류 ValueError(\"범위 초과\")\n예외 ValueError\n    대입 숫자 ← 제곱(결과[\"계산\"])\n마무리\n    검증 결과[\"계산\"] == 3\n\n대입 평가 ← 숫자, 합계(자료(1, 2, 3)), 결과",
+    "python": "import io as 입출력\nimport functools\nfrom math import sqrt\n\nclass 계산기:\n    pass\n\ndef 그대로(함수객체):\n    return 함수객체\n\n@그대로\ndef 합계(값들) -> int:\n    return sum(값들)\n\ndef 자료(*값들):\n    for 값 in 값들:\n        yield 값\n\n제곱 = lambda 값: 값 ** 2\n원본 = {\"기본\": 5}\n추가 = {\"계산\": int(sqrt(9))}\n결과 = {**원본, **추가}\ndel 결과[\"기본\"]\n\ntry:\n    with 입출력.StringIO(\"9\") as 스트림:\n        if (읽음 := 스트림.read()):\n            숫자 = int(읽음)\n    if 숫자 > 5:\n        raise ValueError(\"범위 초과\")\nexcept ValueError:\n    숫자 = 제곱(결과[\"계산\"])\nfinally:\n    assert 결과[\"계산\"] == 3\n\n평가 = 숫자, 합계(자료(1, 2, 3)), 결과"
+  },
+  {
+    "title": "비동기 함수와 패턴 비교",
+    "source": "가져오기 asyncio\n\n비동기함수 처리(명령)\n    기다리기 asyncio.sleep(0)\n    패턴비교 명령\n        패턴 [\"더하기\", 첫째, 둘째]\n            반환 첫째 + 둘째\n        패턴 _\n            반환 None\n\n대입 평가 ← asyncio.run(처리([\"더하기\", 4, 7]))",
+    "python": "import asyncio\n\nasync def 처리(명령):\n    await asyncio.sleep(0)\n    match 명령:\n        case [\"더하기\", 첫째, 둘째]:\n            return 첫째 + 둘째\n        case _:\n            return None\n\n평가 = asyncio.run(처리([\"더하기\", 4, 7]))"
+  }
+]

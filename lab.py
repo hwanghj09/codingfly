@@ -9,7 +9,7 @@ from pathlib import Path
 from threading import Lock, Thread
 
 from fly import BLANK, HERE, Fly, load_lessons
-from pseudocode import translate
+from program_model import ProgramModel
 from reward import RewardMemory
 
 
@@ -163,6 +163,12 @@ class Experiment:
 
 
 def serve(lab):
+    program_model = ProgramModel(lab.fly)
+    program_checks = json.loads((HERE / "program_checks.json").read_text(encoding="utf-8"))
+    program_summary = program_model.evaluate(program_checks)
+    program_summary["examples"] = [{"title": check["title"], "source": check["source"]} for check in program_checks]
+    program_summary["curriculum"] = len(lab.lessons)
+
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_):
             pass
@@ -180,6 +186,8 @@ def serve(lab):
                 self.send((HERE / "lab.html").read_bytes(), "text/html; charset=utf-8")
             elif self.path == "/api/state":
                 self.send(lab.snapshot(), "application/json")
+            elif self.path == "/api/program":
+                self.send(json.dumps(program_summary).encode(), "application/json")
             else:
                 self.send_error(404)
 
@@ -209,7 +217,7 @@ def serve(lab):
                     raise ValueError("의사코드 요청의 형식을 확인하세요.") from error
                 if not isinstance(payload, dict):
                     raise ValueError("의사코드 요청의 형식을 확인하세요.")
-                data = {"code": translate(payload.get("source"))}
+                data = program_model.generate(payload.get("source"))
                 status = 200
             except ValueError as error:
                 data = {"error": str(error)}

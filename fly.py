@@ -46,7 +46,9 @@ class Fly:
         self.weights = {token: [0.0] * (self.output_size + 1) for token in tokens}
 
     def activity(self, example):
-        left, right = map(normalize, example.split(BLANK))
+        return self.project(*map(normalize, example.split(BLANK)))
+
+    def project(self, left, right=""):
         sizes = (1, 2, 3, 5, 8, 12, 20) if self.extended_context else (1, 2, 3, 5, 8)
         features = [f"{side}{size}:{fragment}"
                     for size in sizes
