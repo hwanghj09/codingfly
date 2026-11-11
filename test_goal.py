@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 
 from fly import Fly
 from goal_model import parse_goal, solve
@@ -20,6 +21,36 @@ class GoalTest(unittest.TestCase):
         self.assertEqual(direct["output"], function["output"])
         self.assertNotEqual(direct["code"], function["code"])
         self.assertIn("함수", function["methods"])
+
+    def test_assignment_checks_final_values_instead_of_prints(self):
+        request = "두 변수 a,b를 각각 1, 3으로 지정해"
+        result = solve(self.model, request)
+        self.assertEqual(result["kind"], "변수 값")
+        self.assertEqual(result["expected"], "a = 1, b = 3")
+        self.assertTrue(all(answer["accepted"] for answer in result["answers"]))
+        self.assertTrue(solve(self.model, request, "a, b = 1, 3")["answers"][0]["accepted"])
+        self.assertFalse(solve(self.model, request, "print(1, 3)")["answers"][0]["accepted"])
+
+    def test_sum_function_checks_the_returned_value(self):
+        request = "1부터 10까지 합을 구하는 함수식 만들어"
+        result = solve(self.model, request)
+        self.assertEqual(result["expected"], "55")
+        self.assertEqual(result["kind"], "함수 반환값")
+        self.assertTrue(all(answer["accepted"] for answer in result["answers"]))
+        self.assertTrue(solve(self.model, request, "def total():\n    return 55")["answers"][0]["accepted"])
+        self.assertFalse(solve(self.model, request, "def total():\n    print(55)")["answers"][0]["accepted"])
+        printing = solve(self.model, "함수를 이용해서 1부터 10까지 출력해")
+        self.assertEqual(printing["kind"], "출력")
+        self.assertEqual(printing["expected"], "\n".join(map(str, range(1, 11))))
+
+    def test_general_generation_is_not_graded_as_correct(self):
+        goal = "목록에서 중복을 없애고 원래 순서를 유지하는 함수를 작성해"
+        code = "def unique(items):\n    return list(dict.fromkeys(items))\n"
+        with patch("goal_model.generate_code", return_value=(code, "로컬 모델")) as generator:
+            result = solve(self.model, goal)
+        generator.assert_called_once_with(goal)
+        self.assertEqual(result["answers"][0]["code"], code)
+        self.assertIsNone(result["answers"][0]["accepted"])
 
     def test_requested_method_must_contribute_to_every_output(self):
         goal = "함수를 이용해서 hello를 출력해"

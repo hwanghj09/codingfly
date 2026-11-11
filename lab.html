@@ -128,13 +128,13 @@
       <div class="workbench-grid">
         <form class="workbench-pane" id="goal-form">
           <label for="goal-source">목적</label>
-          <input class="goal-input" id="goal-source" value="hello를 출력해" maxlength="600" required>
-          <p class="note">문자열 출력, 정수 범위, 목록의 합계와 정렬을 지원합니다. <code>함수를 이용해서 hello를 출력해</code>처럼 방법도 지정할 수 있습니다.</p>
+          <textarea class="goal-input" id="goal-source" maxlength="3000" rows="3" required>1부터 10까지 합을 구하는 함수식 만들어</textarea>
+          <p class="note">만들고 싶은 코드를 자연어로 적으세요. <code>함수를 이용해서 hello를 출력해</code>처럼 방법도 지정할 수 있습니다.</p>
           <div class="control"><button class="start" id="solve-goal" type="submit">답안 생성 및 채점</button></div>
           <details class="goal-answer">
             <summary>내 Python 답안 채점하기</summary>
             <label for="goal-answer">검사할 Python 코드</label>
-            <textarea id="goal-answer" maxlength="4000" spellcheck="false" placeholder='print("hello")'></textarea>
+            <textarea id="goal-answer" maxlength="12000" spellcheck="false" placeholder='print("hello")'></textarea>
             <button class="start" id="judge-goal" type="submit">내 답안 채점</button>
           </details>
           <p class="note" id="goal-error" role="alert"></p>
@@ -278,9 +278,11 @@
     const answer = goalResult.answers[Number(el('goal-candidate').value)];
     if (!answer) return;
     el('goal-code').textContent = answer.code;
-    const lines = [`기대 출력 ${JSON.stringify(goalResult.expected)}`, `실제 출력 ${JSON.stringify(answer.output)}`];
+    const lines = goalResult.expected === null
+      ? ['Python 문법 검사 통과 · 실행 결과 미채점']
+      : [`기대 ${goalResult.kind} ${JSON.stringify(goalResult.expected)}`, `실제 ${goalResult.kind} ${JSON.stringify(answer.output)}`];
     if (goalResult.required.length) lines.push(`요구한 방법 ${goalResult.required.join(', ')}`);
-    if (answer.methods.length) lines.push(`출력에 사용한 방법 ${answer.methods.join(', ')}`);
+    if (answer.methods.length) lines.push(`결과에 사용한 방법 ${answer.methods.join(', ')}`);
     if (answer.missing.length) lines.push(`충족하지 못한 방법 ${answer.missing.join(', ')}`);
     if (answer.error) lines.push(answer.error);
     el('goal-detail').textContent = lines.join('\n');
@@ -292,7 +294,7 @@
     const payload = {goal: el('goal-source').value};
     if (event.submitter?.id === 'judge-goal') payload.answer = el('goal-answer').value;
     el('goal-error').textContent = '';
-    el('goal-summary').textContent = '실행 검사 중';
+    el('goal-summary').textContent = payload.answer === undefined ? '코드 작성 중' : '답안 검사 중';
     el('solve-goal').disabled = el('judge-goal').disabled = true;
     try {
       const response = await fetch('/api/goal', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
@@ -302,10 +304,11 @@
       const firstCorrect = result.answers.findIndex(answer => answer.accepted);
       const correct = result.answers.filter(answer => answer.accepted).length;
       const picker = el('goal-candidate');
-      picker.replaceChildren(...result.answers.map((answer, index) => new Option(`답안 ${index + 1} · ${answer.accepted ? '정답' : '미통과'}`, index)));
+      picker.replaceChildren(...result.answers.map((answer, index) => new Option(
+        `답안 ${index + 1} · ${answer.accepted === null ? '문법 확인' : answer.accepted ? '정답' : '미통과'}`, index)));
       picker.disabled = result.answers.length < 2;
       picker.value = String(Math.max(0, firstCorrect));
-      el('goal-summary').textContent = `${result.answers.length}개 검사 · 정답 ${correct}개`;
+      el('goal-summary').textContent = result.engine || `${result.answers.length}개 검사 · 정답 ${correct}개`;
       renderGoalAnswer();
     } catch (error) {
       el('goal-error').textContent = error.message;

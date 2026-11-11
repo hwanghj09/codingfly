@@ -193,9 +193,10 @@ class GoalRuntime:
         for node in statements:
             self.tick()
             match node:
-                case ast.Assign(targets=[ast.Name(id=name)], value=expression):
+                case ast.Assign(targets=targets, value=expression):
                     result = self.expression(expression, env, context)
-                    env[name] = value(result.data, result.methods | context | {"변수"})
+                    for target in targets:
+                        self.assign(target, result, env, context)
                 case ast.AugAssign(target=ast.Name(id=name), op=op, value=expression) if name in env:
                     result = self.binary(op, env[name], self.expression(expression, env, context))
                     env[name] = value(result.data, result.methods | context)
@@ -225,7 +226,8 @@ class GoalRuntime:
                                 raise ValueError("중첩 함수는 실행 검사에서 지원하지 않습니다.")
                             targets = child.targets if isinstance(child, ast.Assign) else (
                                 [child.target] if isinstance(child, (ast.For, ast.AugAssign)) else [])
-                            locals_.update(target.id for target in targets if isinstance(target, ast.Name))
+                            locals_.update(name.id for target in targets for name in ast.walk(target)
+                                           if isinstance(name, ast.Name) and isinstance(name.ctx, ast.Store))
                     self.functions[name] = ([arg.arg for arg in parameters.args], body, locals_)
                     env.pop(name, None)
                 case ast.Return(value=expression) if self.depth:
@@ -235,8 +237,20 @@ class GoalRuntime:
                 case _:
                     raise ValueError(f"실행 검사에서 지원하지 않는 문장입니다. ({type(node).__name__})")
 
+    def assign(self, target, result, env, context):
+        self.tick()
+        if isinstance(target, ast.Name):
+            env[target.id] = value(result.data, result.methods | context | {"변수"})
+        elif isinstance(target, (ast.List, ast.Tuple)):
+            if len(result.data) != len(target.elts):
+                raise ValueError("변수 개수와 대입할 값의 개수가 다릅니다.")
+            for item, data in zip(target.elts, result.data):
+                self.assign(item, value(data, result.methods), env, context)
+        else:
+            raise ValueError("실행 검사에서 지원하지 않는 대입 대상입니다.")
 
-def inspect_output(code):
+
+def inspect_program(code, function=False):
     if not isinstance(code, str) or not code.strip() or len(code) > 4_000:
         raise ValueError("검사할 Python 코드는 4,000자까지 입력할 수 있습니다.")
     runtime = GoalRuntime()
@@ -244,6 +258,15 @@ def inspect_output(code):
         tree = ast.parse(code)
         compile(tree, "<answer>", "exec")
         runtime.block(tree.body, runtime.globals, frozenset())
+        if function:
+            choices = [name for name, (parameters, _, _) in runtime.functions.items()
+                       if not parameters and name not in runtime.globals]
+            if not choices:
+                raise ValueError("인자 없이 호출할 수 있는 함수를 정의하세요.")
+            preferred = "범위합" if "범위합" in choices else choices[-1]
+            returned = runtime.call(preferred, [], {}, runtime.globals, frozenset())
+        else:
+            returned = None
     except (SyntaxError, ArithmeticError, TypeError, LookupError, RecursionError) as error:
         raise ValueError(f"실행 검사 오류. {error}") from error
-    return runtime.output, runtime.methods, runtime.output_methods
+    return runtime, returned
