@@ -121,7 +121,7 @@
     반환 합계
 
 출력 짝수합([1, 2, 3, 4, 5, 6])</textarea>
-          <div class="control"><button class="start" id="generate" type="submit">Python 코드 작성</button><select id="program-example" aria-label="종합 예제 불러오기"><option value="">종합 예제 불러오기</option></select></div>
+          <div class="control"><button class="start" id="generate" type="submit">Python 코드 작성</button><select id="program-example" aria-label="예제 불러오기"><option value="">예제 불러오기</option></select></div>
           <p id="generation-error" role="alert"></p>
         </form>
         <div class="workbench-pane terminal">
@@ -136,6 +136,7 @@
         <p><code>함수 이름(인자)</code> · <code>변수 ← 값</code> · <code>누적 변수 ← 값</code> · <code>각 변수 ∈ 목록</code> · <code>반복 i = 시작 .. 끝</code> (끝 포함)</p>
         <p><code>만약 조건</code> · <code>아니면 만약 조건</code> · <code>아니면</code> · <code>동안 조건</code> · <code>반환 값</code> · <code>출력 값</code> · <code>호출 함수(인자)</code> · <code>중단</code> · <code>건너뛰기</code> · <code>통과</code></p>
         <p>인자가 여러 개인 새 명령은 <code>같음 결과 | a | b</code>, <code>사전 결과 | "키" | 값</code>처럼 <code> | </code>로 나눕니다. 종합 예제에서 나머지 명령의 입력 형식을 확인할 수 있습니다.</p>
+        <p>알고리즘은 <code>1. 새 함수 정의: 탐색(목록, 목표)</code>처럼 단계 이름과 인자를 콜론으로 구분합니다. 조건식과 변수 변경을 구체적으로 적고, 하위 단계는 공백 4칸을 더 들여쓰세요.</p>
       </details>
     </section>
     <div id="error" role="alert"></div>
@@ -197,11 +198,15 @@
       const response = await fetch('/api/program');
       if (!response.ok) throw new Error();
       const summary = await response.json();
-      programExamples = summary.examples;
-      for (const [index, example] of programExamples.entries()) {
-        el('program-example').add(new Option(example.title, index));
+      for (const [label, examples] of Object.entries(summary.examples)) {
+        const group = document.createElement('optgroup');
+        group.label = label;
+        for (const example of examples) {
+          group.append(new Option(example.title, programExamples.push(example) - 1));
+        }
+        el('program-example').append(group);
       }
-      el('program-summary').textContent = `FlyWire 모델 · ${summary.covered.length}/${summary.curriculum}과 · 종합 평가 ${summary.correct}/${summary.total}`;
+      el('program-summary').textContent = `FlyWire 모델 · ${summary.covered.length}/${summary.curriculum}과 · 종합 ${summary.correct}/${summary.total} · 새 표현 ${summary.phrase_correct}/${summary.phrase_total}`;
     } catch {
       el('program-summary').textContent = '의사코드 학습 결과를 불러오지 못했습니다.';
     }

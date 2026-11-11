@@ -69,6 +69,9 @@ class Fly:
                     if depth > 2:
                         break
                     features.extend([f"{side}:line:{depth}:{line.lstrip()[:5]}"] * 3)
+        return self.propagate(features)
+
+    def propagate(self, features):
         inputs = [0.0] * self.input_size
         for feature in features:
             digest = hashlib.blake2s(feature.encode(), digest_size=4).digest()

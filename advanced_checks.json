@@ -1,0 +1,17 @@
+[
+  {
+    "title": "내포·언패킹·연산",
+    "source": "대입 값들 ← [1, 2, 3, 4]\n목록내포 두배 | n * 2 | n | 값들\n조건내포 짝수 | n | n | 값들 | n % 2 == 0\n집합내포 집합 | n % 2 | n | 값들\n사전내포 제곱표 | n | n ** 2 | n | 값들\n생성식 흐름 | n + 1 | n | 값들\n조각 역순 | 값들 | 3 | 0 | -1\n여러변수 a, b | 짝수\n별표풀기 첫째 | 나머지값 | 값들\n타입대입 크기 | int | len(두배)\n범위비교 범위안 | 0 | a | 3\n포함 포함됨 | b | 값들\n미포함 빠짐 | 7 | 값들\n다름 다름값 | a | b\n나눈몫 몫 | 7 | 3\n나머지 나머지값2 | 7 | 3\n거듭제곱 거듭제곱값 | a | b\n문자열서식 표기 | \"{몫}:{나머지값2}\"\n연쇄대입 왼쪽 | 오른쪽 | 8\n대입 평가 ← 두배, 짝수, 집합, 제곱표, list(흐름), 역순, 첫째, 나머지값, 크기, 범위안, 포함됨, 빠짐, 다름값, 거듭제곱값, 표기, 왼쪽 + 오른쪽",
+    "python": "값들 = [1, 2, 3, 4]\n두배 = [n * 2 for n in 값들]\n짝수 = [n for n in 값들 if n % 2 == 0]\n집합 = {n % 2 for n in 값들}\n제곱표 = {n: n ** 2 for n in 값들}\n흐름 = (n + 1 for n in 값들)\n역순 = 값들[3:0:-1]\na, b = 짝수\n첫째, *나머지값 = 값들\n크기: int = len(두배)\n범위안 = 0 <= a < 3\n포함됨 = b in 값들\n빠짐 = 7 not in 값들\n다름값 = a != b\n몫 = 7 // 3\n나머지값2 = 7 % 3\n거듭제곱값 = a ** b\n표기 = f\"{몫}:{나머지값2}\"\n왼쪽 = 오른쪽 = 8\n평가 = 두배, 짝수, 집합, 제곱표, list(흐름), 역순, 첫째, 나머지값, 크기, 범위안, 포함됨, 빠짐, 다름값, 거듭제곱값, 표기, 왼쪽 + 오른쪽"
+  },
+  {
+    "title": "함수 인자·예외 연결·순회",
+    "source": "키워드가변함수 합산 | 값\n    반환 sum(값.values())\n위치전용함수 곱 | a | b\n    반환 a * b\n키워드전용함수 더하기 | a | b\n    반환 a + b\n함수 항목()\n    위임생성 [2, 4]\n대입 출력값 ← []\n시도\n    시도\n        오류 ValueError(\"원인\")\n    예외별명 ValueError | 예외값\n        원인예외 RuntimeError(\"실패\") | 예외값\n예외별명 RuntimeError | 실패\n    호출 출력값.append(str(실패.__cause__))\n동시순회 a | b | [1, 2] | [3, 4]\n    호출 출력값.append(곱(a, b))\n순회완료\n    호출 출력값.append(합산(x=2, y=3))\n번호순회 번호 | 값 | 항목() | 1\n    호출 출력값.append(더하기(번호, b=값))\n대입 평가 ← 출력값",
+    "python": "def 합산(**값):\n    return sum(값.values())\ndef 곱(a, /, b):\n    return a * b\ndef 더하기(a, *, b):\n    return a + b\ndef 항목():\n    yield from [2, 4]\n출력값 = []\ntry:\n    try:\n        raise ValueError(\"원인\")\n    except ValueError as 예외값:\n        raise RuntimeError(\"실패\") from 예외값\nexcept RuntimeError as 실패:\n    출력값.append(str(실패.__cause__))\nfor a, b in zip([1, 2], [3, 4]):\n    출력값.append(곱(a, b))\nelse:\n    출력값.append(합산(x=2, y=3))\nfor 번호, 값 in enumerate(항목(), 1):\n    출력값.append(더하기(번호, b=값))\n평가 = 출력값"
+  },
+  {
+    "title": "비동기 순회와 패턴 조건",
+    "source": "가져오기 asyncio\n가져올곳 contextlib | AsyncExitStack\n비동기함수 값()\n    각 x ∈ [1, 2, 3]\n        내보내기 x\n비동기함수 실행()\n    비동기자원 AsyncExitStack() | 자원값\n        비동기내포 두배 | x * 2 | x | 값()\n        비동기순회 x | 값()\n            패턴비교 x\n                패턴조건 n | n > 2\n                    호출 두배.append(n)\n                여러패턴 1 | 2\n                    통과\n    반환 두배\n대입 평가 ← asyncio.run(실행())",
+    "python": "import asyncio\nfrom contextlib import AsyncExitStack\nasync def 값():\n    for x in [1, 2, 3]:\n        yield x\nasync def 실행():\n    async with AsyncExitStack() as 자원값:\n        두배 = [x * 2 async for x in 값()]\n        async for x in 값():\n            match x:\n                case n if n > 2:\n                    두배.append(n)\n                case 1 | 2:\n                    pass\n    return 두배\n평가 = asyncio.run(실행())"
+  }
+]

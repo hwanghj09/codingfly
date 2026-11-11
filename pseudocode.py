@@ -28,7 +28,12 @@ def expression(text):
     text = text.strip()
     if not text:
         raise ValueError("값이나 조건을 입력하세요.")
-    ast.parse(text, mode="eval")
+    if text.startswith("호출 "):
+        text = text.removeprefix("호출 ").strip()
+        if not isinstance(ast.parse(text, mode="eval").body, ast.Call):
+            raise ValueError("‘호출 함수(인자)’ 형식으로 입력하세요.")
+    else:
+        ast.parse(text, mode="eval")
     return text
 
 
@@ -91,7 +96,7 @@ def statement(line):
     raise ValueError(f"지원하는 명령을 확인하세요. {name!r}")
 
 
-def translate(source, render=statement):
+def translate(source, render=None):
     if not isinstance(source, str) or not source.strip():
         raise ValueError("의사코드를 입력하세요.")
     if len(source) > MAX_SOURCE:
@@ -106,7 +111,7 @@ def translate(source, render=statement):
         try:
             if "\t" in indent:
                 raise ValueError("들여쓰기에 공백을 사용하세요.")
-            output.append(indent + render(text))
+            output.append(indent + (render(text, len(indent)) if render else statement(text)))
         except SyntaxError as error:
             raise ValueError(f"{number}줄 · {error.msg}") from error
         except (ValueError, RecursionError) as error:

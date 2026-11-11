@@ -1,11 +1,13 @@
 import ast
 import io
 import random
+import re
 import tokenize
 from dataclasses import dataclass
 from string import Formatter
 
-from pseudocode import COMMANDS, SIMPLE, statement, translate
+from algorithm_model import AlgorithmModel
+from pseudocode import COMMANDS, SIMPLE, identifier, statement, translate
 from reward import RewardMemory
 
 
@@ -50,6 +52,7 @@ OPERATIONS = {
     "건너뛰기": Operation((35,)),
     "삭제": Operation((36,), "del {}"),
     "사전": Operation((37, 38, 39), "{} = {{{}: {}}}"),
+    "사전갱신": Operation(template="{}[{}] = {}"),
     "데코레이터": Operation((40,), "@{}"),
     "반환형함수": Operation((41,), "def {} -> {}:"),
     "가변인자함수": Operation((42,), "def {}(*{}):"),
@@ -59,6 +62,38 @@ OPERATIONS = {
     "비동기함수": Operation((46,), "async def {}:"),
     "패턴비교": Operation((47,), "match {}:"),
     "패턴": Operation((48,), "case {}:"),
+    "목록내포": Operation((49,), "{} = [{} for {} in {}]"),
+    "조건내포": Operation((50,), "{} = [{} for {} in {} if {}]"),
+    "집합내포": Operation((51,), "{} = {{{} for {} in {}}}"),
+    "사전내포": Operation((52,), "{} = {{{}: {} for {} in {}}}"),
+    "생성식": Operation((53,), "{} = ({} for {} in {})"),
+    "조각": Operation((54,), "{} = {}[{}:{}:{}]"),
+    "여러변수": Operation((55,), "{} = {}"),
+    "별표풀기": Operation((56,), "{}, *{} = {}"),
+    "키워드가변함수": Operation((57,), "def {}(**{}):"),
+    "위치전용함수": Operation((58,), "def {}({}, /, {}):"),
+    "키워드전용함수": Operation((59,), "def {}({}, *, {}):"),
+    "타입대입": Operation((60,), "{}: {} = {}"),
+    "범위비교": Operation((61,), "{} = {} <= {} < {}"),
+    "포함": Operation((62,), "{} = {} in {}"),
+    "미포함": Operation((63,), "{} = {} not in {}"),
+    "다름": Operation((64,), "{} = {} != {}"),
+    "나눈몫": Operation((65,), "{} = {} // {}"),
+    "나머지": Operation((66,), "{} = {} % {}"),
+    "거듭제곱": Operation((67,), "{} = {} ** {}"),
+    "문자열서식": Operation((68,), "{} = f{}"),
+    "연쇄대입": Operation((69,), "{} = {} = {}"),
+    "예외별명": Operation((70,), "except {} as {}:"),
+    "원인예외": Operation((71,), "raise {} from {}"),
+    "위임생성": Operation((72,), "yield from {}"),
+    "순회완료": Operation((73,), "else:"),
+    "동시순회": Operation((74,), "for {}, {} in zip({}, {}):"),
+    "번호순회": Operation((75,), "for {}, {} in enumerate({}, {}):"),
+    "패턴조건": Operation((76,), "case {} if {}:"),
+    "여러패턴": Operation((77,), "case {} | {}:"),
+    "비동기순회": Operation((78,), "async for {} in {}:"),
+    "비동기자원": Operation((79,), "async with {} as {}:"),
+    "비동기내포": Operation((80,), "{} = [{} async for {} in {}]"),
     "누적": Operation(),
     "반복": Operation(),
     "출력": Operation(),
@@ -94,8 +129,32 @@ def instruction(line):
     return cue.removesuffix(":"), body[0] if body else ""
 
 
+STEP_NUMBER = re.compile(r"^\d+(?:\.\d+)*[.)]\s+")
+STEP_PHRASE = re.compile(r"([가-힣][가-힣 ]*):(?:\s+(.*)|$)")
+BRANCH = {"아니면", "아니면 만약"}
+
+
+def render_step(action, body):
+    if action in ("대입", "누적"):
+        parts = arguments(body)
+        if len(parts) == 2 and all(parts):
+            target, value = parts
+            operator, node = ("=", ast.Assign) if action == "대입" else ("+=", ast.AugAssign)
+            code = f"{target} {operator} {value}"
+            tree = ast.parse(code).body
+            if len(tree) == 1 and isinstance(tree[0], node):
+                return code
+            raise ValueError("대상과 값을 확인하세요.")
+    if action == "각":
+        parts = arguments(body)
+        if len(parts) == 2:
+            body = " ∈ ".join(parts)
+    return statement(f"{action} {body}".rstrip())
+
+
 class ProgramModel:
     def __init__(self, fly):
+        self.algorithm = AlgorithmModel(fly)
         actions = {cue: cue for cue in OPERATIONS}
         aliases = {**COMMANDS, **SIMPLE}
         for cue, operation in OPERATIONS.items():
@@ -103,6 +162,7 @@ class ProgramModel:
                 actions.update({alias: cue for alias, action in aliases.items() if action == aliases[cue]})
             actions.update(dict.fromkeys(operation.aliases, cue))
         self.cues = frozenset(actions)
+        self.curriculum = len({lesson for operation in OPERATIONS.values() for lesson in operation.lessons})
         examples = [(0, cue, action) for cue, action in actions.items()]
         self.memory = RewardMemory(fly, examples, examples, {}, project=fly.project)
         rng = random.Random(42)
@@ -121,17 +181,43 @@ class ProgramModel:
                         self.bonus += reward - 1
                         break
 
-    def render(self, line, used):
+    def render(self, line, used, indent, siblings, dictionaries):
         if line.startswith("#"):
             return line
+        step = STEP_NUMBER.match(line)
+        if step:
+            line = line[step.end():]
+        for deeper in [level for level in siblings if level > indent]:
+            del siblings[deeper]
         cue, body = instruction(line)
+        phrase = STEP_PHRASE.fullmatch(line)
+        if phrase and phrase[1] not in self.cues and (step or phrase[2] or cue not in self.cues):
+            action, code = self.decode_step(phrase[1], phrase[2] or "", siblings.get(indent))
+            siblings[indent] = action
+            used.update(OPERATIONS[action].lessons)
+            return code
         if cue not in self.cues:
-            raise ValueError(f"학습 목록에 없는 명령입니다. {cue!r}")
+            try:
+                fields = arguments(line)
+                if len(fields) == 3 and all(fields):
+                    name = fields[0]
+                    cue = "사전갱신" if name in dictionaries else "사전"
+                    fields[0] = dictionaries.setdefault(name, identifier("_".join(name.split())))
+                    body = " | ".join(fields)
+                elif isinstance(ast.parse(line, mode="eval").body, ast.Call):
+                    cue, body = "호출", line
+            except (SyntaxError, tokenize.TokenError):
+                pass
+            if cue not in self.cues:
+                raise ValueError(f"학습 목록에 없는 명령입니다. {cue!r}")
         action = self.memory.predict(cue)
         if action is None:
             raise ValueError("모델이 Python 구문을 고르지 못했습니다.")
+        siblings[indent] = action
         operation = OPERATIONS[action]
         used.update(operation.lessons)
+        if action == "출력":
+            body = dictionaries.get(body, body)
         if not operation.template:
             return statement(f"{action} {body}".rstrip())
         if operation.template.endswith(":"):
@@ -145,9 +231,23 @@ class ProgramModel:
             raise ValueError(f"{action}에 필요한 인자 {expected}개를 ‘ | ’로 구분하세요.")
         return operation.template.format(*parts)
 
+    def decode_step(self, phrase, body, previous):
+        for action, score in self.algorithm.ranks(phrase):
+            if score < 0.42:
+                break
+            if action in BRANCH and previous not in ("만약", "아니면 만약"):
+                continue
+            try:
+                return action, render_step(action, body)
+            except (SyntaxError, ValueError, tokenize.TokenError):
+                continue
+        raise ValueError(f"‘{phrase}’ 단계의 명령과 인자를 확인하세요.")
+
     def generate(self, source):
         used = set()
-        code = translate(source, lambda line: self.render(line, used))
+        siblings = {}
+        dictionaries = {}
+        code = translate(source, lambda line, indent: self.render(line, used, indent, siblings, dictionaries))
         return {"code": code, "lessons": sorted(used)}
 
     def evaluate(self, checks):
