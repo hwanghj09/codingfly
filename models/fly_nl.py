@@ -10,5 +10,12 @@ NL_VOCABULARY = Vocabulary(
 
 
 class FlyNL(NeuralSequence):
-    def __init__(self, graph, *, seed=101, config=None):
-        super().__init__(graph, NL_VOCABULARY, role="fly-nl", seed=seed, config=config)
+    def __init__(self, graph, *, seed=101, config=None, context_bag=False):
+        super().__init__(
+            graph,
+            NL_VOCABULARY,
+            role="fly-nl",
+            seed=seed,
+            config=config,
+            context_bag=context_bag,
+        )

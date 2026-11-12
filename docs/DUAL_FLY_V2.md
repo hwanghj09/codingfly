@@ -63,7 +63,7 @@ OPENBLAS_NUM_THREADS=1 python -m models.train_sequence --epochs 60 --polish-step
 OPENBLAS_NUM_THREADS=1 python -m models.train_nl --epochs 60 --polish-steps 160 --evaluate-test --output artifacts/nl-v2
 python -m evaluation.end_to_end --output artifacts/e2e-v2
 python dual_fly.py --ir "PRINT 37"
-python dual_fly.py --goal '37 을 출력해'
+python dual_fly.py --goal '37 을 출력해' --nl-dir artifacts/nl-v2
 ```
 
 코드 실행 채점에는 `bubblewrap`과 `/usr/bin/python3`가 필요하다. 네트워크·host workspace/home를 숨긴 읽기 전용 namespace, CPU/메모리/프로세스/출력 제한을 사용한다. 격리가 없으면 호스트 실행으로 대체하지 않는다.

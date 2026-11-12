@@ -27,7 +27,7 @@ def main():
         help="Default v2; explicit old checkpoint paths select v1",
     )
     parser.add_argument("--code-dir", type=Path, default=ROOT / "artifacts/code-v2")
-    parser.add_argument("--nl-dir", type=Path, default=ROOT / "artifacts/nl-v2")
+    parser.add_argument("--nl-dir", type=Path, default=ROOT / "artifacts/nl-v3")
     parser.add_argument("--checkpoint", type=Path)
     parser.add_argument("--dataset", type=Path)
     parser.add_argument("--graph", type=Path, default=ROOT / "flywire_lab_2048.csv")

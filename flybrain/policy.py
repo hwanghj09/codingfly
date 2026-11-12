@@ -47,9 +47,11 @@ TEACHER_MODULES = frozenset(
         "evaluation.code_data",
         "evaluation.curriculum_v2",
         "evaluation.nl_data",
+        "evaluation.nl_data_v3",
         "models.train_code",
         "models.train_sequence",
         "models.train_nl",
+        "models.train_nl_v3",
     }
 )
 

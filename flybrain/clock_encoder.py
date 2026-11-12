@@ -10,6 +10,7 @@ from flybrain.sequence_io import IR_LITERALS, lexical_spans
 
 CLOCK_ENCODER_VERSION = "clocked-line-byte-population-v2.6"
 NL_ENCODER_VERSION = "clocked-nl-pointer-bytes-v3.0"
+NL_CONTEXT_BAG_VERSION = "clocked-nl-invariant-context-pointer-bytes-v3.1"
 IR_SYNTAX_IDS = {
     value: index + 1
     for index, value in enumerate(IR_LITERALS)
@@ -28,15 +29,21 @@ class ClockEncoder:
         source_position_decay=False,
         ir_syntax=False,
         opaque_literals=False,
+        context_bag=False,
     ):
         self.node_count, self.input_nodes = node_count, tuple(input_nodes)
         self.seed, self.fanout = seed, fanout
         self.source_position_decay = source_position_decay
         self.ir_syntax = ir_syntax
         self.opaque_literals = opaque_literals
+        if context_bag and not opaque_literals:
+            raise ValueError("Invariant context is only available for NL byte encoding")
+        self.context_bag = context_bag
 
     @property
     def version(self):
+        if self.context_bag:
+            return NL_CONTEXT_BAG_VERSION
         return NL_ENCODER_VERSION if self.opaque_literals else CLOCK_ENCODER_VERSION
 
     @staticmethod
@@ -155,6 +162,7 @@ class ClockEncoder:
         binding=False,
         text_mode=True,
         register_count=0,
+        context_choice=False,
     ):
         if (
             not isinstance(source, bytes)
@@ -189,12 +197,17 @@ class ClockEncoder:
         drive = self.project(opaque, clock, weights)
         if self.opaque_literals:
             bag, literal_positions, word_bytes = self.nl_features(source)
-            drive = (
-                self.project(bag, clock)
-                + 0.75 * self.project(literal_positions, clock ^ 0x589965CC75374CC3)
-                + 0.1 * drive
-                + 0.1 * self.project(word_bytes, clock ^ 0x1D8E4E27C47D124F)
-            )
+            if self.context_bag and context_choice:
+                drive = self.project(bag, clock) + 0.1 * self.project(
+                    word_bytes, clock ^ 0x1D8E4E27C47D124F
+                )
+            else:
+                drive = (
+                    self.project(bag, clock)
+                    + 0.75 * self.project(literal_positions, clock ^ 0x589965CC75374CC3)
+                    + 0.1 * drive
+                    + 0.1 * self.project(word_bytes, clock ^ 0x1D8E4E27C47D124F)
+                )
         elif not self.ir_syntax:
             drive += 0.02 * self.project(raw, clock ^ 0xE7037ED1A0B428DB)
         # A bounded, fixed-strength context channel uses actual earlier actions.

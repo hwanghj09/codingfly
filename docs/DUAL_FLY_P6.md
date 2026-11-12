@@ -7,7 +7,7 @@
 python -m evaluation.retries --output artifacts/retry-v1
 python -m evaluation.snapshot_retry --study artifacts/retry-v1
 python dual_fly.py --goal '변수 "total" 에 7 를 저장해' \
-  --tests oracle.json --max-attempts 3 --feedback-mode weak
+  --nl-dir artifacts/nl-v2 --tests oracle.json --max-attempts 3 --feedback-mode weak
 ```
 
 위 CLI의 `oracle.json`:

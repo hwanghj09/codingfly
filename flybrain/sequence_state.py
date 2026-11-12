@@ -24,7 +24,13 @@ class SequenceState:
 
     def context_stimulus(self, encoder, candidate):
         return encoder.encode(
-            self.source(), 0, 0, contextual=True, context=candidate, text_mode=False
+            self.source(),
+            0,
+            0,
+            contextual=True,
+            context=candidate,
+            text_mode=False,
+            context_choice=True,
         )
 
     def copy_candidates(self):

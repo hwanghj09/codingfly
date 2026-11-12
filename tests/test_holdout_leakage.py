@@ -10,6 +10,7 @@ from flybrain.graph import Graph, digest
 from ir.tokens import spec_hash
 from evaluation.curriculum_v2 import DATA_VERSION, code_cases_v2, composition_cases
 from evaluation.nl_data import NL_DATA_VERSION, nl_cases
+from evaluation.nl_data_v3 import NL_DATA_VERSION as NL_V3_DATA_VERSION, nl_cases_v3
 from evaluation.retries import (
     DATA_VERSION as RETRY_DATA_VERSION,
     retry_cases,
@@ -27,6 +28,7 @@ class HoldoutTest(unittest.TestCase):
         for filename, splits, kind in (
             ("code-v2.json", code_cases_v2(), DATA_VERSION),
             ("nl-v2.json", nl_cases(), NL_DATA_VERSION),
+            ("nl-v3.json", nl_cases_v3(), NL_V3_DATA_VERSION),
             ("retry-v1.json", retry_cases(), RETRY_DATA_VERSION),
             (
                 "compositions-v2.json",

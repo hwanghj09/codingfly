@@ -1,11 +1,13 @@
 """Neural literal/COPY transducer with graph-selected cursor and memory controls."""
 
 import time
+import json
+from pathlib import Path
 
 import numpy as np
 
 from flybrain.checkpoint import load, save
-from flybrain.clock_encoder import ClockEncoder
+from flybrain.clock_encoder import ClockEncoder, NL_CONTEXT_BAG_VERSION
 from flybrain.dynamics import Brain, DynamicsConfig
 from flybrain.graph import digest
 from flybrain.policy import fly_only
@@ -16,9 +18,13 @@ from models.fly_code import Generation
 
 
 class NeuralSequence:
-    def __init__(self, graph, vocabulary, *, role, seed=0, config=None):
+    def __init__(
+        self, graph, vocabulary, *, role, seed=0, config=None, context_bag=False
+    ):
         if role not in {"fly-code", "fly-nl"}:
             raise ValueError("Invalid sequence role")
+        if context_bag and role != "fly-nl":
+            raise ValueError("Invariant context requires the fly-nl role")
         self.role, self.vocabulary = role, vocabulary
         self.brain = Brain(
             graph,
@@ -27,10 +33,12 @@ class NeuralSequence:
             config=config
             or DynamicsConfig(inhibitory_fraction=0.2, sign_constraint=False),
         )
-        self.encoder = self.make_encoder(graph, self.brain.input_nodes, seed, role)
+        self.encoder = self.make_encoder(
+            graph, self.brain.input_nodes, seed, role, context_bag=context_bag
+        )
 
     @staticmethod
-    def make_encoder(graph, inputs, seed, role):
+    def make_encoder(graph, inputs, seed, role, *, context_bag=False):
         return ClockEncoder(
             len(graph.node_ids),
             inputs,
@@ -38,6 +46,7 @@ class NeuralSequence:
             source_position_decay=role == "fly-code",
             ir_syntax=role == "fly-code",
             opaque_literals=role == "fly-nl",
+            context_bag=context_bag,
         )
 
     def teacher_decisions(self, source, actions):
@@ -244,7 +253,13 @@ class NeuralSequence:
 
     @classmethod
     def restore(cls, path, graph, vocabulary, *, role, contract):
-        model = NeuralSequence(graph, vocabulary, role=role)
+        # The checkpoint loader below verifies checksum, role and complete encoder
+        # contract. This header selects one of two fixed, local I/O implementations.
+        header = json.loads(Path(path).read_text())
+        if not isinstance(header, dict) or not isinstance(header.get("payload"), dict):
+            raise ValueError("Malformed sequence checkpoint")
+        context_bag = header.get("payload", {}).get("encoder") == NL_CONTEXT_BAG_VERSION
+        model = NeuralSequence(graph, vocabulary, role=role, context_bag=context_bag)
         brain, state = load(
             path,
             graph,
@@ -255,5 +270,7 @@ class NeuralSequence:
         if len(brain.output_nodes) != vocabulary.radix:
             raise ValueError("Sequence readout mismatch")
         model.brain = brain
-        model.encoder = model.make_encoder(graph, brain.input_nodes, brain.seed, role)
+        model.encoder = model.make_encoder(
+            graph, brain.input_nodes, brain.seed, role, context_bag=context_bag
+        )
         return model, state
