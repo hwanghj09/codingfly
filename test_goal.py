@@ -3,6 +3,7 @@ import sys
 import unittest
 from unittest.mock import patch
 
+from code_generator import generate_code
 from fly import Fly
 from goal_model import parse_goal, solve
 from lab import GRAPH
@@ -51,6 +52,13 @@ class GoalTest(unittest.TestCase):
         generator.assert_called_once_with(goal)
         self.assertEqual(result["answers"][0]["code"], code)
         self.assertIsNone(result["answers"][0]["accepted"])
+
+    def test_local_model_code_block_with_surrounding_prose(self):
+        code = "def rank(items):\n    return sorted(items, key=lambda item: item['score'], reverse=True)\n"
+        content = f"다음과 같이 작성할 수 있습니다.\n\n```python\n{code}```\n\n점수가 높은 순서로 반환합니다."
+        response = {"choices": [{"message": {"content": content}}]}
+        with patch("code_generator.request_json", return_value=response):
+            self.assertEqual(generate_code("점수로 내림차순 정렬하는 함수를 작성해")[0], code)
 
     def test_requested_method_must_contribute_to_every_output(self):
         goal = "함수를 이용해서 hello를 출력해"

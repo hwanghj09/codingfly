@@ -14,7 +14,8 @@ INSTRUCTIONS = (
 )
 LOCAL_MODEL = "qwen2.5-coder-3b"
 LOCAL_URL = "http://127.0.0.1:8766/v1/chat/completions"
-FENCED_CODE = re.compile(r"```(?:python|py)?\s*\n(.*?)\n```", re.DOTALL | re.IGNORECASE)
+FENCED_CODE = re.compile(r"^[ \t]*```(?:python|py)?[ \t]*\r?\n(.*?)\r?\n[ \t]*```[ \t]*$",
+                         re.MULTILINE | re.DOTALL | re.IGNORECASE)
 
 
 def request_json(payload):
@@ -56,9 +57,13 @@ def generate_code(goal):
         raise ValueError("언어 모델에서 Python 답안을 받지 못했습니다.") from error
     if not isinstance(code, str):
         raise ValueError("언어 모델에서 Python 답안을 받지 못했습니다.")
-    code = code.strip()
-    if fenced := FENCED_CODE.fullmatch(code):
-        code = fenced[1]
-    code += "\n"
-    syntax_check(code)
+    code = code.strip() + "\n"
+    try:
+        syntax_check(code)
+    except ValueError:
+        blocks = FENCED_CODE.findall(code)
+        if len(blocks) != 1:
+            raise
+        code = blocks[0] + "\n"
+        syntax_check(code)
     return code, "로컬 Qwen2.5-Coder 3B"
