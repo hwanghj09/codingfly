@@ -1,6 +1,6 @@
 # CodingFly: 두 개의 FlyWire 신경망 기반 Python 생성기 개발 명세서
 
-> **구현 추적:** [실측 구현 결과](IMPLEMENTATION_RESULTS.md)와 [재현 절차](EXPERIMENT_PROTOCOL.md)를 추가했다. 현재 P0~P2를 검증했고 P3 초기 실험은 성능 목표 미달이다. 아래 본문은 최초 설계와 단계별 완료 기준을 보존한다.
+> **구현 추적:** [실측 결과](IMPLEMENTATION_RESULTS.md), [v2 구조·재현 절차](DUAL_FLY_V2.md). P3의 제한된 24종 목표를 통과했고 P4/Fly-NL과 P5 연결 실험을 추가했다. 새 한국어 표현의 종단 실행 정답률은 24/32이며, P6~P8은 남아 있다. 아래 본문은 최초 설계와 완료 기준을 보존한다.
 
 > 작성 기준: 2026-11-11 · 대상: [hwanghj09/codingfly](https://github.com/hwanghj09/codingfly), main 브랜치  
 > 문서 상태: **설계 및 구현 계획**. 이 문서에 적힌 신규 모듈·테스트·성능 목표는 아직 구현 또는 재현되었다는 뜻이 아니다.  

@@ -34,8 +34,17 @@ jobs:
           from models.train_code import require_p2
           require_p2('artifacts/toy-p2/report.json')
           PY
+      - run: python -m evaluation.toy --free-signs --output artifacts/toy-signed
+      - name: Require the current signed-edge learning gate
+        run: |
+          python - <<'PY'
+          from models.train_code import require_p2
+          require_p2('artifacts/toy-signed/report.json')
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: toy-learning-evidence
-          path: artifacts/toy-p2/
+          path: |
+            artifacts/toy-p2/
+            artifacts/toy-signed/

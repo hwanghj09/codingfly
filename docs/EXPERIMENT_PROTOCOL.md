@@ -1,5 +1,7 @@
 # Fly-only 실험 절차
 
+> 이 문서는 최초 v1 실험의 절차를 보존한다. 현재 v2 신경 시퀀스·Fly-NL·종단 검증의 재현 방법은 [DUAL_FLY_V2.md](DUAL_FLY_V2.md)를 사용한다. v1의 P3 실패 결과는 [초기 보고서](INITIAL_IMPLEMENTATION_RESULTS.md)에 있다.
+
 ## 경로와 연구 계약
 
 `lab.py`/`fly.py`/기존 `benchmark.py`는 legacy다. 새 추론은 `dual_fly.py → models.fly_code → flybrain`으로 실행한다. `evaluation`은 학습 자료·오차·실행 채점 담당이며 모델이 답을 선택하는 데 사용하지 않는다. `ir`는 형식 검사만 한다. Python 생성기는 기존 모델/번역기/정규식/외부 LLM을 import할 수 없고, 추론 중 네트워크·프로세스 실행도 차단한다. 이 의존성 가드는 연구 경로의 실수 방지 장치이며 악의적인 Python을 격리하는 샌드박스와는 별개다.

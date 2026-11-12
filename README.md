@@ -1,21 +1,27 @@
 # CodingFly: FlyWire 시냅스 학습과 Python 생성 실험
 
-[개발 로드맵](docs/DUAL_FLY_DEVELOPMENT_ROADMAP.md)에 따른 **fly-only 연구 경로**를 추가했습니다. 현재 P0~P2를 구현·검증했고, P3는 LET/PRINT 순차 생성 실험까지 구현했습니다. **Fly-NL과 두 파리 통합은 아직 구현하지 않았습니다.** P3가 문법/실행 목표에 미달해 다음 단계 확장을 보류합니다. [실측 결과와 한계](docs/IMPLEMENTATION_RESULTS.md) · [실험 절차](docs/EXPERIMENT_PROTOCOL.md) · [IR v0.1](docs/IR_SPEC.md)
+[개발 로드맵](docs/DUAL_FLY_DEVELOPMENT_ROADMAP.md)에 따라 **Fly-Code를 수정하고 Fly-NL과 두 단계 연결을 추가했습니다.** 새 Fly-Code 평가에서는 조건문·반복문·함수 등을 포함한 24종 96개 프로그램이 모두 실행 정답이었고, 미학습 조합·경계 과제는 3/4개를 통과했습니다. Fly-NL→Fly-Code는 새로운 한국어 표현의 지원 과제 32개 중 24개를 맞혔으며, 미지원 요청 4개는 모두 불확실 결과로 처리했습니다. [결과·남은 오류](docs/IMPLEMENTATION_RESULTS.md) · [v2 구조·재현 절차](docs/DUAL_FLY_V2.md) · [IR v0.1](docs/IR_SPEC.md)
 
-새 경로는 원본 FlyWire 간선의 강도만 학습하는 반복적 rate 신경 모델입니다. 입력은 고정 UTF-8 바이트 자극이고, 출력 뉴런의 활동이 Python 토큰 또는 원문 COPY 위치를 결정합니다. 외부 LLM, 기존 정규식 의도 분류, 기존 코드 템플릿으로 실패한 답을 보정하지 않습니다. 생물학적으로 검증된 초파리 뇌 시뮬레이터라는 의미는 아닙니다.
+두 모델은 각각 원본 FlyWire 간선의 강도만 학습하는 독립적인 rate 신경 모델입니다. 출력 뉴런이 의도 문맥, 인자 복사 위치, IR/Python 토큰, 줄 이동과 블록 상태를 선택합니다. 외부 LLM·정규식 의도 분류·코드 템플릿으로 답을 보정하지 않습니다. 고정 입출력 부호화와 임시 레지스터를 사용하는 인공 계산 모델이며, 생물학적으로 검증된 초파리 뇌 시뮬레이터는 아닙니다.
 
 ```bash
 python -m pip install -r requirements.txt
 python -m unittest -v
 python benchmark.py
-python -m evaluation.toy --output artifacts/toy-p2
-python -m models.train_code --toy-report artifacts/toy-p2/report.json --output artifacts/fly-code
-python dual_fly.py --checkpoint artifacts/fly-code/learned.json --dataset artifacts/fly-code/dataset.json --ir "PRINT 37"
+python -m evaluation.toy --free-signs --output artifacts/toy-signed
+OPENBLAS_NUM_THREADS=1 python -m models.train_sequence --output artifacts/code-v2 --epochs 60 --polish-steps 160 --evaluate-test
+OPENBLAS_NUM_THREADS=1 python -m models.train_nl --output artifacts/nl-v2 --epochs 60 --polish-steps 160 --evaluate-test
+python -m evaluation.end_to_end
+python dual_fly.py --ir "PRINT 37"
+python dual_fly.py --goal '37 을 출력해'
+python dual_fly.py --goal '"count" 에 7 을 저장하고 "count" 를 출력해'
 ```
 
-새 신경 엔진은 Python 3.10 이상과 NumPy를 사용합니다. 생성 코드의 **실행 채점**에는 Linux의 `bubblewrap`과 `/usr/bin/python3`가 필요합니다. 미설치/격리 불가 환경에서는 `sandbox_unavailable`로 실패하며 호스트 실행으로 대체하지 않습니다. 기존 데모는 계속 표준 라이브러리만 사용합니다.
+새 신경 엔진은 Python 3.10 이상, NumPy, SciPy를 사용합니다. 위 재현 명령은 Linux 기준이며, **실행 채점**에는 `bubblewrap`과 `/usr/bin/python3`가 필요합니다. 격리 불가 환경에서는 `sandbox_unavailable`로 실패하고 호스트 실행으로 대체하지 않습니다. 기존 데모는 계속 표준 라이브러리만 사용합니다. 체크포인트는 명령 실행 시 `artifacts/`에 생성합니다.
 
-훈련은 고정 시드·예산으로 수행하고 자료/그래프/IR 해시, 실제 변경 간선, 복원 결과, frozen/재연결/무작위 대조 결과를 JSON에 남깁니다. `--trace`를 주면 각 출력 선택의 뉴런/가중치 근거를 볼 수 있습니다. 이 명령은 **연구용 예측**이므로 생성된 코드가 올바르다고 보장하지 않습니다. 실패한 출력과 중단 상태를 그대로 반환합니다.
+현재 자연어 범위는 정수·문자열 출력, 변수 대입·출력, 더한 뒤 출력, 항등/덧셈 함수, 끝을 제외한 정수 구간 출력입니다. **식별자는 큰따옴표로 감싸고 수치·조사는 공백으로 구분**합니다. 영어, 붙여 쓴 수치·조사, 임의의 복합 요구는 아직 검증 범위 밖입니다. 두 가지 새 표현에서 의도를 잘못 선택한 오류 8개를 그대로 보고합니다. 재시도(P6), 전체 언어 대조 실험(P7), 새 대시보드(P8)는 남아 있습니다.
+
+`--trace`는 각 선택의 뉴런/가중치 근거를, `--tests oracle.json`은 격리 실행 채점을 제공합니다. 오라클 없이 자연어를 생성하면 `syntax_only`로 표시합니다. 숨긴 평가를 연 run은 재학습·재채점을 막으며, 후속 모델 개발에는 새 평가 버전을 사용합니다. v1 신경 실험은 `--engine v1`과 기존 체크포인트로 재현할 수 있습니다.
 
 ## Legacy: 초파리 뇌지도에 Python 문법 가르치기
 
