@@ -70,4 +70,11 @@ python dual_fly.py --goal '37 을 출력해'
 
 `--tests oracle.json`으로 사용자 오라클을 줄 수 있다. 예를 들어 `{"stdout":"37\n","variables":{}}`를 전달하면 실제 출력과 비교한다. 오라클 없이 자연어를 생성할 때의 `syntax_only`는 의미 정답 판정이 아니다. `--trace`로 두 모델의 실제 선택 근거를 출력한다. v1은 `--engine v1`과 최초 체크포인트/데이터 경로로 유지한다.
 
-전체 가중치·trace는 `artifacts/`에 남기고, 작은 검토 결과는 `python -m evaluation.snapshot_v2 --test-log /tmp/codingfly-final-v2-tests.log`로 저장한다. 코드/라이브러리/플랫폼·dirty 소스 해시·모델 해시는 각 보고서에 기록된다. [잠긴 평가 자료](../experiments/locked/)와 [실측 결과](IMPLEMENTATION_RESULTS.md)를 함께 확인한다.
+전체 가중치·trace는 `artifacts/`에 남긴다. 검토용 테스트 로그와 작은 JSON은 훈련 후 다음처럼 저장한다.
+
+```bash
+python -m unittest -v > artifacts/tests.log 2>&1
+python -m evaluation.snapshot_v2 --test-log artifacts/tests.log
+```
+
+코드/라이브러리/플랫폼·dirty 소스 해시·모델 해시는 각 보고서에 기록된다. [잠긴 평가 자료](../experiments/locked/)와 [실측 결과](IMPLEMENTATION_RESULTS.md)를 함께 확인한다.

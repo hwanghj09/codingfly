@@ -13,7 +13,7 @@ NL_ENCODER_VERSION = "clocked-nl-pointer-bytes-v3.0"
 IR_SYNTAX_IDS = {
     value: index + 1
     for index, value in enumerate(IR_LITERALS)
-    if value and not value.isspace()
+    if value and not value.isspace() and value != b"UNKNOWN"
 }
 
 

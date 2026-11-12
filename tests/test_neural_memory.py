@@ -35,6 +35,10 @@ class NeuralMemoryTest(unittest.TestCase):
         first = brain.encoder.encode(b"LET alpha 123", 1, 0)
         second = brain.encoder.encode("LET 처음_보는_이름 -783".encode(), 1, 0)
         np.testing.assert_array_equal(first, second)
+        # UNKNOWN is an output transport marker, not a reserved IR identifier.
+        np.testing.assert_array_equal(
+            first, brain.encoder.encode(b"LET UNKNOWN -783", 1, 0)
+        )
         raw = "LET 처음_보는_이름 -783".encode()
         state = SequenceState([raw], CODE_VOCABULARY)
         self.assertEqual(
