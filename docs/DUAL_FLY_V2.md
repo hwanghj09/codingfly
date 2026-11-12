@@ -70,6 +70,8 @@ python dual_fly.py --goal '37 을 출력해'
 
 `--tests oracle.json`으로 사용자 오라클을 줄 수 있다. 예를 들어 `{"stdout":"37\n","variables":{}}`를 전달하면 실제 출력과 비교한다. 오라클 없이 자연어를 생성할 때의 `syntax_only`는 의미 정답 판정이 아니다. `--trace`로 두 모델의 실제 선택 근거를 출력한다. v1은 `--engine v1`과 최초 체크포인트/데이터 경로로 유지한다.
 
+실패 후 최대 3회 재생성하는 [P6 프로토콜](DUAL_FLY_P6.md)은 `--max-attempts 3 --tests oracle.json`으로 실행한다. 기본은 단회 생성이며, 재시도는 시냅스를 갱신하지 않는다. 피드백 없는 탐색과 약한/단계별 피드백을 같은 예산에서 비교하는 명령은 `python -m evaluation.retries`다.
+
 전체 가중치·trace는 `artifacts/`에 남긴다. 검토용 테스트 로그와 작은 JSON은 훈련 후 다음처럼 저장한다.
 
 ```bash

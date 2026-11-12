@@ -9,6 +9,7 @@ from flybrain.clock_encoder import ClockEncoder
 from flybrain.dynamics import Brain, DynamicsConfig
 from flybrain.graph import digest
 from flybrain.policy import fly_only
+from flybrain.retry_input import RetryDecoding, feedback_drive
 from flybrain.sequence_io import lexical_spans
 from flybrain.sequence_state import SequenceState
 from models.fly_code import Generation
@@ -92,7 +93,15 @@ class NeuralSequence:
         return count
 
     def generate(
-        self, source, *, max_actions=512, timeout=30.0, record=False, transmission=True
+        self,
+        source,
+        *,
+        max_actions=512,
+        timeout=30.0,
+        record=False,
+        transmission=True,
+        feedback=None,
+        decoding=None,
     ):
         if (
             not isinstance(source, str)
@@ -103,6 +112,11 @@ class NeuralSequence:
         ):
             raise ValueError("Invalid sequence input or bounds")
         state = SequenceState(source.encode().splitlines(), self.vocabulary)
+        decoding = decoding or RetryDecoding()
+        if not isinstance(decoding, RetryDecoding):
+            raise ValueError("Invalid decoding policy")
+        rng = np.random.default_rng(decoding.seed)
+        retry_drive, feedback_hash = feedback_drive(self.encoder, feedback)
         output, trace = b"", []
         status, deadline = "max_tokens", time.monotonic() + timeout
         with fly_only():
@@ -118,6 +132,8 @@ class NeuralSequence:
                 def read(stimulus, event):
                     if time.monotonic() > deadline:
                         raise TimeoutError("timeout")
+                    if retry_drive is not None:
+                        stimulus = stimulus + retry_drive
                     probabilities, _, activity = self.brain.forward(
                         stimulus, record=record, transmission=transmission
                     )
@@ -134,6 +150,7 @@ class NeuralSequence:
                                 **event,
                                 "chosen": int(np.argmax(probabilities)),
                                 "positive_score": float(probabilities[1]),
+                                "feedback_sha256": feedback_hash,
                                 "neural": activity,
                             }
                         )
@@ -150,7 +167,10 @@ class NeuralSequence:
                             )
                             for candidate in range(self.vocabulary.context_slots)
                         ]
-                        action = self.vocabulary.context_start + int(np.argmax(scores))
+                        ranking = np.argsort(-np.asarray(scores), kind="stable")
+                        action = self.vocabulary.context_start + int(
+                            ranking[decoding.context_rank]
+                        )
                     elif state.binding:
                         candidates = state.copy_candidates()
                         if not candidates:
@@ -176,9 +196,13 @@ class NeuralSequence:
                                     "partial": action,
                                 },
                             )
-                            action = self.vocabulary.radix * action + int(
-                                np.argmax(probabilities)
-                            )
+                            chosen = decoding.choose(probabilities, rng)
+                            if record:
+                                trace[-1]["chosen"] = chosen
+                            action = self.vocabulary.radix * action + chosen
+                    if record:
+                        trace[-1]["selected_action"] = action
+                        trace[-1]["context_rank"] = decoding.context_rank
                     emitted, termination = state.apply(action)
                     output += emitted
                 except TimeoutError:

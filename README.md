@@ -1,6 +1,8 @@
 # CodingFly: FlyWire 시냅스 학습과 Python 생성 실험
 
-[개발 로드맵](docs/DUAL_FLY_DEVELOPMENT_ROADMAP.md)에 따라 **Fly-Code를 수정하고 Fly-NL과 두 단계 연결을 추가했습니다.** 새 Fly-Code 평가에서는 조건문·반복문·함수 등을 포함한 24종 96개 프로그램이 모두 실행 정답이었고, 미학습 조합·경계 과제는 3/4개를 통과했습니다. Fly-NL→Fly-Code는 새로운 한국어 표현의 지원 과제 32개 중 24개를 맞혔으며, 미지원 요청 4개는 모두 불확실 결과로 처리했습니다. [결과·남은 오류](docs/IMPLEMENTATION_RESULTS.md) · [v2 구조·재현 절차](docs/DUAL_FLY_V2.md) · [IR v0.1](docs/IR_SPEC.md)
+[개발 로드맵](docs/DUAL_FLY_DEVELOPMENT_ROADMAP.md)에 따라 **Fly-Code, 독립 Fly-NL, 두 단계 연결과 제한된 재시도를 구현했습니다.** Fly-Code 평가에서는 조건문·반복문·함수 등을 포함한 24종 96개 프로그램이 모두 실행 정답이었고, 미학습 조합·경계 과제는 3/4개를 통과했습니다. Fly-NL→Fly-Code 단회 생성은 새로운 한국어 표현의 지원 과제 32개 중 24개를 맞혔으며, 미지원 요청 4개는 모두 불확실 결과로 처리했습니다. [결과·남은 오류](docs/IMPLEMENTATION_RESULTS.md) · [v2 구조·재현 절차](docs/DUAL_FLY_V2.md) · [P6 재시도](docs/DUAL_FLY_P6.md) · [IR v0.1](docs/IR_SPEC.md)
+
+P6의 별도 재시도 진단은 **이미 공개된 표현** 64개 지원 요청에서 단회 48/64, 최대 3회 피드백 없는 탐색 56/64, 약한 피드백 59/64, 단계별 감독 피드백 62/64였습니다. 각 조건의 5개 검색 시드에서 동일했고, 미지원 요청은 8/8개 모두 불확실 응답이었습니다. 이 결과는 새로운 숨긴 언어 평가나 시냅스 학습 향상이 아닙니다. 감독 조건은 정답 IR을 오류 책임 분류에만 사용하므로 일반 CLI 결과와 구분합니다.
 
 두 모델은 각각 원본 FlyWire 간선의 강도만 학습하는 독립적인 rate 신경 모델입니다. 출력 뉴런이 의도 문맥, 인자 복사 위치, IR/Python 토큰, 줄 이동과 블록 상태를 선택합니다. 외부 LLM·정규식 의도 분류·코드 템플릿으로 답을 보정하지 않습니다. 고정 입출력 부호화와 임시 레지스터를 사용하는 인공 계산 모델이며, 생물학적으로 검증된 초파리 뇌 시뮬레이터는 아닙니다.
 
@@ -12,6 +14,7 @@ python -m evaluation.toy --free-signs --output artifacts/toy-signed
 OPENBLAS_NUM_THREADS=1 python -m models.train_sequence --output artifacts/code-v2 --epochs 60 --polish-steps 160 --evaluate-test
 OPENBLAS_NUM_THREADS=1 python -m models.train_nl --output artifacts/nl-v2 --epochs 60 --polish-steps 160 --evaluate-test
 python -m evaluation.end_to_end
+python -m evaluation.retries
 python dual_fly.py --ir "PRINT 37"
 python dual_fly.py --goal '37 을 출력해'
 python dual_fly.py --goal '"count" 에 7 을 저장하고 "count" 를 출력해'
@@ -19,9 +22,11 @@ python dual_fly.py --goal '"count" 에 7 을 저장하고 "count" 를 출력해'
 
 새 신경 엔진은 Python 3.10 이상, NumPy, SciPy를 사용합니다. 위 재현 명령은 Linux 기준이며, **실행 채점**에는 `bubblewrap`과 `/usr/bin/python3`가 필요합니다. 격리 불가 환경에서는 `sandbox_unavailable`로 실패하고 호스트 실행으로 대체하지 않습니다. 기존 데모는 계속 표준 라이브러리만 사용합니다. 체크포인트는 명령 실행 시 `artifacts/`에 생성합니다.
 
-현재 자연어 범위는 정수·문자열 출력, 변수 대입·출력, 더한 뒤 출력, 항등/덧셈 함수, 끝을 제외한 정수 구간 출력입니다. **식별자는 큰따옴표로 감싸고 수치·조사는 공백으로 구분**합니다. 영어, 붙여 쓴 수치·조사, 임의의 복합 요구는 아직 검증 범위 밖입니다. 두 가지 새 표현에서 의도를 잘못 선택한 오류 8개를 그대로 보고합니다. 재시도(P6), 전체 언어 대조 실험(P7), 새 대시보드(P8)는 남아 있습니다.
+현재 자연어 범위는 정수·문자열 출력, 변수 대입·출력, 더한 뒤 출력, 항등/덧셈 함수, 끝을 제외한 정수 구간 출력입니다. **식별자는 큰따옴표로 감싸고 수치·조사는 공백으로 구분**합니다. 영어, 붙여 쓴 수치·조사, 임의의 복합 요구는 아직 검증 범위 밖입니다. 단회 생성의 의미 오류 8개는 모델 재학습 없이 유지되며, 재시도에서 해결되지 않은 요청도 결과에 남깁니다. 실패 보상에 의한 시냅스 재학습, 전체 언어 대조 실험(P7), 새 대시보드(P8)는 남아 있습니다.
 
 `--trace`는 각 선택의 뉴런/가중치 근거를, `--tests oracle.json`은 격리 실행 채점을 제공합니다. 오라클 없이 자연어를 생성하면 `syntax_only`로 표시합니다. 숨긴 평가를 연 run은 재학습·재채점을 막으며, 후속 모델 개발에는 새 평가 버전을 사용합니다. v1 신경 실험은 `--engine v1`과 기존 체크포인트로 재현할 수 있습니다.
+
+`--max-attempts 3 --tests oracle.json`은 실패 시 최대 두 번 더 신경 생성을 수행합니다. 기본은 1회이며, 성공·불확실 응답·격리 인프라 오류에서 즉시 종료합니다. [P6 문서](docs/DUAL_FLY_P6.md)에 오라클 예제, 피드백 모드, 한계와 재현 명령이 있습니다.
 
 ## Legacy: 초파리 뇌지도에 Python 문법 가르치기
 

@@ -10,6 +10,11 @@ from flybrain.graph import Graph, digest
 from ir.tokens import spec_hash
 from evaluation.curriculum_v2 import DATA_VERSION, code_cases_v2, composition_cases
 from evaluation.nl_data import NL_DATA_VERSION, nl_cases
+from evaluation.retries import (
+    DATA_VERSION as RETRY_DATA_VERSION,
+    retry_cases,
+    run as run_retries_study,
+)
 from models.train_sequence import fit, polish_saved
 
 
@@ -22,6 +27,7 @@ class HoldoutTest(unittest.TestCase):
         for filename, splits, kind in (
             ("code-v2.json", code_cases_v2(), DATA_VERSION),
             ("nl-v2.json", nl_cases(), NL_DATA_VERSION),
+            ("retry-v1.json", retry_cases(), RETRY_DATA_VERSION),
             (
                 "compositions-v2.json",
                 {"composition": composition_cases()},
@@ -52,6 +58,8 @@ class HoldoutTest(unittest.TestCase):
             (path / "report.json").write_text('{"test_evaluated":true}')
             with self.assertRaisesRegex(ValueError, "Cannot tune"):
                 polish_saved(path)
+            with self.assertRaisesRegex(ValueError, "already opened"):
+                run_retries_study(None, None, path)
 
     def test_committed_evaluation_locks_match_current_generators(self):
         for filename, splits, graph, ir_hash, kind in (

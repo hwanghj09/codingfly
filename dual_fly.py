@@ -12,6 +12,7 @@ from ir.grammar import validate
 from ir.tokens import IR_VERSION, spec_hash
 from models.fly_code import FlyCode
 from models.pipeline import FlyPipeline, load_model
+from models.retry import run_retries
 
 
 ROOT = Path(__file__).resolve().parent
@@ -43,9 +44,23 @@ def main():
     )
     parser.add_argument("--trace", action="store_true")
     parser.add_argument("--max-actions", type=int, default=512)
+    parser.add_argument(
+        "--max-attempts",
+        type=int,
+        default=1,
+        help="1..3 attempts; retries require --goal and --tests",
+    )
+    parser.add_argument(
+        "--feedback-mode", choices=["weak", "supervised", "resample"], default="weak"
+    )
+    parser.add_argument("--retry-seed", type=int, default=0)
     args = parser.parse_args()
     engine = args.engine or ("v1" if args.checkpoint or args.dataset else "v2")
     try:
+        if not 1 <= args.max_attempts <= 3:
+            raise ValueError("--max-attempts must be between 1 and 3")
+        if args.max_attempts > 1 and (args.goal is None or args.tests is None):
+            raise ValueError("Retries require --goal and an explicit --tests oracle")
         verify_generation_tree()
         graph = Graph.from_csv(args.graph)
         expected = json.loads(args.tests.read_text()) if args.tests else None
@@ -62,15 +77,25 @@ def main():
                 checkpoint=args.checkpoint,
                 dataset=args.dataset,
             )
-            result = FlyPipeline(a, b).run(
+            result = run_retries(
+                FlyPipeline(a, b),
                 args.goal,
                 expected=expected,
                 record=args.trace,
                 max_actions=args.max_actions,
+                max_attempts=args.max_attempts,
+                feedback_mode=args.feedback_mode,
+                seed=args.retry_seed,
             )
             print(
                 json.dumps(
-                    {"mode": "fly-only", "stage": "P4/P5-experiment", **result},
+                    {
+                        "mode": "fly-only",
+                        "stage": "P6-retry"
+                        if args.max_attempts > 1
+                        else "P4/P5-experiment",
+                        **result,
+                    },
                     ensure_ascii=False,
                 )
             )

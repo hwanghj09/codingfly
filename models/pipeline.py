@@ -47,8 +47,31 @@ class FlyPipeline:
             raise ValueError("Pipeline requires independent A/B roles and synapses")
         self.fly_nl, self.fly_code = fly_nl, fly_code
 
-    def run(self, goal, *, expected=None, record=False, max_actions=512):
-        first = self.fly_nl.generate(goal, record=record, max_actions=max_actions)
+    def run(
+        self,
+        goal,
+        *,
+        expected=None,
+        record=False,
+        max_actions=512,
+        nl_options=None,
+        code_options=None,
+    ):
+        first = self.fly_nl.generate(
+            goal, record=record, max_actions=max_actions, **(nl_options or {})
+        )
+        return self.complete(
+            first,
+            expected=expected,
+            record=record,
+            max_actions=max_actions,
+            code_options=code_options,
+        )
+
+    def complete(
+        self, first, *, expected=None, record=False, max_actions=512, code_options=None
+    ):
+        """Validate an actual A generation, optionally reusing it for B-only retries."""
         result = {
             "trace_id": str(uuid.uuid4()),
             "status": "invalid_ir",
@@ -71,7 +94,7 @@ class FlyPipeline:
             result["error"] = str(error)
             return result
         second = self.fly_code.generate(
-            first.code, record=record, max_actions=max_actions
+            first.code, record=record, max_actions=max_actions, **(code_options or {})
         )
         result.update(code=second.code, fly_code=asdict(second))
         if second.status != "eos":
