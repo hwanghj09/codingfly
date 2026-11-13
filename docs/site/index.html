@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f8fa" />
+    <meta
+      name="description"
+      content="학습된 Fly-NL과 Fly-Code로 자연어를 Python으로 만들고, 브라우저에서 바로 실행해 보세요."
+    />
+    <title>CodingFly — 학습된 모델 실험실</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <header class="header shell">
+      <a class="brand" href="./" aria-label="CodingFly 홈"
+        ><span class="brand-mark" aria-hidden="true">⌘</span> Coding<span
+          >Fly</span
+        ><span class="brand-tag">PLAYGROUND</span></a
+      >
+      <nav aria-label="주요 메뉴">
+        <a
+          href="https://github.com/hwanghj09/codingfly"
+          target="_blank"
+          rel="noreferrer"
+          >GitHub <span aria-hidden="true">↗</span></a
+        ><span class="local-badge"><i></i> 브라우저에서 실행</span>
+      </nav>
+    </header>
+    <main class="shell">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">TRAINED. READY. YOUR TURN.</p>
+          <h1>배운 파리에게<br />코드를 부탁해 보세요<span>.</span></h1>
+          <p class="intro-copy">
+            자연어를 이해하는 Fly-NL, Python을 쓰는 Fly-Code.<br />학습된 두
+            모델의 결과를 지금 바로 확인하세요.
+          </p>
+        </div>
+        <div class="model-card">
+          <div class="model-orbit" aria-hidden="true">
+            <span>A</span><b>→</b><span>B</span>
+          </div>
+          <p>학습 완료 모델</p>
+          <strong>Fly-NL v3.2 <span>+</span> Fly-Code v2</strong
+          ><small>원본 FlyWire 연결망 · 독립된 두 신경 모델</small>
+        </div>
+      </section>
+      <section class="playground" aria-label="모델 실험실">
+        <div class="workspace-top">
+          <div class="workspace-title">
+            <span class="status-dot" id="model-dot"></span
+            ><strong>모델 실험실</strong
+            ><span id="model-state" role="status" aria-live="polite"
+              >실행 환경 준비 중</span
+            >
+          </div>
+          <span class="privacy-note">입력은 이 브라우저 안에서 처리됩니다</span>
+        </div>
+        <div class="columns">
+          <section class="request-panel" aria-labelledby="request-heading">
+            <div class="section-label">
+              <span>01</span>
+              <h2 id="request-heading">무엇을 만들까요?</h2>
+            </div>
+            <form id="goal-form">
+              <label for="goal">자연어 요청</label>
+              <textarea id="goal" rows="6" maxlength="600" spellcheck="false">
+변수 "합계" 에 -13 를 저장한 뒤 4 를 더해서 출력해</textarea
+              >
+              <p class="input-hint">
+                변수·함수 이름은 <code>"큰따옴표"</code>로, 숫자와 조사는 띄어
+                써 주세요.
+              </p>
+              <div class="examples-label">예시로 시작하기</div>
+              <div class="examples" id="examples" aria-label="요청 예시"></div>
+              <div class="generate-row">
+                <button id="generate" class="primary" disabled type="submit">
+                  <span id="generate-label">모델 불러오는 중…</span
+                  ><span aria-hidden="true">↗</span></button
+                ><button
+                  id="cancel-generation"
+                  class="text-button"
+                  type="button"
+                  hidden
+                >
+                  중단
+                </button>
+              </div>
+            </form>
+            <div class="loading-note" id="loading-note">
+              <span class="spinner" aria-hidden="true"></span
+              ><span id="loading-message"
+                >첫 실행에는 Python과 모델을 내려받습니다.</span
+              >
+            </div>
+            <p
+              id="generation-message"
+              class="message"
+              role="status"
+              aria-live="polite"
+            ></p>
+            <button id="reload-model" class="text-button" type="button" hidden>
+              모델 다시 불러오기 ↻
+            </button>
+            <details class="support">
+              <summary>어떤 요청을 테스트할 수 있나요?</summary>
+              <p>
+                정수·문자열 출력, 변수 대입, 덧셈 후 출력, 항등·덧셈 함수, 끝을
+                제외한 정수 구간 반복을 지원합니다. 자유로운 복합 지시·영어·붙여
+                쓴 숫자/조사는 아직 검증 범위 밖입니다.
+              </p>
+              <p>
+                실제 학습된 모델이 매번 새로 추론합니다. 답안 검색이나 외부 언어
+                모델을 사용하지 않습니다.
+              </p>
+            </details>
+          </section>
+          <section class="result-panel" aria-labelledby="result-heading">
+            <div class="section-label">
+              <span>02</span>
+              <h2 id="result-heading">만들어진 Python</h2>
+              <span id="syntax-badge" class="badge" hidden>구문 확인</span>
+            </div>
+            <div class="code-toolbar">
+              <span><i class="python-dot"></i> generated.py</span
+              ><button
+                id="copy-code"
+                class="text-button"
+                type="button"
+                disabled
+              >
+                복사
+              </button>
+            </div>
+            <pre
+              id="python-code"
+              class="code empty"
+              tabindex="0"
+              aria-label="생성된 Python 코드"
+            >
+생성한 코드가 여기에 표시됩니다.</pre
+            >
+            <details class="ir-details">
+              <summary>
+                중간 의사코드 보기 <span>Fly-NL → Fly-Code</span>
+              </summary>
+              <pre id="ir-code" class="code ir-code" tabindex="0">
+아직 생성된 의사코드가 없습니다.</pre
+              >
+            </details>
+            <div class="execution-head">
+              <div class="section-label">
+                <span>03</span>
+                <h2>직접 실행하기</h2>
+              </div>
+              <button id="run" type="button" class="run-button" disabled>
+                ▶ Python 실행</button
+              ><button id="stop-run" type="button" class="text-button" hidden>
+                중단
+              </button>
+            </div>
+            <div id="function-fields" class="function-fields" hidden>
+              <label for="function-name">호출할 함수</label
+              ><select id="function-name"></select
+              ><label for="function-args"
+                >함수에 넣을 값 <span>JSON 배열</span></label
+              ><input
+                id="function-args"
+                type="text"
+                value="[]"
+                spellcheck="false"
+                placeholder="[7, 8]"
+              />
+            </div>
+            <div class="console" aria-live="polite">
+              <div class="console-label">
+                <span>실행 결과</span
+                ><span id="execution-state">실행 대기</span>
+              </div>
+              <pre id="output">코드를 만든 뒤 실행해 보세요.</pre>
+              <div id="variables" hidden></div>
+              <div id="return-value" hidden></div>
+            </div>
+            <details class="compare-details">
+              <summary>기대 출력과 비교하기 <span>선택 사항</span></summary>
+              <label class="check-label"
+                ><input id="compare-enabled" type="checkbox" /> 기대 출력 비교
+                사용</label
+              ><label for="expected-output">기대하는 표준 출력</label
+              ><textarea
+                id="expected-output"
+                rows="2"
+                spellcheck="false"
+                placeholder="실행 결과와 비교할 텍스트를 입력하세요"
+              ></textarea>
+              <p class="input-hint">
+                줄바꿈까지 비교합니다. 기대 출력은 모델에 전달되지 않습니다.
+              </p>
+            </details>
+            <p id="comparison" class="message" role="status"></p>
+          </section>
+        </div>
+        <div class="workspace-bottom">
+          <span><i></i> 학습된 체크포인트 직접 추론</span
+          ><span id="trace-label">Fly-NL → IR → Fly-Code → Python</span>
+        </div>
+      </section>
+      <section class="facts" aria-label="모델 정보">
+        <div><b>2</b><span>독립 신경 모델</span></div>
+        <div><b>2,048</b><span>모델당 뉴런</span></div>
+        <div><b>96 / 96</b><span>제한된 한국어 8종 실행 평가</span></div>
+        <a
+          href="https://github.com/hwanghj09/codingfly/blob/main/docs/IMPLEMENTATION_RESULTS.md"
+          target="_blank"
+          rel="noreferrer"
+          >평가 범위와 결과 보기 ↗</a
+        >
+      </section>
+    </main>
+    <footer class="shell">
+      <span
+        >CodingFly <span class="footer-separator">/</span> FlyWire 기반 시냅스
+        학습 실험</span
+      ><span
+        >브라우저 실행은 서버의 OS 격리 채점과 별개입니다.
+        <a href="./LICENSES.txt">데이터·라이선스</a></span
+      >
+    </footer>
+  </body>
+</html>

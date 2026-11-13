@@ -1,0 +1,1246 @@
+{
+  "sha256": "4cf70ca158af77ed291fc77417a147d1ab09a0df7ca899324bc54332b6816669",
+  "payload": {
+    "version": 1,
+    "seed": 1729,
+    "kind": "first-byte-with-unseen-noise-v1",
+    "graph": {
+      "source_sha256": "17894d8c8f1328a36a635e6a57a903bea8a993c8c2e56a3284534696a002ffe3",
+      "graph_sha256": "09a6250603d905720c11d56d54b209fadc0a64606dcdb77009492f986d053cd1",
+      "source_version": "FlyWire Codex FAFB v783 (repository README provenance)",
+      "selection": "upstream first 30000 rows; syn_count >= 5; self edges excluded upstream; BFS from 720575940624547622; no further filtering",
+      "node_ids": [
+        "720575940606123698",
+        "720575940606850434",
+        "720575940607177739",
+        "720575940608184156",
+        "720575940608277852",
+        "720575940609399506",
+        "720575940610841074",
+        "720575940610847842",
+        "720575940610921642",
+        "720575940611591829",
+        "720575940611644825",
+        "720575940612879853",
+        "720575940613152938",
+        "720575940613622312",
+        "720575940613732271",
+        "720575940614252967",
+        "720575940614263719",
+        "720575940614326439",
+        "720575940614522043",
+        "720575940614549650",
+        "720575940614825026",
+        "720575940615527995",
+        "720575940615846237",
+        "720575940616089995",
+        "720575940617036352",
+        "720575940617165661",
+        "720575940617172573",
+        "720575940617368532",
+        "720575940617713206",
+        "720575940618036765",
+        "720575940618464379",
+        "720575940620475630",
+        "720575940620955357",
+        "720575940620975696",
+        "720575940621149812",
+        "720575940621577152",
+        "720575940622666933",
+        "720575940622735615",
+        "720575940623119871",
+        "720575940623738807",
+        "720575940624036656",
+        "720575940624547622",
+        "720575940624590316",
+        "720575940625030233",
+        "720575940626217341",
+        "720575940626468629",
+        "720575940627594568",
+        "720575940627954375",
+        "720575940628641847",
+        "720575940628734376",
+        "720575940628896168",
+        "720575940629981440",
+        "720575940630496374",
+        "720575940630862287",
+        "720575940631571247",
+        "720575940632351457",
+        "720575940632950241",
+        "720575940634209376",
+        "720575940634868472",
+        "720575940635012238",
+        "720575940636302711",
+        "720575940643489902",
+        "720575940645059107",
+        "720575940647147908"
+      ],
+      "nodes": 64,
+      "edges": 168,
+      "syn_count_total": 4458,
+      "duplicates": "sum same direction",
+      "self_edges": "retain if present"
+    },
+    "ir_sha256": "55d93102940c7c806e47020a7e30b62adf320b182a971d6572807dc8f1f7b16a",
+    "splits": {
+      "train": [
+        {
+          "id": "byte-65-1",
+          "family": "noise-1",
+          "source": "4101",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-10",
+          "family": "noise-10",
+          "source": "410a",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-11",
+          "family": "noise-11",
+          "source": "410b",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-12",
+          "family": "noise-12",
+          "source": "410c",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-13",
+          "family": "noise-13",
+          "source": "410d",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-14",
+          "family": "noise-14",
+          "source": "410e",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-16",
+          "family": "noise-16",
+          "source": "4110",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-17",
+          "family": "noise-17",
+          "source": "4111",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-18",
+          "family": "noise-18",
+          "source": "4112",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-2",
+          "family": "noise-2",
+          "source": "4102",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-21",
+          "family": "noise-21",
+          "source": "4115",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-22",
+          "family": "noise-22",
+          "source": "4116",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-23",
+          "family": "noise-23",
+          "source": "4117",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-24",
+          "family": "noise-24",
+          "source": "4118",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-26",
+          "family": "noise-26",
+          "source": "411a",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-27",
+          "family": "noise-27",
+          "source": "411b",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-28",
+          "family": "noise-28",
+          "source": "411c",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-29",
+          "family": "noise-29",
+          "source": "411d",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-3",
+          "family": "noise-3",
+          "source": "4103",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-30",
+          "family": "noise-30",
+          "source": "411e",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-31",
+          "family": "noise-31",
+          "source": "411f",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-34",
+          "family": "noise-34",
+          "source": "4122",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-37",
+          "family": "noise-37",
+          "source": "4125",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-41",
+          "family": "noise-41",
+          "source": "4129",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-43",
+          "family": "noise-43",
+          "source": "412b",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-44",
+          "family": "noise-44",
+          "source": "412c",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-45",
+          "family": "noise-45",
+          "source": "412d",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-5",
+          "family": "noise-5",
+          "source": "4105",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-6",
+          "family": "noise-6",
+          "source": "4106",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-7",
+          "family": "noise-7",
+          "source": "4107",
+          "target": "0"
+        },
+        {
+          "id": "byte-66-1",
+          "family": "noise-1",
+          "source": "4201",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-10",
+          "family": "noise-10",
+          "source": "420a",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-11",
+          "family": "noise-11",
+          "source": "420b",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-12",
+          "family": "noise-12",
+          "source": "420c",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-13",
+          "family": "noise-13",
+          "source": "420d",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-14",
+          "family": "noise-14",
+          "source": "420e",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-16",
+          "family": "noise-16",
+          "source": "4210",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-17",
+          "family": "noise-17",
+          "source": "4211",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-18",
+          "family": "noise-18",
+          "source": "4212",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-2",
+          "family": "noise-2",
+          "source": "4202",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-21",
+          "family": "noise-21",
+          "source": "4215",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-22",
+          "family": "noise-22",
+          "source": "4216",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-23",
+          "family": "noise-23",
+          "source": "4217",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-24",
+          "family": "noise-24",
+          "source": "4218",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-26",
+          "family": "noise-26",
+          "source": "421a",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-27",
+          "family": "noise-27",
+          "source": "421b",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-28",
+          "family": "noise-28",
+          "source": "421c",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-29",
+          "family": "noise-29",
+          "source": "421d",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-3",
+          "family": "noise-3",
+          "source": "4203",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-30",
+          "family": "noise-30",
+          "source": "421e",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-31",
+          "family": "noise-31",
+          "source": "421f",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-34",
+          "family": "noise-34",
+          "source": "4222",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-37",
+          "family": "noise-37",
+          "source": "4225",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-41",
+          "family": "noise-41",
+          "source": "4229",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-43",
+          "family": "noise-43",
+          "source": "422b",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-44",
+          "family": "noise-44",
+          "source": "422c",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-45",
+          "family": "noise-45",
+          "source": "422d",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-5",
+          "family": "noise-5",
+          "source": "4205",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-6",
+          "family": "noise-6",
+          "source": "4206",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-7",
+          "family": "noise-7",
+          "source": "4207",
+          "target": "1"
+        },
+        {
+          "id": "byte-67-1",
+          "family": "noise-1",
+          "source": "4301",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-10",
+          "family": "noise-10",
+          "source": "430a",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-11",
+          "family": "noise-11",
+          "source": "430b",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-12",
+          "family": "noise-12",
+          "source": "430c",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-13",
+          "family": "noise-13",
+          "source": "430d",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-14",
+          "family": "noise-14",
+          "source": "430e",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-16",
+          "family": "noise-16",
+          "source": "4310",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-17",
+          "family": "noise-17",
+          "source": "4311",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-18",
+          "family": "noise-18",
+          "source": "4312",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-2",
+          "family": "noise-2",
+          "source": "4302",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-21",
+          "family": "noise-21",
+          "source": "4315",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-22",
+          "family": "noise-22",
+          "source": "4316",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-23",
+          "family": "noise-23",
+          "source": "4317",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-24",
+          "family": "noise-24",
+          "source": "4318",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-26",
+          "family": "noise-26",
+          "source": "431a",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-27",
+          "family": "noise-27",
+          "source": "431b",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-28",
+          "family": "noise-28",
+          "source": "431c",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-29",
+          "family": "noise-29",
+          "source": "431d",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-3",
+          "family": "noise-3",
+          "source": "4303",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-30",
+          "family": "noise-30",
+          "source": "431e",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-31",
+          "family": "noise-31",
+          "source": "431f",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-34",
+          "family": "noise-34",
+          "source": "4322",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-37",
+          "family": "noise-37",
+          "source": "4325",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-41",
+          "family": "noise-41",
+          "source": "4329",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-43",
+          "family": "noise-43",
+          "source": "432b",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-44",
+          "family": "noise-44",
+          "source": "432c",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-45",
+          "family": "noise-45",
+          "source": "432d",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-5",
+          "family": "noise-5",
+          "source": "4305",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-6",
+          "family": "noise-6",
+          "source": "4306",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-7",
+          "family": "noise-7",
+          "source": "4307",
+          "target": "2"
+        },
+        {
+          "id": "byte-68-1",
+          "family": "noise-1",
+          "source": "4401",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-10",
+          "family": "noise-10",
+          "source": "440a",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-11",
+          "family": "noise-11",
+          "source": "440b",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-12",
+          "family": "noise-12",
+          "source": "440c",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-13",
+          "family": "noise-13",
+          "source": "440d",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-14",
+          "family": "noise-14",
+          "source": "440e",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-16",
+          "family": "noise-16",
+          "source": "4410",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-17",
+          "family": "noise-17",
+          "source": "4411",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-18",
+          "family": "noise-18",
+          "source": "4412",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-2",
+          "family": "noise-2",
+          "source": "4402",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-21",
+          "family": "noise-21",
+          "source": "4415",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-22",
+          "family": "noise-22",
+          "source": "4416",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-23",
+          "family": "noise-23",
+          "source": "4417",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-24",
+          "family": "noise-24",
+          "source": "4418",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-26",
+          "family": "noise-26",
+          "source": "441a",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-27",
+          "family": "noise-27",
+          "source": "441b",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-28",
+          "family": "noise-28",
+          "source": "441c",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-29",
+          "family": "noise-29",
+          "source": "441d",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-3",
+          "family": "noise-3",
+          "source": "4403",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-30",
+          "family": "noise-30",
+          "source": "441e",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-31",
+          "family": "noise-31",
+          "source": "441f",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-34",
+          "family": "noise-34",
+          "source": "4422",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-37",
+          "family": "noise-37",
+          "source": "4425",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-41",
+          "family": "noise-41",
+          "source": "4429",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-43",
+          "family": "noise-43",
+          "source": "442b",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-44",
+          "family": "noise-44",
+          "source": "442c",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-45",
+          "family": "noise-45",
+          "source": "442d",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-5",
+          "family": "noise-5",
+          "source": "4405",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-6",
+          "family": "noise-6",
+          "source": "4406",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-7",
+          "family": "noise-7",
+          "source": "4407",
+          "target": "3"
+        }
+      ],
+      "validation": [
+        {
+          "id": "byte-65-0",
+          "family": "noise-0",
+          "source": "4100",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-15",
+          "family": "noise-15",
+          "source": "410f",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-25",
+          "family": "noise-25",
+          "source": "4119",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-33",
+          "family": "noise-33",
+          "source": "4121",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-36",
+          "family": "noise-36",
+          "source": "4124",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-39",
+          "family": "noise-39",
+          "source": "4127",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-4",
+          "family": "noise-4",
+          "source": "4104",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-40",
+          "family": "noise-40",
+          "source": "4128",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-8",
+          "family": "noise-8",
+          "source": "4108",
+          "target": "0"
+        },
+        {
+          "id": "byte-66-0",
+          "family": "noise-0",
+          "source": "4200",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-15",
+          "family": "noise-15",
+          "source": "420f",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-25",
+          "family": "noise-25",
+          "source": "4219",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-33",
+          "family": "noise-33",
+          "source": "4221",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-36",
+          "family": "noise-36",
+          "source": "4224",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-39",
+          "family": "noise-39",
+          "source": "4227",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-4",
+          "family": "noise-4",
+          "source": "4204",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-40",
+          "family": "noise-40",
+          "source": "4228",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-8",
+          "family": "noise-8",
+          "source": "4208",
+          "target": "1"
+        },
+        {
+          "id": "byte-67-0",
+          "family": "noise-0",
+          "source": "4300",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-15",
+          "family": "noise-15",
+          "source": "430f",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-25",
+          "family": "noise-25",
+          "source": "4319",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-33",
+          "family": "noise-33",
+          "source": "4321",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-36",
+          "family": "noise-36",
+          "source": "4324",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-39",
+          "family": "noise-39",
+          "source": "4327",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-4",
+          "family": "noise-4",
+          "source": "4304",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-40",
+          "family": "noise-40",
+          "source": "4328",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-8",
+          "family": "noise-8",
+          "source": "4308",
+          "target": "2"
+        },
+        {
+          "id": "byte-68-0",
+          "family": "noise-0",
+          "source": "4400",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-15",
+          "family": "noise-15",
+          "source": "440f",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-25",
+          "family": "noise-25",
+          "source": "4419",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-33",
+          "family": "noise-33",
+          "source": "4421",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-36",
+          "family": "noise-36",
+          "source": "4424",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-39",
+          "family": "noise-39",
+          "source": "4427",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-4",
+          "family": "noise-4",
+          "source": "4404",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-40",
+          "family": "noise-40",
+          "source": "4428",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-8",
+          "family": "noise-8",
+          "source": "4408",
+          "target": "3"
+        }
+      ],
+      "test": [
+        {
+          "id": "byte-65-19",
+          "family": "noise-19",
+          "source": "4113",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-20",
+          "family": "noise-20",
+          "source": "4114",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-32",
+          "family": "noise-32",
+          "source": "4120",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-35",
+          "family": "noise-35",
+          "source": "4123",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-38",
+          "family": "noise-38",
+          "source": "4126",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-42",
+          "family": "noise-42",
+          "source": "412a",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-46",
+          "family": "noise-46",
+          "source": "412e",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-47",
+          "family": "noise-47",
+          "source": "412f",
+          "target": "0"
+        },
+        {
+          "id": "byte-65-9",
+          "family": "noise-9",
+          "source": "4109",
+          "target": "0"
+        },
+        {
+          "id": "byte-66-19",
+          "family": "noise-19",
+          "source": "4213",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-20",
+          "family": "noise-20",
+          "source": "4214",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-32",
+          "family": "noise-32",
+          "source": "4220",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-35",
+          "family": "noise-35",
+          "source": "4223",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-38",
+          "family": "noise-38",
+          "source": "4226",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-42",
+          "family": "noise-42",
+          "source": "422a",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-46",
+          "family": "noise-46",
+          "source": "422e",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-47",
+          "family": "noise-47",
+          "source": "422f",
+          "target": "1"
+        },
+        {
+          "id": "byte-66-9",
+          "family": "noise-9",
+          "source": "4209",
+          "target": "1"
+        },
+        {
+          "id": "byte-67-19",
+          "family": "noise-19",
+          "source": "4313",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-20",
+          "family": "noise-20",
+          "source": "4314",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-32",
+          "family": "noise-32",
+          "source": "4320",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-35",
+          "family": "noise-35",
+          "source": "4323",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-38",
+          "family": "noise-38",
+          "source": "4326",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-42",
+          "family": "noise-42",
+          "source": "432a",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-46",
+          "family": "noise-46",
+          "source": "432e",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-47",
+          "family": "noise-47",
+          "source": "432f",
+          "target": "2"
+        },
+        {
+          "id": "byte-67-9",
+          "family": "noise-9",
+          "source": "4309",
+          "target": "2"
+        },
+        {
+          "id": "byte-68-19",
+          "family": "noise-19",
+          "source": "4413",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-20",
+          "family": "noise-20",
+          "source": "4414",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-32",
+          "family": "noise-32",
+          "source": "4420",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-35",
+          "family": "noise-35",
+          "source": "4423",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-38",
+          "family": "noise-38",
+          "source": "4426",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-42",
+          "family": "noise-42",
+          "source": "442a",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-46",
+          "family": "noise-46",
+          "source": "442e",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-47",
+          "family": "noise-47",
+          "source": "442f",
+          "target": "3"
+        },
+        {
+          "id": "byte-68-9",
+          "family": "noise-9",
+          "source": "4409",
+          "target": "3"
+        }
+      ]
+    }
+  }
+}

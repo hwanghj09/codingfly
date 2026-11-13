@@ -1,3 +1,5 @@
+"""Legacy hybrid learning dashboard. The fly-only experiment uses dual_fly.py."""
+
 import argparse
 import hashlib
 import json
@@ -268,7 +270,7 @@ def serve(lab):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="초파리 Python 학습 대시보드")
+    parser = argparse.ArgumentParser(description="Legacy 초파리 Python 학습 대시보드")
     parser.add_argument("--checkpoint", type=Path, default=HERE / "lab_state_v2.json")
     args = parser.parse_args()
     serve(Experiment(args.checkpoint))

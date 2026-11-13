@@ -1,0 +1,3 @@
+# Legacy remains standard-library only; the sparse neural engine uses NumPy/SciPy.
+numpy>=1.24,<3
+scipy>=1.10,<2
