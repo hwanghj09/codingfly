@@ -47,8 +47,8 @@ class Brain:
         self.graph, self.seed = graph, seed
         self.config = config or DynamicsConfig()
         self.input_nodes, self.output_nodes = graph.groups(output_count)
-        self.pre = np.array([a for a, _, _ in graph.edges], dtype=np.int64)
-        self.post = np.array([b for _, b, _ in graph.edges], dtype=np.int64)
+        self.pre = np.array([a for a, _, _ in graph.edges], dtype=np.intp)
+        self.post = np.array([b for _, b, _ in graph.edges], dtype=np.intp)
         counts = np.array([c for _, _, c in graph.edges], dtype=np.float64)
         incoming = np.bincount(self.post, weights=counts, minlength=len(graph.node_ids))
         rng = np.random.default_rng(seed)

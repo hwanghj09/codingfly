@@ -137,7 +137,7 @@ class ClockEncoder:
         clock_key = self.mix(np.array([clock], dtype=np.uint64))[0]
         numbers = self.mix(features[:, None] ^ offsets[None, :] ^ clock_key)
         indices = (
-            ((numbers >> np.uint64(1)) % len(self.input_nodes)).ravel().astype(np.int64)
+            ((numbers >> np.uint64(1)) % len(self.input_nodes)).ravel().astype(np.intp)
         )
         signs = (numbers & np.uint64(1)).astype(np.int64).ravel() * 2 - 1
         weights = np.ones(len(features)) if weights is None else np.asarray(weights)

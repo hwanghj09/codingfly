@@ -7,13 +7,19 @@ from pathlib import Path
 import uuid
 import numpy as np
 
-from evaluation.oracles import grade_code
 from flybrain.graph import digest
 from ir.grammar import InvalidIR, validate
 from ir.tokens import IR_VERSION, spec_hash
 from models.fly_code_v2 import CODE_VOCABULARY
 from models.fly_nl import NL_VOCABULARY
 from models.neural_sequence import NeuralSequence
+
+
+def grade_code(code, expected):
+    # Browser inference has no OS executor. Import it only for native grading.
+    from evaluation.oracles import grade_code as grade
+
+    return grade(code, expected)
 
 
 def load_model(directory, graph, *, role, checkpoint=None, dataset=None):
