@@ -37,16 +37,21 @@ jobs:
           key: pyodide-0.27.7-numpy-2.0.2-v1
       - name: Build and verify released model bundle
         run: python web/build.py --output _site
+      - name: Check the tracked Pages source export
+        run: python web/build.py --check-source
       - name: Install Chromium for real browser verification
         run: python -m playwright install --with-deps chromium
       - name: Verify browser inference, execution and mobile layout
         run: python web/test_browser.py --site _site --report artifacts/browser-results.json
+      - name: Verify the existing branch-based Pages entry
+        run: python web/test_browser.py --site . --quick --report artifacts/browser-source-results.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: browser-evidence
           path: |
             artifacts/browser-results.json
+            artifacts/browser-source-results.json
             artifacts/web-*.png
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -57,17 +62,28 @@ jobs:
     needs: build
     runs-on: ubuntu-22.04
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.legacy.outputs.page_url }}
     steps:
-      - name: Use GitHub Actions as the Pages source
+      - uses: actions/checkout@v4
+      - name: Inspect the existing Pages source
+        id: source
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh api --method PUT repos/${{ github.repository }}/pages -f build_type=workflow
+        run: echo "type=$(gh api repos/${{ github.repository }}/pages --jq .build_type)" >> "$GITHUB_OUTPUT"
       - uses: actions/configure-pages@v5
+        if: steps.source.outputs.type == 'workflow'
       - name: Deploy verified trained playground
         id: deployment
+        if: steps.source.outputs.type == 'workflow'
         uses: actions/deploy-pages@v4
+      - name: Publish the verified main branch source
+        id: legacy
+        if: steps.source.outputs.type == 'legacy'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python web/deploy_legacy.py

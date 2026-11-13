@@ -177,7 +177,15 @@ def run(site, url, report_path, *, quick=False, executable=None):
                 path=str(report_path.parent / "web-mobile.png"), full_page=True
             )
             result["mobile"] = True
-            assert not result["external_requests"], result["external_requests"]
+            runtime_base = manifest.get("runtime_base", "./runtime/")
+            allowed_runtime = "https://cdn.jsdelivr.net/pyodide/v0.27.7/full/"
+            unexpected = [
+                request
+                for request in result["external_requests"]
+                if runtime_base != allowed_runtime
+                or not request.startswith(allowed_runtime)
+            ]
+            assert not unexpected, unexpected
             assert not result["console_errors"], result["console_errors"]
             result.update(
                 passed=True, browser=browser.version, models=manifest["models"]

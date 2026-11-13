@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "name": "Fly-NL v3.2 + Fly-Code v2",
+  "graph_sha256": "1a5b590a19ff94b853ad0abcbca589a536369f2b868f7e37536dfcfa8e2c1564",
+  "graph_source_sha256": "aeb787e1d0d2361581fb89c3589d4623b7203cc25df302cf4282937c34a3e135",
+  "ir_version": "0.1",
+  "ir_sha256": "62205d2728091cea58f08875bc1270769597b9b3edd685ea401b8796985ac4da",
+  "supported_tasks": 8,
+  "evaluation": {
+    "correct": 96,
+    "total": 96,
+    "unsupported_correct": 12,
+    "unsupported_total": 12
+  },
+  "models": {
+    "fly-nl": {
+      "file": "checkpoints/fly-nl.json",
+      "sha256": "6fc7deaab35bd12b255a42e4b4667883a261781c4e402dc2cda053ea41520625",
+      "weights_sha256": "2b274953ee749b2230bd62394dca4740381888a2d757aa9b5594933fe502ebd9",
+      "contract": {
+        "dataset_sha256": "a7ea57fe91a9705f99c6eb0ef7c61835b7dce33fcf26459fc9038c2601714cec",
+        "ir_version": "0.1",
+        "ir_sha256": "62205d2728091cea58f08875bc1270769597b9b3edd685ea401b8796985ac4da"
+      },
+      "encoder": "clocked-nl-invariant-context-pointer-bytes-v3.1"
+    },
+    "fly-code": {
+      "file": "checkpoints/fly-code.json",
+      "sha256": "059a2350b8d57a29d79c62de9e9fdaac0f6580fe8d23c5438824469a3e03e23d",
+      "weights_sha256": "128a53689b9fd17edfce57fadc6b6c4016090c23e4a540dc409a6cd58b9680aa",
+      "contract": {
+        "dataset_sha256": "691865d7b0d437208316999470807f8c9a8d2e407ab05b70af2a10369d5c26be",
+        "ir_version": "0.1",
+        "ir_sha256": "62205d2728091cea58f08875bc1270769597b9b3edd685ea401b8796985ac4da"
+      },
+      "encoder": "clocked-line-byte-population-v2.6"
+    }
+  },
+  "bundle": "model-730f9d42b123c31f.zip",
+  "bundle_sha256": "730f9d42b123c31fc4b332dd004966a7fabfa804bff928d9def1d75bb1e9816d",
+  "pyodide_version": "0.27.7",
+  "runtime_base": "https://cdn.jsdelivr.net/pyodide/v0.27.7/full/"
+}

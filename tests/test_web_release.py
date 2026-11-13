@@ -12,6 +12,7 @@ class BrowserReleaseTest(unittest.TestCase):
     def test_release_uses_evaluated_weights_without_teachers_or_test_answers(self):
         release = verified_release()
         archive = model_archive(release)
+        self.assertEqual(archive, model_archive(release))
         with zipfile.ZipFile(io.BytesIO(archive)) as z:
             names = z.namelist()
             self.assertIn("checkpoints/fly-nl.json", names)

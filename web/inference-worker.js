@@ -3,15 +3,24 @@ let python;
 const notify = (message) => postMessage({ type: "progress", message });
 const ready = (async () => {
   notify("Python 실행 환경을 준비하고 있어요");
-  importScripts("./runtime/pyodide.js");
-  python = await loadPyodide({
-    indexURL: new URL("./runtime/", self.location.href).href,
-  });
-  await python.loadPackage("numpy");
-  notify("학습된 두 모델을 확인하고 있어요");
   const response = await fetch("./site-manifest.json", { cache: "no-cache" });
   if (!response.ok) throw new Error("모델 정보를 불러오지 못했습니다.");
   const manifest = await response.json();
+  const runtime = new URL(
+    manifest.runtime_base || "./runtime/",
+    self.location.href,
+  );
+  if (
+    runtime.origin !== self.location.origin &&
+    runtime.href !== "https://cdn.jsdelivr.net/pyodide/v0.27.7/full/"
+  )
+    throw new Error("알 수 없는 Python 실행 환경입니다.");
+  importScripts(new URL("pyodide.js", runtime).href);
+  python = await loadPyodide({
+    indexURL: runtime.href,
+  });
+  await python.loadPackage("numpy");
+  notify("학습된 두 모델을 확인하고 있어요");
   const download = await fetch(new URL(manifest.bundle, self.location.href));
   if (!download.ok) throw new Error("모델 파일을 불러오지 못했습니다.");
   const bundle = await download.arrayBuffer();

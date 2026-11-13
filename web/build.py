@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import shutil
 import sys
+import tempfile
 import urllib.request
 import zipfile
 
@@ -78,9 +79,9 @@ def model_archive(release):
             info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             archive.writestr(info, path.read_bytes())
-        archive.writestr(
-            "browser_manifest.json", json.dumps(release, ensure_ascii=False)
-        )
+        info = zipfile.ZipInfo("browser_manifest.json", date_time=(2020, 1, 1, 0, 0, 0))
+        info.compress_type = zipfile.ZIP_DEFLATED
+        archive.writestr(info, json.dumps(release, ensure_ascii=False))
     return data.getvalue()
 
 
@@ -125,7 +126,7 @@ def vendor_runtime(destination):
     package("numpy")
 
 
-def build(output, *, runtime=True):
+def build(output, *, runtime=True, source_export=False):
     output = Path(output)
     protected = [
         ROOT / name
@@ -141,9 +142,12 @@ def build(output, *, runtime=True):
             "experiments",
         )
     ]
-    if output.resolve() == ROOT or any(
-        path == output.resolve() or path in output.resolve().parents
-        for path in protected
+    if not (source_export and output.resolve() == ROOT / "docs/site") and (
+        output.resolve() == ROOT
+        or any(
+            path == output.resolve() or path in output.resolve().parents
+            for path in protected
+        )
     ):
         raise ValueError("Build output cannot overwrite source")
     release = verified_release()
@@ -172,6 +176,7 @@ def build(output, *, runtime=True):
                 "bundle": filename,
                 "bundle_sha256": identity,
                 "pyodide_version": PYODIDE_VERSION,
+                "runtime_base": PYODIDE_BASE if source_export else "./runtime/",
             },
             ensure_ascii=False,
             indent=2,
@@ -193,11 +198,40 @@ def build(output, *, runtime=True):
     print(f"Built {output}; {len(bundle):,} byte verified model bundle")
 
 
+def check_source():
+    with tempfile.TemporaryDirectory() as directory:
+        # Match the legacy export without granting permission to overwrite source.
+        build(directory, runtime=False)
+        path = Path(directory) / "site-manifest.json"
+        manifest = json.loads(path.read_text())
+        manifest["runtime_base"] = PYODIDE_BASE
+        path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+        expected = {
+            p.name: p.read_bytes() for p in Path(directory).iterdir() if p.is_file()
+        }
+        actual = {
+            p.name: p.read_bytes()
+            for p in (ROOT / "docs/site").iterdir()
+            if p.is_file()
+        }
+        if expected != actual:
+            raise ValueError(
+                "Tracked Pages export is stale; run python web/build.py --export-source"
+            )
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "_site")
     parser.add_argument(
         "--skip-runtime", action="store_true", help="For offline unit checks only"
     )
+    parser.add_argument("--export-source", action="store_true")
+    parser.add_argument("--check-source", action="store_true")
     arguments = parser.parse_args()
-    build(arguments.output, runtime=not arguments.skip_runtime)
+    if arguments.check_source:
+        check_source()
+    elif arguments.export_source:
+        build(ROOT / "docs/site", runtime=False, source_export=True)
+    else:
+        build(arguments.output, runtime=not arguments.skip_runtime)

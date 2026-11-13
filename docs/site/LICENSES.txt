@@ -1,0 +1,8 @@
+FlyWire Consortium, Dorkenwald et al., Neuronal wiring diagram of an adult brain (2024).
+Derived from FlyWire Codex FAFB v783, selected and aggregated as described in the repository README.
+https://www.nature.com/articles/s41586-024-07558-y
+https://home.flywire.ai/guidelines
+Data license: CC BY-NC 4.0, https://creativecommons.org/licenses/by-nc/4.0/
+Pyodide: MPL-2.0; CPython and NumPy retain their upstream licenses.
+https://github.com/pyodide/pyodide
+https://github.com/hwanghj09/codingfly
