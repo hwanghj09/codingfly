@@ -3,12 +3,50 @@ import sys
 import unittest
 import zipfile
 import io
+import os
+from pathlib import Path
+import tempfile
+from unittest.mock import patch
 
 from web.build import model_archive, verified_release
 from web.runner import execute
+from web.deploy_legacy import deploy
 
 
 class BrowserReleaseTest(unittest.TestCase):
+    def test_pages_reuses_the_current_main_build_without_mutating_settings(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "output"
+            with patch.dict(
+                os.environ,
+                {
+                    "GITHUB_REPOSITORY": "owner/repo",
+                    "GITHUB_SHA": "selected-main",
+                    "GITHUB_OUTPUT": str(output),
+                },
+            ):
+                with patch(
+                    "web.deploy_legacy.api",
+                    side_effect=[
+                        {
+                            "build_type": "legacy",
+                            "source": {"branch": "main", "path": "/"},
+                            "html_url": "https://example.test/",
+                        },
+                        {
+                            "commit": "selected-main",
+                            "status": "built",
+                            "url": "https://api.github.com/repos/owner/repo/pages/builds/1",
+                        },
+                    ],
+                ) as calls:
+                    deploy()
+                    self.assertEqual(calls.call_count, 2)
+                    self.assertTrue(
+                        all("method" not in c.kwargs for c in calls.call_args_list)
+                    )
+            self.assertIn("page_url=https://example.test/", output.read_text())
+
     def test_release_uses_evaluated_weights_without_teachers_or_test_answers(self):
         release = verified_release()
         archive = model_archive(release)

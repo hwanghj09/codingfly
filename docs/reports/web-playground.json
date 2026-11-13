@@ -34,7 +34,7 @@
       }
     }
   },
-  "native_tests": {"passed":true,"count":105,"seconds":7.149,"log_sha256":"8438e3a7f51683093977b91f23e6e12e4f11c4d9e0608963ba1e098d17b23fca"},
+  "native_tests": {"passed":true,"count":106,"seconds":8.073,"log_sha256":"74cbda63467ba2eeb28835e91073abfbbaaa8b625d6680202e03c1a4797e0752"},
   "browser": {
     "all_browser_cases": {
       "passed": true,

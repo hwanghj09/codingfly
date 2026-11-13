@@ -22,7 +22,14 @@ def deploy():
         "path": "/",
     }:
         raise ValueError("Expected the existing main/root Pages source")
-    requested = api(f"repos/{repository}/pages/builds", method="POST")
+    latest = api(f"repos/{repository}/pages/builds/latest")
+    # A normal main push already schedules a build; reuse it when possible.
+    requested = (
+        latest
+        if latest.get("commit") == commit
+        and latest.get("status") in {"queued", "building", "built"}
+        else api(f"repos/{repository}/pages/builds", method="POST")
+    )
     prefix = f"https://api.github.com/repos/{repository}/pages/builds/"
     url = requested.get("url", prefix + "latest")
     if not url.startswith(prefix):
@@ -30,7 +37,7 @@ def deploy():
     endpoint = f"repos/{repository}/pages/builds/" + url[len(prefix) :]
     deadline = time.monotonic() + 600
     while time.monotonic() < deadline:
-        build = api(endpoint)
+        build = requested
         print(f"Pages build: {build['status']}", flush=True)
         if build["status"] == "errored":
             raise RuntimeError(
@@ -42,6 +49,7 @@ def deploy():
             print(site["html_url"], flush=True)
             return
         time.sleep(5)
+        requested = api(endpoint)
     raise TimeoutError("Pages did not publish this commit within ten minutes")
 
 
